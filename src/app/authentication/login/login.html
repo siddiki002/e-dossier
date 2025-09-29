@@ -1,0 +1,24 @@
+<div class="login-container">
+    <img src="/navy-icon.png" alt="Navy Icon" class="login-image"/>
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit($event)">
+        <mat-form-field appearance="outline" >
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username">
+            <mat-hint>Enter your email</mat-hint>
+        </mat-form-field>
+        @if(loginForm.controls.username.hasError('required') && loginForm.controls.username.touched) {
+            <mat-error>Username is required</mat-error>
+        }
+        @if(loginForm.controls.username.hasError('email') && loginForm.controls.username.touched) {
+            <mat-error>Invalid email format</mat-error>
+        }
+        <mat-form-field appearance="outline" >
+            <mat-label>Password</mat-label>
+            <input matInput formControlName="password" type="password">
+        </mat-form-field>
+        @if(loginForm.controls.password.hasError('required') && loginForm.controls.password.touched) {
+            <mat-error>Password is required</mat-error>
+        }
+    </form>
+    <button matButton="elevated" class="login-button">Login</button>
+</div>
