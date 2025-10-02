@@ -1,0 +1,20 @@
+<div class="data-entry-dashboard">
+    <h3>Please select a class</h3>
+    <div class="data-entry-dashboard-grid">
+        <button *ngFor="let class of classes" matButton="elevated" class="data-entry-dashboard-button" (click)="openDialog(class.id)">
+            <mat-card-header>{{ class.name }}</mat-card-header>
+            <mat-card-content>
+                <p>Number of Students: {{ class.numberOfStudents }}</p>
+            </mat-card-content>
+        </button>
+    </div>
+</div> 
+
+<ng-template #courseSelectionDialog>
+    <h4 mat-dialog-title>Select Course for <strong>{{selectedClass?.name}}</strong></h4>
+    <mat-dialog-content>
+        <mat-selection-list [hideSingleSelectionIndicator]="false">
+            <a mat-list-item class="course-item" *ngFor="let course of courses" (click)="selectCourse(course.id)">{{ course.name }}</a>
+        </mat-selection-list>
+    </mat-dialog-content>
+</ng-template>

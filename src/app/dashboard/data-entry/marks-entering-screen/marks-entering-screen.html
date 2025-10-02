@@ -1,0 +1,32 @@
+<div class="officers-list">
+    <h3>Entering Marks for <strong>{{className}}</strong> - <em>{{courseName}}</em></h3>
+    <p>Total Officers: {{ officersInClass.length }}</p>
+    <mat-form-field appearance="outline">
+        <mat-label>Total Marks</mat-label>
+        <input matInput [(ngModel)]="totalMarksInCourse"/>
+    </mat-form-field>
+    <mat-list>
+        @for(officer of officersInClass; track officer){
+            <mat-list-item>
+                <div matListItemTitle>
+                    {{ officer.id }} {{ officer.name }}
+                </div>
+                <div matListItemMeta>
+                    <input
+                    class="marks-input"
+                    [(ngModel)]="marksOfEachOfficer[officer.id]"
+                    />
+                    / {{ totalMarksInCourse }}
+                </div>
+            </mat-list-item>
+        }
+    </mat-list>
+    <button matButton="elevated" class="save-marks-button" (click)="saveMarks()">Save Marks</button>
+</div>
+
+<ng-template #successDialog>
+    <h4 mat-dialog-content>Marks saved successfully</h4>
+    <mat-dialog-actions>
+        <button mat-button (click)="dialogRef.close()">OK</button>
+    </mat-dialog-actions>
+</ng-template>

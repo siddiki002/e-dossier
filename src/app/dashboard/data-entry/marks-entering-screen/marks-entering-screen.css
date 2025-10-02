@@ -1,0 +1,30 @@
+.officers-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 100px;
+}
+
+.marks-input {
+    width: 30px;
+    border: none;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: gray;
+    background-color: inherit;
+}
+
+.marks-input:focus {
+    outline: none;
+    border-bottom-color: black;
+}
+
+.save-marks-button {
+    margin-top: 2rem;
+    padding: 10px 20px;
+}
+
+.mat-mdc-list-item {
+    width: 400px;
+}

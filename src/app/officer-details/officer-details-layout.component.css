@@ -1,0 +1,30 @@
+.officer-details-layout-container {
+    height: 100vh;
+}
+
+.drawer-container {
+    background-color: #0A0825;
+    width: 250px;
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px
+}
+
+.drawer-image {
+    width: 80px;
+    height: 100px;
+}
+
+.drawer-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-block: 16px;
+}
+
+.router-container {
+    text-align: center;
+    color: white;
+    cursor: pointer;
+}

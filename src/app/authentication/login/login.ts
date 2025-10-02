@@ -4,6 +4,10 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
+import { AuthenticationService } from '../service/authentication.service';
+import { UserService } from '@app/user.service';
+import { Router } from '@angular/router';
+import { userType } from '../authentication.const';
 
 @Component({
   selector: 'login',
@@ -16,15 +20,31 @@ export class Login {
     username: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required])
   })
-  protected imagePath = '@public/Navy Icon.png';
+  protected showInvalidCredentialsError = false;
+  protected userType: userType = null;
 
-  constructor() {
-    this.loginForm.valueChanges.subscribe(status => console.log(status));
+  constructor(private authenticationService: AuthenticationService, private userService: UserService, private router: Router) {
+    this.loginForm.valueChanges.subscribe(() => {
+      if(this.showInvalidCredentialsError) {
+        this.showInvalidCredentialsError = false;
+      }
+    })
+    this.userService.user.subscribe((user) => {
+      this.userType = user;
+    })
+    this.userService.setIsAuthenticated(false);
   }
 
   public onSubmit(event : SubmitEvent) {
     event.preventDefault();
-    console.log(this.loginForm.value);
-    console.log(this.loginForm.controls.password.errors);
+    if(this.loginForm.valid) {
+      const isAuthenticated = this.authenticationService.authenticate(this.loginForm.value.username!, this.loginForm.value.password!)
+      if(isAuthenticated) {
+          this.userService.setIsAuthenticated(isAuthenticated);
+          this.router.navigate(['/dashboard', this.userType]);
+      } else {
+        this.showInvalidCredentialsError = true;
+      }
+    }
   }
 }

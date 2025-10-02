@@ -1,5 +1,8 @@
 <div class="login-container">
     <img src="/navy-icon.png" alt="Navy Icon" class="login-image"/>
+    @if (showInvalidCredentialsError) {
+        <mat-error>Invalid username or password</mat-error>
+    }
     <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit($event)">
         <mat-form-field appearance="outline" >
             <mat-label>Username</mat-label>
@@ -19,6 +22,6 @@
         @if(loginForm.controls.password.hasError('required') && loginForm.controls.password.touched) {
             <mat-error>Password is required</mat-error>
         }
+        <button matButton="elevated" class="login-button">Login</button>
     </form>
-    <button matButton="elevated" class="login-button">Login</button>
 </div>

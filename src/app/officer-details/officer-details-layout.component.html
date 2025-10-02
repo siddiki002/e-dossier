@@ -1,0 +1,21 @@
+<mat-drawer-container [hasBackdrop]="true" class="officer-details-layout-container" role="navigation">
+      <mat-drawer [opened]="isMenuOpened" class="drawer-container">
+        <div class="drawer-image-container">
+            <img src="/navy-icon.png" class="drawer-image"/>
+        </div>
+          <mat-divider></mat-divider>
+          <div class="router-container">
+              <h3 [routerLink]="['personal-information']" (click)="toggleMenu()">Personal Information</h3>
+              <h3 [routerLink]="['personal-information']" (click)="toggleMenu()">Academics</h3>
+              <h3 [routerLink]="['personal-information']" (click)="toggleMenu()">Discpline/Observations</h3>
+              <h3 [routerLink]="['personal-information']" (click)="toggleMenu()">Traits Assessment</h3>
+              <h3 [routerLink]="['personal-information']" (click)="toggleMenu()">Extra Curricular</h3>
+              <h3 [routerLink]="['personal-information']" (click)="toggleMenu()">Misc Records</h3>
+          </div>
+      </mat-drawer>
+
+      <mat-drawer-content>
+        <router-outlet></router-outlet>
+        <button (click)="toggleMenu()">Toggle Menu</button>
+      </mat-drawer-content>
+</mat-drawer-container>
