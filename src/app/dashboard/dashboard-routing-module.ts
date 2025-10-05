@@ -5,7 +5,12 @@ const routes: Routes = [
   {path: 'data-entry', loadComponent: () => import('./data-entry/data-entry').then(m => m.DataEntry)},
   {path : 'instructor', loadComponent: () => import('./instructor/instructor').then(m => m.Instructor)},
   {path: 'oic', loadComponent: () => import('./oic/oic').then(m => m.Oic)},
-  {path: 'class/:id', loadComponent: () => import('./data-entry/marks-entering-screen/marks-entering-screen').then(m => m.MarksEnteringScreen)},
+  {path: 'academics/:id', loadComponent: () => import('./data-entry/marks-entering-screen/marks-entering-screen').then(m => m.MarksEnteringScreen)},
+  {path: 'personalInformation/:id', loadComponent: () => import('./data-entry/marks-entering-screen/marks-entering-screen').then(m => m.MarksEnteringScreen)},
+  {path: 'discipline/:id', loadComponent: () => import('./data-entry/marks-entering-screen/marks-entering-screen').then(m => m.MarksEnteringScreen)},
+  {path: 'traits/:id', loadComponent: () => import('./data-entry/marks-entering-screen/marks-entering-screen').then(m => m.MarksEnteringScreen)},
+  {path: 'extraCurricular/:id', loadComponent: () => import('./data-entry/marks-entering-screen/marks-entering-screen').then(m => m.MarksEnteringScreen)},
+  {path: 'miscRecords/:id', loadComponent: () => import('./data-entry/marks-entering-screen/marks-entering-screen').then(m => m.MarksEnteringScreen)},
 ];
 
 @NgModule({

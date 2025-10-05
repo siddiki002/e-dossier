@@ -8,10 +8,12 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import { MatDialog, MatDialogContent, MatDialogActions, MatDialogRef } from '@angular/material/dialog';
+import {MatSelectModule} from '@angular/material/select';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'marks-entering-screen',
-  imports: [MatListModule, MatInputModule, MatFormFieldModule, FormsModule, MatButtonModule, MatDialogContent, MatDialogActions],
+  imports: [MatListModule, MatInputModule, MatFormFieldModule, FormsModule, MatButtonModule, MatDialogContent, MatDialogActions, MatSelectModule, CommonModule],
   templateUrl: './marks-entering-screen.html',
   styleUrl: './marks-entering-screen.css'
 })
@@ -21,38 +23,51 @@ export class MarksEnteringScreen implements OnInit {
 
   protected totalMarksInCourse: number = 100;
   protected officersInClass: Officer[] = [];
-  protected courseName: string = '';
   protected className: string = '';
   protected marksOfEachOfficer: {[officerId: string]: number} = {};
+  protected selectedCourseId: string = '';
+  protected selectedAssessmentType: {key: string, value: string} = {key: '', value: ''};
+  protected courseList = courses;
+  protected assessmentTypeList: {key: string, value: string}[] = [
+    {
+      key: 'quiz',
+      value: 'Quiz'
+    },
+    {
+      key: 'assignment',
+      value: 'Assignments'
+    },
+    {
+      key: 'formative_test',
+      value: 'Formative Test'
+    },
+    {
+      key: 'finals',
+      value: 'Finals'
+    }
+  ]
+  
   
   private _classId!: string;
-  private _courseId!: string;
   private _dialogRef!: MatDialogRef<any,any>;
 
   get classId() {
     return this._classId;
   }
 
-  get courseId() {
-    return this._courseId;
-  }
-
   get dialogRef() {
     return this._dialogRef;
+  }
+
+  get courseName() : string {
+    const course = this.courseList.find(c => c.id === this.selectedCourseId);
+    return course ? course.name : '';
   }
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private dialog: MatDialog) {
     this.activatedRoute.params.subscribe(params => {
       this._classId = params['id'];
     });
-    this.activatedRoute.queryParams.subscribe(queryParams => {
-      this._courseId = queryParams['courseId'];
-    });
-  }
-
-  private getCourseName(courseId: string): string {
-    const course = courses.find(c => c.id === courseId);
-    return course ? course.name : '';
   }
 
   private getClassName(classId: string): string {
@@ -61,15 +76,11 @@ export class MarksEnteringScreen implements OnInit {
   }
 
   ngOnInit() {
-    if(!this._classId || !this._courseId) return;
+    if(!this._classId) return;
 
     // Get the list of officers enrolled in this class
     this.officersInClass.push(...officers.filter(officer => officer.classId.includes(this._classId)));
-    this.courseName = this.getCourseName(this._courseId);
     this.className = this.getClassName(this._classId);
-    this.officersInClass.forEach(officer => {
-      this.marksOfEachOfficer[officer.id] = officer.courseMarks.find(cm => cm.courseId === this._courseId)?.marks || 0;
-    });
   }
 
   updateOfficerMarks(officerId: string, marks: string) {
@@ -86,5 +97,12 @@ export class MarksEnteringScreen implements OnInit {
     this._dialogRef = this.dialog.open(this.successDialog);
 
     this._dialogRef.afterClosed().subscribe(() => this.navigateToDashboard());
+  }
+
+  onCourseSelection(courseId: string) {
+    this.selectedCourseId = courseId;
+    this.officersInClass.forEach(officer => {
+      this.marksOfEachOfficer[officer.id] = officer.courseMarks.find(cm => cm.courseId === this.selectedCourseId)?.marks || 0;
+    });
   }
 }

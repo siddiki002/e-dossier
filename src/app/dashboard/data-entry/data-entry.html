@@ -10,11 +10,11 @@
     </div>
 </div> 
 
-<ng-template #courseSelectionDialog>
-    <h4 mat-dialog-title>Select Course for <strong>{{selectedClass?.name}}</strong></h4>
+<ng-template #optionsDialog>
+    <h4 mat-dialog-title>Which of the following data you want to enter?</h4>
     <mat-dialog-content>
         <mat-selection-list [hideSingleSelectionIndicator]="false">
-            <a mat-list-item class="course-item" *ngFor="let course of courses" (click)="selectCourse(course.id)">{{ course.name }}</a>
+            <a mat-list-item class="course-item" *ngFor="let option of optionsList" (click)="selectOption(option.key)">{{ option.value }}</a>
         </mat-selection-list>
     </mat-dialog-content>
 </ng-template>

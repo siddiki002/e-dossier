@@ -16,12 +16,19 @@ import { MatListModule } from '@angular/material/list';
 })
 export class DataEntry {
 
-  @ViewChild('courseSelectionDialog') courseSelectionDialog!: TemplateRef<any>;
+  @ViewChild('optionsDialog') optionsDialog!: TemplateRef<any>;
 
   protected classes : Class[] = []
   protected courses : Course[] = []
   protected selectedClass : Class | null = null;
-  
+  protected optionsList : {key: string, value: string}[] = [
+    {key: 'personalInformation', value: 'Personal Information'},
+    {key: 'academics', value: 'Academics'},
+    {key: 'discipline', value: 'Discipline/Observations'},
+    {key: 'traits', value: 'Traits Assessment'},
+    {key: 'extraCurricular', value: 'Extra Curricular/Sport'},
+    {key: 'miscRecords', value: 'Misc Records'}
+  ];
 
   private _dialogRef!: MatDialogRef<any,any>;
 
@@ -38,12 +45,12 @@ export class DataEntry {
 
   openDialog(classId: string) {
     this.selectedClass = this.classes.find(c => c.id === classId) || null;
-    this._dialogRef = this.dialog.open(this.courseSelectionDialog);
+    this._dialogRef = this.dialog.open(this.optionsDialog);
   }
 
-  selectCourse(courseId: string) {
-    this._dialogRef.close(courseId);
-    this.router.navigate(['dashboard/class', this.selectedClass?.id], { queryParams: { courseId } });
+  selectOption(optionKey: string) {
+    this._dialogRef.close(optionKey);
+    this.router.navigate([`dashboard/${optionKey}`, this.selectedClass?.id]);
   }
 
 }

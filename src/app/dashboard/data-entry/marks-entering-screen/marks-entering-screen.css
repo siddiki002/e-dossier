@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-top: 100px;
+    padding-top: 50px;
 }
 
 .marks-input {
@@ -27,4 +27,13 @@
 
 .mat-mdc-list-item {
     width: 400px;
+}
+
+.course-selection-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+    gap: 1rem
 }

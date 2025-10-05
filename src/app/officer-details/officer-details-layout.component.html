@@ -15,7 +15,9 @@
       </mat-drawer>
 
       <mat-drawer-content>
+        <button matIconButton (click)="toggleMenu()" style="margin-left: 0.5rem;">
+          <mat-icon>menu</mat-icon>
+        </button>
         <router-outlet></router-outlet>
-        <button (click)="toggleMenu()">Toggle Menu</button>
       </mat-drawer-content>
 </mat-drawer-container>

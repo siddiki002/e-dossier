@@ -1,1 +1,16 @@
-<p>personal-information works!</p>
+<div *ngIf="officerDetails" class="name-image-container">
+    <div class="image-container">
+        <img src="/officer-image.png" class="officer-image"/> 
+    </div>
+    <div class="name-container">
+        <p class="main-text">{{officerDetails.name}}</p>
+        <p class="subdued-text">{{officerDetails.dateOfBirth.getFullYear()}}</p>
+    </div>
+</div>
+
+<div class="information-container">
+    <div class="personal-information"></div>
+    <div class="additional-information">
+        <div class="father-information"></div>
+    </div>
+</div>

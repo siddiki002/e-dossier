@@ -1,5 +1,24 @@
-<div class="officers-list">
-    <h3>Entering Marks for <strong>{{className}}</strong> - <em>{{courseName}}</em></h3>
+<div class="course-selection-container">
+    <mat-form-field appearance="outline">
+    <mat-label>Course</mat-label>
+    <mat-select [ngModel]="selectedCourseId" name="course" (ngModelChange)="onCourseSelection($event)">
+      @for (course of courseList; track course) {
+        <mat-option [value]="course.id">{{course.name}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+    <mat-form-field *ngIf="!!selectedCourseId" appearance="outline">
+        <mat-label>Assessment Type</mat-label>
+        <mat-select [(ngModel)]="selectedAssessmentType" name="assessment">
+            @for (assessment of assessmentTypeList; track assessment) {
+            <mat-option [value]="assessment" (valueChange)="selectedAssessmentType = assessment">{{assessment.value}}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<div class="officers-list" *ngIf="!!selectedCourseId">
+    <h3>Entering {{selectedAssessmentType.value ? `${selectedAssessmentType.value} marks` : 'marks'}} for <strong>{{className}}</strong> - <em>{{courseName}}</em></h3>
     <p>Total Officers: {{ officersInClass.length }}</p>
     <mat-form-field appearance="outline">
         <mat-label>Total Marks</mat-label>
@@ -21,7 +40,7 @@
             </mat-list-item>
         }
     </mat-list>
-    <button matButton="elevated" class="save-marks-button" (click)="saveMarks()">Save Marks</button>
+    <button matButton="elevated" class="save-marks-button" (click)="saveMarks()" [disabled]="!(officersInClass.length > 0)">Save Marks</button>
 </div>
 
 <ng-template #successDialog>
