@@ -61,6 +61,8 @@ export class PersonalInformation {
       if(currentOfficer) {
         this.officerDetails = currentOfficer;
       }
+
+      this.familyParticularsDataSource[0].name = this.officerDetails?.fatherName;
     })
   }
 
