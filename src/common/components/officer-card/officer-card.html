@@ -1,0 +1,25 @@
+<div *ngIf="officerDetails" class="profile-card">
+    <img src="/officer-image.png" alt="Officer Image">
+    <div class="profile-details">
+      <div class="detail">
+        <h3>Officer Name</h3>
+        <p>{{officerDetails.name}}</p>
+      </div>
+      <div class="detail">
+        <h3>ID</h3>
+        <p>{{officerDetails.id}}</p>
+      </div>
+      <div class="detail">
+        <h3>CNIC</h3>
+        <p>{{officerDetails.cnic}}</p>
+      </div>
+      <div class="detail">
+        <h3>Mobile Number</h3>
+        <p>{{officerDetails.contactNumber}}</p>
+      </div>
+      <div class="detail">
+        <h3>Class</h3>
+        <p>{{className}}</p>
+      </div>
+    </div>
+</div>

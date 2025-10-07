@@ -1,0 +1,93 @@
+<officer-card [officerDetails]="officerDetails"></officer-card>
+
+<div class="academics-container">
+    <h3>Compulsory Modules</h3>
+    
+    <table mat-table [dataSource]="compulsoryModuleDataSource" class="mat-elevation-z8 demo-table">
+      
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">{{element.name}}</td>
+      </ng-container>
+    
+      <!-- First Attempt Column -->
+      <ng-container matColumnDef="firstAttempt">
+        <th mat-header-cell *matHeaderCellDef>First Attempt</th>
+        <td mat-cell *matCellDef="let element">{{element.passedFirstAttempt !== undefined ? (element.passedFirstAttempt ? 'Passed' : 'Failed') : '—'}}</td>
+      </ng-container>
+    
+      <!-- Second Attempt Column -->
+      <ng-container matColumnDef="secondAttempt">
+        <th mat-header-cell *matHeaderCellDef>Second Attempt</th>
+        <td mat-cell *matCellDef="let element">{{element.passedSecondAttempt !== undefined ? (element.passedSecondAttempt ? 'Passed' : 'Failed') : '—'}}</td>
+      </ng-container>
+    
+      <!-- Third Attempt Column -->
+      <ng-container matColumnDef="thirdAttempt">
+        <th mat-header-cell *matHeaderCellDef>Third Attempt</th>
+        <td mat-cell *matCellDef="let element">{{element.passedThirdAttempt !== undefined ? (element.passedThirdAttempt ? 'Passed' : 'Failed') : '—'}}</td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="compulsoryModuleDisplayedColumns"></tr>
+      <tr
+          mat-row
+          *matRowDef="let row; columns: compulsoryModuleDisplayedColumns;"
+      ></tr>
+    </table>
+    
+    
+    <h3>P.T.T Assessments</h3>
+    
+    
+    <table mat-table [dataSource]="pttAssessmentDataSource" class="mat-elevation-z8 demo-table">
+    
+      <!-- Subject Column -->
+      <ng-container matColumnDef="subject">
+        <th mat-header-cell *matHeaderCellDef>Subject</th>
+        <td mat-cell *matCellDef="let element">{{element.Subject}}</td>
+      </ng-container>
+    
+      <!-- Total Column -->
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef>Total</th>
+        <td mat-cell *matCellDef="let element">{{element.Total}}</td>
+      </ng-container>
+    
+      <!-- Quiz Column -->
+      <ng-container matColumnDef="quiz">
+        <th mat-header-cell *matHeaderCellDef>Quiz</th>
+        <td mat-cell *matCellDef="let element">{{element.quiz}}</td>
+      </ng-container>
+    
+      <!-- Assignment Column -->
+      <ng-container matColumnDef="assignment">
+        <th mat-header-cell *matHeaderCellDef>Assignment</th>
+        <td mat-cell *matCellDef="let element">{{element.assignment}}</td>
+      </ng-container>
+    
+      <!-- Formative Test Column -->
+      <ng-container matColumnDef="formativeTest">
+        <th mat-header-cell *matHeaderCellDef>Formative Test</th>
+        <td mat-cell *matCellDef="let element">{{element.formativeTest}}</td>
+      </ng-container>
+    
+      <!-- Finals Column -->
+      <ng-container matColumnDef="finals">
+        <th mat-header-cell *matHeaderCellDef>Finals</th>
+        <td mat-cell *matCellDef="let element">{{element.finals}}</td>
+      </ng-container>
+    
+        <!-- Grade Column -->
+      <ng-container matColumnDef="grade">
+        <th mat-header-cell *matHeaderCellDef>Grade</th>
+        <td mat-cell *matCellDef="let element">{{calculateGrade(element)}}</td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="pttAssessmentDisplayedColumns"></tr>
+      <tr
+          mat-row
+          *matRowDef="let row; columns: pttAssessmentDisplayedColumns;"
+      ></tr>
+    </table>
+</div>

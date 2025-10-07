@@ -1,16 +1,36 @@
-<div *ngIf="officerDetails" class="name-image-container">
-    <div class="image-container">
-        <img src="/officer-image.png" class="officer-image"/> 
-    </div>
-    <div class="name-container">
-        <p class="main-text">{{officerDetails.name}}</p>
-        <p class="subdued-text">{{officerDetails.dateOfBirth.getFullYear()}}</p>
-    </div>
-</div>
+<officer-card [officerDetails]="officerDetails"></officer-card>
 
-<div class="information-container">
-    <div class="personal-information"></div>
-    <div class="additional-information">
-        <div class="father-information"></div>
-    </div>
-</div>
+<table mat-table [dataSource]="familyParticularsDataSource" class="mat-elevation-z8 demo-table">
+    <ng-container matColumnDef="relation">
+        <th mat-header-cell *matHeaderCellDef>Relation</th>
+        <td mat-cell *matCellDef="let element">{{element.relation}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">{{element.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="age">
+        <th mat-header-cell *matHeaderCellDef>Age</th>
+        <td mat-cell *matCellDef="let element">{{element.age}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="contactNumber">
+        <th mat-header-cell *matHeaderCellDef>Contact Number</th>
+        <td mat-cell *matCellDef="let element">{{element.contactNumber}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="occupation">
+        <th mat-header-cell *matHeaderCellDef>Occupation</th>
+        <td mat-cell *matCellDef="let element">{{element.occupation}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef>Address</th>
+        <td mat-cell *matCellDef="let element">{{element.address}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="familyParticularsDisplayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: familyParticularsDisplayedColumns;"></tr>
+</table>

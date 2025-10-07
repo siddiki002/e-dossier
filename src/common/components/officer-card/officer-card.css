@@ -1,0 +1,38 @@
+.profile-card {
+    display: flex;
+    max-width: 700px;
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.profile-card img {
+    width: 50%;
+    object-fit: cover;
+}
+
+.profile-details {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.detail {
+    margin-bottom: 16px;
+}
+
+.detail h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.detail p {
+    margin: 4px 0 0;
+    font-size: 0.95rem;
+    color: #666;
+}

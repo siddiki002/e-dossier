@@ -71,21 +71,16 @@ export const courses : Course[] = [
 ]
 
 export const classes: Class[] = [
-    {id: 'CLS1001', instructorId: 'INS1001', numberOfStudents: 20, name: 'Class A'},
-    {id: 'CLS1002', instructorId: 'INS1001', numberOfStudents: 30, name: 'Class B'},
-    {id: 'CLS1003', instructorId: 'INS1002', numberOfStudents: 25, name: 'Class C'},
-    {id: 'CLS1004', instructorId: 'INS1003', numberOfStudents: 15, name: 'Class D'},
-    {id: 'CLS1005', instructorId: 'INS1004', numberOfStudents: 10, name: 'Class E'},
-    {id: 'CLS1006', instructorId: 'INS1005', numberOfStudents: 18, name: 'Class F'},
-    {id: 'CLS1007', instructorId: 'INS1006', numberOfStudents: 22, name: 'Class G'},
-    {id: 'CLS1008', instructorId: 'INS1007', numberOfStudents: 28, name: 'Class H'},
-    {id: 'CLS1009', instructorId: 'INS1008', numberOfStudents: 12, name: 'Class I'},
-    {id: 'CLS1010', instructorId: 'INS1009', numberOfStudents: 16, name: 'Class J'},
-    {id: 'CLS1011', instructorId: 'INS1010', numberOfStudents: 14, name: 'Class K'},
-    {id: 'CLS1012', instructorId: 'INS1011', numberOfStudents: 19, name: 'Class L'},
-    {id: 'CLS1013', instructorId: 'INS1012', numberOfStudents: 21, name: 'Class M'},
-    {id: 'CLS1014', instructorId: 'INS1013', numberOfStudents: 17, name: 'Class N'},
-    {id: 'CLS1015', instructorId: 'INS1014', numberOfStudents: 13, name: 'Class O'}
+    {id: 'CLS1001', instructorId: 'INS1001', numberOfStudents: 20, name: '2021 Alpha'},
+    {id: 'CLS1002', instructorId: 'INS1001', numberOfStudents: 30, name: '2021 Beta'},
+    {id: 'CLS1003', instructorId: 'INS1002', numberOfStudents: 25, name: '2022 Alpha'},
+    {id: 'CLS1004', instructorId: 'INS1003', numberOfStudents: 15, name: '2022 Beta'},
+    {id: 'CLS1005', instructorId: 'INS1004', numberOfStudents: 10, name: '2023 Alpha'},
+    {id: 'CLS1006', instructorId: 'INS1005', numberOfStudents: 18, name: '2023 Beta'},
+    {id: 'CLS1007', instructorId: 'INS1006', numberOfStudents: 22, name: '2024 Alpha'},
+    {id: 'CLS1008', instructorId: 'INS1007', numberOfStudents: 28, name: '2024 Beta'},
+    {id: 'CLS1009', instructorId: 'INS1008', numberOfStudents: 12, name: '2025 Alpha'},
+    {id: 'CLS1010', instructorId: 'INS1009', numberOfStudents: 16, name: '2025 Beta'},
 ]
 
 export const instructors: Instructor[] = [

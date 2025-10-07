@@ -15,6 +15,7 @@ export const routes: Routes = [
         children: [
             {path: '', redirectTo: 'personal-information', pathMatch: 'full'},
             { path: 'personal-information', loadComponent: () => import('./officer-details/personal-information/personal-information').then(m => m.PersonalInformation) },
+            { path: 'academics', loadComponent: () => import('./officer-details/academics/academics').then(m => m.Academics)},
         ]
     },
     {
