@@ -1,1 +1,4 @@
+<header *ngIf="isUserAuthenticated" class="app-header">
+    <mat-icon (click)="logout()">logout</mat-icon>
+</header>
 <router-outlet></router-outlet>

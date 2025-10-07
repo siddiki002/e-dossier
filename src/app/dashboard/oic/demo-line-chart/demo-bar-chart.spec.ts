@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DemoLineChart } from './demo-line-chart';
+import { DemoLineChart } from './demo-bar-chart';
 
 describe('DemoLineChart', () => {
   let component: DemoLineChart;

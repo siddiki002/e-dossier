@@ -1,24 +1,18 @@
-.name-image-container {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 2rem;
+.personal-information-container {
+    padding-block: 0.5rem;
+    padding-inline: 1rem;
 }
 
-.officer-image {
-    width: 125px;
-    height: 125px;
+.extra-details {
+      max-width: 700px;
+      margin: 20px auto;
+      border-radius: 12px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 40px; 
 }
 
-.main-text {
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.subdued-text {
-    color: gray;
-    font-size: 16px;
-    font-weight: 400;
+.extra-details .detail {
+    margin-bottom: 0; 
 }

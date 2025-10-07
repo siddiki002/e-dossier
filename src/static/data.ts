@@ -15,7 +15,13 @@ export const officers : Officer[] = [
             { courseId: 'CRS1001', marks: 85 },
             { courseId: 'CRS1002', marks: 90 },
             { courseId: 'CRS1003', marks: 95 }
-        ]
+        ],
+        emergencyContact: {
+            name: 'Fatima Raza',
+            relation: 'Wife',
+            contactNumber: '03007654321',
+            cnic: '35202-7654321-0'
+        }
     },
     {
         id: "OFF1002",
@@ -30,7 +36,13 @@ export const officers : Officer[] = [
         courseMarks: [
             { courseId: 'CRS1001', marks: 88 },
             { courseId: 'CRS1002', marks: 92 }
-        ]
+        ],
+        emergencyContact: {
+            name: 'Ahmed Khan',
+            relation: 'Father',
+            contactNumber: '03001234567',
+            cnic: '35202-1234567-1'
+        }
     },
     {
         id: "OFF1003",
@@ -45,7 +57,13 @@ export const officers : Officer[] = [
         courseMarks: [
             { courseId: 'CRS1002', marks: 78 },
             { courseId: 'CRS1003', marks: 82 }
-        ]
+        ],
+        emergencyContact: {
+            name: 'Amina Ali',
+            relation: 'Mother',
+            contactNumber: '03005556677',
+            cnic: '35202-5566778-9'
+        }
     },
     {
         id: "OFF1004",
@@ -60,7 +78,13 @@ export const officers : Officer[] = [
         courseMarks: [
             { courseId: 'CRS1001', marks: 91 },
             { courseId: 'CRS1003', marks: 89 }
-        ]
+        ],
+        emergencyContact: {
+            name: 'Siddiqui Khan',
+            relation: 'Father',
+            contactNumber: '03002223334',
+            cnic: '35202-2233445-6'
+        }
     }
 ]
 

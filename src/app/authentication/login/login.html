@@ -17,7 +17,8 @@
         }
         <mat-form-field appearance="outline" >
             <mat-label>Password</mat-label>
-            <input matInput formControlName="password" type="password">
+            <input matInput formControlName="password" [type]="isPasswordVisible ? 'text' : 'password'">
+            <mat-icon class="visibility-icon" matSuffix (click)="isPasswordVisible = !isPasswordVisible">{{isPasswordVisible ? 'visibility' : 'visibility_off'}}</mat-icon>
         </mat-form-field>
         @if(loginForm.controls.password.hasError('required') && loginForm.controls.password.touched) {
             <mat-error>Password is required</mat-error>

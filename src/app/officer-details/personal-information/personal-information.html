@@ -1,36 +1,75 @@
 <officer-card [officerDetails]="officerDetails"></officer-card>
 
-<table mat-table [dataSource]="familyParticularsDataSource" class="mat-elevation-z8 demo-table">
-    <ng-container matColumnDef="relation">
-        <th mat-header-cell *matHeaderCellDef>Relation</th>
-        <td mat-cell *matCellDef="let element">{{element.relation}}</td>
-    </ng-container>
+<div class="personal-information-container">
 
-    <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let element">{{element.name}}</td>
-    </ng-container>
+    @if(officerDetails) {
+        <h3>Additional Information</h3>
+    
+        <div class="extra-details">
+        <div class="detail">
+          <h3>Marital Status</h3>
+          <p>{{officerDetails.maritalStatus}}</p>
+        </div>
+        <div class="detail">
+          <h3>Date of Birth</h3>
+          <p>{{officerDetails.dateOfBirth.toLocaleDateString()}}</p>
+        </div>
+        <div class="detail">
+          <h3>Blood Group</h3>
+          <p>{{officerDetails.bloodGroup}}</p>
+        </div>
+        @if(officerDetails.emergencyContact){
+            <div class="detail">
+              <h3>Emergency Contact name</h3>
+              <p>{{officerDetails.emergencyContact.name}}</p>
+            </div>
+            <div class="detail">
+              <h3>Emergency Contact relation</h3>
+              <p>{{officerDetails.emergencyContact.relation}}</p>
+            </div>
+            <div class="detail">
+              <h3>Emergency Contact number</h3>
+              <p>{{officerDetails.emergencyContact.contactNumber}}</p>
+            </div>
+        }
+      </div>
+    }
 
-    <ng-container matColumnDef="age">
-        <th mat-header-cell *matHeaderCellDef>Age</th>
-        <td mat-cell *matCellDef="let element">{{element.age}}</td>
-    </ng-container>
 
-    <ng-container matColumnDef="contactNumber">
-        <th mat-header-cell *matHeaderCellDef>Contact Number</th>
-        <td mat-cell *matCellDef="let element">{{element.contactNumber}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="occupation">
-        <th mat-header-cell *matHeaderCellDef>Occupation</th>
-        <td mat-cell *matCellDef="let element">{{element.occupation}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="address">
-        <th mat-header-cell *matHeaderCellDef>Address</th>
-        <td mat-cell *matCellDef="let element">{{element.address}}</td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="familyParticularsDisplayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: familyParticularsDisplayedColumns;"></tr>
-</table>
+    <h3>Family Particulars</h3>
+    
+    <table mat-table [dataSource]="familyParticularsDataSource" class="mat-elevation-z8 demo-table">
+        <ng-container matColumnDef="relation">
+            <th mat-header-cell *matHeaderCellDef>Relation</th>
+            <td mat-cell *matCellDef="let element">{{element.relation}}</td>
+        </ng-container>
+    
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">{{element.name}}</td>
+        </ng-container>
+    
+        <ng-container matColumnDef="age">
+            <th mat-header-cell *matHeaderCellDef>Age</th>
+            <td mat-cell *matCellDef="let element">{{element.age}}</td>
+        </ng-container>
+    
+        <ng-container matColumnDef="contactNumber">
+            <th mat-header-cell *matHeaderCellDef>Contact Number</th>
+            <td mat-cell *matCellDef="let element">{{element.contactNumber}}</td>
+        </ng-container>
+    
+        <ng-container matColumnDef="occupation">
+            <th mat-header-cell *matHeaderCellDef>Occupation</th>
+            <td mat-cell *matCellDef="let element">{{element.occupation}}</td>
+        </ng-container>
+    
+        <ng-container matColumnDef="address">
+            <th mat-header-cell *matHeaderCellDef>Address</th>
+            <td mat-cell *matCellDef="let element">{{element.address}}</td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="familyParticularsDisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: familyParticularsDisplayedColumns;"></tr>
+    </table>
+</div>

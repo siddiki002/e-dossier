@@ -13,6 +13,12 @@ export type Officer = {
             courseId: string,
             marks: number
         }[]
+    emergencyContact? : {
+        name: string,
+        relation: string,
+        contactNumber: string
+        cnic?: string
+    }
     
 }
 

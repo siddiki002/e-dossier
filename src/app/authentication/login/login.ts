@@ -8,10 +8,11 @@ import { AuthenticationService } from '../service/authentication.service';
 import { UserService } from '@app/user.service';
 import { Router } from '@angular/router';
 import { userType } from '../authentication.const';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'login',
-  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, CommonModule],
+  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, CommonModule, MatIconModule],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -22,6 +23,7 @@ export class Login {
   })
   protected showInvalidCredentialsError = false;
   protected userType: userType = null;
+  protected isPasswordVisible: boolean = false;
 
   constructor(private authenticationService: AuthenticationService, private userService: UserService, private router: Router) {
     this.loginForm.valueChanges.subscribe(() => {
