@@ -92,8 +92,16 @@ export class MarksEnteringScreen implements OnInit {
   }
 
   saveMarks() {
-    // Send the marks to backend to save
-    // For now just updating the local copy
+    // TODO: Send the marks to backend to save
+    // For now save the marks in browser local storage for demo purpose
+    Object.keys(this.marksOfEachOfficer).forEach(officerId => {
+      const currentMarks = officers.find(o => o.id === officerId)?.courseMarks;
+      if(currentMarks) {
+        const otherCoursesMarks = currentMarks.filter(cm => cm.courseId !== this.selectedCourseId);
+        otherCoursesMarks.push({courseId: this.selectedCourseId, marks: parseFloat(this.marksOfEachOfficer[officerId].toString())});
+        localStorage.setItem(officerId, JSON.stringify(otherCoursesMarks));
+      }
+    })
     this._dialogRef = this.dialog.open(this.successDialog);
 
     this._dialogRef.afterClosed().subscribe(() => this.navigateToDashboard());
@@ -102,6 +110,11 @@ export class MarksEnteringScreen implements OnInit {
   onCourseSelection(courseId: string) {
     this.selectedCourseId = courseId;
     this.officersInClass.forEach(officer => {
+      const marksInLocalStorage = JSON.parse(localStorage.getItem(officer.id) || '[]') as {courseId: string, marks: number}[];
+      if(marksInLocalStorage.length) {
+        this.marksOfEachOfficer[officer.id] = marksInLocalStorage.find((cm: {courseId: string, marks: number}) => cm.courseId === this.selectedCourseId)?.marks || 0;
+        return;
+      }
       this.marksOfEachOfficer[officer.id] = officer.courseMarks.find(cm => cm.courseId === this.selectedCourseId)?.marks || 0;
     });
   }

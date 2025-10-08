@@ -17,8 +17,8 @@
     </mat-form-field>
 </div>
 
-<div class="officers-list" *ngIf="!!selectedCourseId">
-    <h3>Entering {{selectedAssessmentType.value ? `${selectedAssessmentType.value} marks` : 'marks'}} for <strong>{{className}}</strong> - <em>{{courseName}}</em></h3>
+<div class="officers-list" *ngIf="!!selectedAssessmentType.value">
+    <h3>Entering {{selectedAssessmentType.value}} marks for <strong>{{className}}</strong> - <em>{{courseName}}</em></h3>
     <p>Total Officers: {{ officersInClass.length }}</p>
     <mat-form-field appearance="outline">
         <mat-label>Total Marks</mat-label>
