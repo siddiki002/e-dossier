@@ -1,0 +1,21 @@
+<div class="sailor-container">
+  
+  <div class="header">
+    <h2>{{ classTitle }}</h2>
+    <button mat-raised-button color="primary" (click)="addNewSailor()">
+      Add New Sailor
+    </button>
+  </div>
+
+  <div class="sailor-list">
+    <mat-card *ngFor="let sailor of sailors; let index = index" class="sailor-item">
+      <span>{{index + 1}}</span>
+			<span>{{ sailor.name }}</span>
+    </mat-card>
+
+    <div *ngIf="sailors.length === 0" class="empty">
+      No sailors found.
+    </div>
+  </div>
+
+</div>

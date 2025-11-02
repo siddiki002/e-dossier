@@ -1,19 +1,29 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { userType } from "./authentication/authentication.const";
+import { User } from "src/common/common.types";
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserService {
-    private _user : BehaviorSubject<userType> = new BehaviorSubject<userType>(null);
+    private _userType : BehaviorSubject<userType> = new BehaviorSubject<userType>(null);
+    private _user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
     private _isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-    get user() {
-        return this._user.asObservable();
+    get userType() {
+        return this._userType.asObservable();
     }
     
-    setUser(user: userType) {
+    setUserType(user: userType) {
+        this._userType.next(user);
+    }
+
+    get User() {
+        return this._user.asObservable();
+    }
+
+    setUser(user: User | null) {
         this._user.next(user);
     }
 

@@ -108,5 +108,5 @@ export const classes: Class[] = [
 ]
 
 export const instructors: Instructor[] = [
-    {id: 'INS1001', firstName: 'Ahmed', lastName: 'Khan', courses: ['CRS1001']},
+    {id: 'INS1001', name: 'Ahmed Khan', courses: ['CRS1001'], fatherName: 'Mohammad Khan'},
 ]

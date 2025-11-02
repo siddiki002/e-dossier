@@ -3,10 +3,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterOutlet } from '@angular/router';
 import { UserService } from './user.service';
 import { CommonModule } from '@angular/common';
+import { LoaderComponent } from "src/common/components/loader/loader";
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatIconModule, CommonModule],
+  imports: [RouterOutlet, MatIconModule, CommonModule, LoaderComponent, MatSnackBarModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

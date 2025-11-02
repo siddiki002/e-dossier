@@ -1,0 +1,10 @@
+@use '@angular/material' as mat;
+
+:host {
+    @include mat.select-overrides((
+    placeholder-text-color: white,
+    enabled-arrow-color: white,
+    enabled-trigger-text-color: white,
+    panel-background-color: black
+  ));
+}

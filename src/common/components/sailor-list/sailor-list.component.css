@@ -1,0 +1,45 @@
+.sailor-container {
+  max-width: 450px;
+  margin: auto;
+  padding: 1rem;
+  border-radius: 12px;
+  background: black;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: black;
+  color: white;
+  z-index: 10;
+}
+
+.sailor-list {
+  height: 400px;
+  overflow-y: auto;
+  /* padding-right: 0.3rem; */
+}
+
+.sailor-item {
+  margin-bottom: 0.7rem;
+  margin-top: 0.7rem;
+  padding: 0.7rem;
+  border-radius: 8px;
+  background: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: black;
+}
+
+.empty {
+  text-align: center;
+  color: #888;
+  padding-top: 2rem;
+  font-size: 14px;
+}

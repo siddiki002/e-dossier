@@ -14,7 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'login',
   imports: [MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, CommonModule, MatIconModule],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrl: './login.css',
+  providers: [AuthenticationService]
 })
 export class Login {
   protected loginForm = new FormGroup({
@@ -31,7 +32,7 @@ export class Login {
         this.showInvalidCredentialsError = false;
       }
     })
-    this.userService.user.subscribe((user) => {
+    this.userService.userType.subscribe((user) => {
       this.userType = user;
     })
     this.userService.setIsAuthenticated(false);
@@ -40,13 +41,15 @@ export class Login {
   public onSubmit(event : SubmitEvent) {
     event.preventDefault();
     if(this.loginForm.valid) {
-      const isAuthenticated = this.authenticationService.authenticate(this.loginForm.value.username!, this.loginForm.value.password!)
-      if(isAuthenticated) {
-          this.userService.setIsAuthenticated(isAuthenticated);
+      this.authenticationService.authenticate(this.loginForm.value.username!, this.loginForm.value.password!).subscribe((isAuthenticated) => {
+        console.log('Authentication Result:', isAuthenticated);
+        if(isAuthenticated) {
+          this.userService.setIsAuthenticated(true);
           this.router.navigate(['/dashboard', this.userType]);
-      } else {
-        this.showInvalidCredentialsError = true;
-      }
+        }else {
+          this.showInvalidCredentialsError = true;
+        }
+      })
     }
   }
 }

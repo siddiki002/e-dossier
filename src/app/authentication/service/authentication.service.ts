@@ -1,6 +1,10 @@
 import { Injectable } from "@angular/core";
 import { UserService } from "@app/user.service";
-import { userType } from "../authentication.const";
+import { AuthenticationResponse, userType } from "../authentication.const";
+import { HttpClient, HttpResponse } from "@angular/common/http";
+import { baseUrl } from "src/common/base";
+import { User } from "src/common/common.types";
+import { Observable, map, catchError, of } from "rxjs";
 
 type data = {
     username: string,
@@ -10,29 +14,34 @@ type data = {
 
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 
 export class AuthenticationService {
 
-    private _dummyData : data[] = [];
+    constructor(private userService: UserService, private http: HttpClient) {}
 
-    constructor(private userService: UserService) {
-        this.loadData();
-    }
+    authenticate(username: string, password: string): Observable<boolean> {
+        return this.http.post<AuthenticationResponse>(
+            `${baseUrl}/login`,
+            { email: username, password },
+            { observe: 'response' }
+        ).pipe(
+            map((response: HttpResponse<AuthenticationResponse>) => {
+            if (response.status === 200 && response.body?.role) {
+                this.userService.setUserType(response.body.role);
+                const user: User = {
+                email: username,
+                role: response.body.role,
+                id: response.body?.id
+                };
+                this.userService.setUser(user);
 
-    private async loadData() {
-        const dummyData = await import('../../../static/credentials.json')
-        this._dummyData = JSON.parse(JSON.stringify(dummyData)).default;
-    }
-
-    authenticate(username: string, password: string): boolean {
-        // TODO: The authentication will be done from a backend server. Currently doing it on dummy data.
-        const user = this._dummyData.find(user => user.username === username && user.password === password);
-        if(user) {
-            this.userService.setUser(user.role)
-            return true;
-        }
-        return false;
-    }
+                return true;
+            }
+            return false;
+            }),
+            catchError(() => of(false))
+        );
+    }   
 }

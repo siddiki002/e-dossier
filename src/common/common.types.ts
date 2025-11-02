@@ -1,3 +1,5 @@
+import { userType } from "@app/authentication/authentication.const"
+
 export type Officer = {
     id: string,
     name: string,
@@ -30,8 +32,8 @@ export type Course = {
 export type Instructor = {
     id: string,
     courses: string[]
-    firstName: string,
-    lastName: string
+    name: string,
+    fatherName: string
 }
 
 export type Class = {
@@ -40,3 +42,11 @@ export type Class = {
     numberOfStudents: number,
     name: string
 }
+
+export type User = {
+    role: userType,
+    email: string
+    id?: string
+}
+
+export type Intent = 'positive' | 'negative' | 'warning' | 'info'
