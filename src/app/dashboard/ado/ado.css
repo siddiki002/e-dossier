@@ -45,3 +45,18 @@
     gap: 1rem;
     text-align: center;
 }
+
+.option-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-block: 0.5rem !important;
+}
+
+.option-card {
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: white;
+    color: black;
+    text-align: center;
+}

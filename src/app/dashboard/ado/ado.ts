@@ -10,10 +10,16 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { CdkNoDataRow } from "@angular/cdk/table";
+
+type Option = {
+  name: string;
+  route: string;
+}
 
 @Component({
   selector: 'ado',
-  imports: [MatCardModule, MatSelectModule, SailorListComponent, MatDialogModule, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+  imports: [MatCardModule, MatSelectModule, SailorListComponent, MatDialogModule, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, CdkNoDataRow],
   templateUrl: './ado.html',
   styleUrls: ['./ado.css', './ado.scss']
 })
@@ -27,9 +33,11 @@ export class Ado {
   protected newClassName: string = '';
   protected instructors: Instructor[] = [];
   protected newClassInstructorId: string = '';
+  
 
   @ViewChild('addSailorDialog') addSailorDialogTemplate: any;
   @ViewChild('addClassDialog') addClassDialogTemplate: any;
+  @ViewChild('selectOptionDialog') selectOptionDialogTemplate: any;
 
 
   constructor(private http: HttpClient, private dialog: MatDialog) {}
@@ -60,7 +68,7 @@ export class Ado {
   }
 
   protected selectClass(param: Class) {
-    console.log('Selected Class:', param);
+    this.dialogRef = this.dialog.open(this.selectOptionDialogTemplate);
   }
 
   protected confirmAddSailor() {
@@ -122,6 +130,21 @@ export class Ado {
   protected onClassSelectionChange(newClassId: string) {
     this.selectedClassId = newClassId;
     this.getSailorsInClass();
+  }
+
+  protected get options () {
+    return [
+      {name : "Personal Information", route: "personal-information-entry"},
+      {name: "Discipline / Observation", route: "discipline-observation-entry"},
+      {name : "PET / SPORTS", route: "pet-sports-entry"},
+      {name : 'Medical Records', route: 'medical-records-entry'},
+      {name : "Leave Records", route: "leave-records-entry"},
+      {name : "Kit item issued", route: "kit-item-issued-entry"},
+    ];
+  }
+
+  protected selectOption(option: Option) {
+    console.log('Selected Option:', option);
   }
 
 }

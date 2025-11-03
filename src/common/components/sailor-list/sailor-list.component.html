@@ -8,14 +8,21 @@
   </div>
 
   <div class="sailor-list">
-    <mat-card *ngFor="let sailor of sailors; let index = index" class="sailor-item">
+    <div *ngIf="showSearchBar" class="search-bar">
+      <div class="search-container">
+        <input [ngModel]="searchTerm" (ngModelChange)="onSearch($event)" placeholder="Search sailors" class="search-input"/>
+        <mat-icon class="search-icon">search</mat-icon>
+      </div>
+    </div>
+    <mat-card *ngFor="let sailor of sailorList; let index = index" class="sailor-item" (click)="selectSailor(sailor)" [class.hover-enabled]="allowSailorSelection">
       <span>{{index + 1}}</span>
 			<span>{{ sailor.name }}</span>
     </mat-card>
 
-    <div *ngIf="sailors.length === 0" class="empty">
+    <div *ngIf="sailorList.length === 0" class="empty">
       No sailors found.
     </div>
   </div>
 
+  
 </div>

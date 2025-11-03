@@ -60,3 +60,15 @@
         <button matButton="elevated" color="primary" (click)="confirmAddClass()">Add</button>
     </mat-dialog-actions>
 </ng-template>
+
+<ng-template #selectOptionDialog>
+    <h2 mat-dialog-title>Select an Option</h2>
+    <mat-dialog-content class="option-list">
+        @for (option of options; track $index) {
+            <mat-card (click)="selectOption(option)" class="option-card">{{ option.name }}</mat-card>
+        }
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button matButton="elevated" (click)="dialogRef.close()">Cancel</button>
+    </mat-dialog-actions>
+</ng-template>

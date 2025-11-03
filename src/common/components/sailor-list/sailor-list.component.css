@@ -37,9 +37,44 @@
   color: black;
 }
 
+.sailor-item.hover-enabled:hover {
+  cursor: pointer;
+  background-color: rgba(202, 200, 200, 0.881);
+}
+
 .empty {
   text-align: center;
   color: #888;
   padding-top: 2rem;
   font-size: 14px;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background-color: inherit;
+  margin: 1rem 0rem;
+}
+
+.search-container:focus-within {
+  border: 1px solid white;
+}
+
+.search-input {
+  width: 100%;
+  background-color: inherit;
+  border: none;
+  height: 24px;
+  color: white;
+}
+
+.search-input:focus {
+  outline: none;
+}
+
+
+.search-icon {
+  color: white;
 }
