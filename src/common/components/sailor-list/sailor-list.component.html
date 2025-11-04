@@ -2,7 +2,7 @@
   
   <div class="header">
     <h2>{{ classTitle }}</h2>
-    <button mat-raised-button color="primary" (click)="addNewSailor()">
+    <button *ngIf="allowAddSailor" mat-raised-button color="primary" (click)="addNewSailor()">
       Add New Sailor
     </button>
   </div>
@@ -14,7 +14,7 @@
         <mat-icon class="search-icon">search</mat-icon>
       </div>
     </div>
-    <mat-card *ngFor="let sailor of sailorList; let index = index" class="sailor-item" (click)="selectSailor(sailor)" [class.hover-enabled]="allowSailorSelection">
+    <mat-card *ngFor="let sailor of sailorList; let index = index" class="sailor-item" (click)="selectSailor(sailor)" [class.hover-enabled]="allowSailorSelection" [class.selected]="sailor.id === selectedOfficerId">
       <span>{{index + 1}}</span>
 			<span>{{ sailor.name }}</span>
     </mat-card>

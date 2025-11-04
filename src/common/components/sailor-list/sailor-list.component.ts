@@ -21,13 +21,15 @@ export class SailorListComponent implements OnInit, OnDestroy {
   @Input() classTitle: string | undefined = "";
   @Input() showSearchBar: boolean = false;
   @Input() allowSailorSelection: boolean = false;
+  @Input() allowAddSailor: boolean = false;
 
   @Output() addSailor = new EventEmitter();
-  @Output() sailorSelected = new EventEmitter<Officer>();
+  @Output() onSailorSelection = new EventEmitter<Officer>();
 
   protected searchTerm: string = "";
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
+  protected selectedOfficerId: string = "";
 
   constructor(private http: HttpClient){}
 
@@ -49,7 +51,8 @@ export class SailorListComponent implements OnInit, OnDestroy {
   }
 
   protected selectSailor(sailor: Officer) {
-    this.sailorSelected.emit(sailor);
+    this.selectedOfficerId = sailor.id;
+    this.onSailorSelection.emit(sailor);
   }
 
   protected onSearch(term: string) {

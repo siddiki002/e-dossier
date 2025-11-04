@@ -17,13 +17,17 @@
                 <mat-option value="{{class.id}}">{{class.name}}</mat-option>
             }
         </mat-select>
-        <sailor-list [classTitle]="selectedClass?.name" [sailors]="sailorsInClass" (addSailor)="openAddSailorDialog()"></sailor-list>
+        <sailor-list [classTitle]="selectedClass?.name" [sailors]="sailorsInClass" (addSailor)="openAddSailorDialog()" [allowAddSailor]="true"></sailor-list>
     </div>
 </div>
 
 <ng-template #addSailorDialog>
     <h2 mat-dialog-title>Add New Sailor</h2>
     <mat-dialog-content>
+        <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-label>Sailor ID</mat-label>
+            <input matInput [(ngModel)]="newSailorId" />
+        </mat-form-field>
         <mat-form-field appearance="fill" style="width: 100%;">
             <mat-label>Sailor Name</mat-label>
             <input matInput [(ngModel)]="newSailorName" />

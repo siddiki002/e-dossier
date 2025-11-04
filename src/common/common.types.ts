@@ -1,6 +1,7 @@
 import { userType } from "@app/authentication/authentication.const"
 
 export type Officer = {
+    officerId?: string,
     id: string,
     name: string,
     fatherName: string,
@@ -21,6 +22,13 @@ export type Officer = {
         contactNumber: string
         cnic?: string
     }
+    imageUrl?: string
+    additionalFamilyInformation?: {
+        name: string,
+        relation: string,
+        contactNumber: string,
+        cnic?: string
+    }[]
     
 }
 

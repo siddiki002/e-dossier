@@ -1,1 +1,126 @@
-<p>personal-information-entry works!</p>
+<div class="personal-information-entry-container">
+    <div style="width: 100%; display: flex; justify-content: flex-end;">
+        ,<button matButton="filled" [disabled]="!personalInformationForm.valid" (click)="saveOfficerInformation()">Save Information</button>
+        <input
+            type="file"
+            #fileInput
+            (change)="onFileSelected($event)"
+            accept="image/*"
+            style="display: none"
+        />
+    </div>
+    <div class="content">
+        <div style="padding: 1rem; width: 30%; background-color: black; max-height: fit-content;">
+            <sailor-list (onSailorSelection)="onOfficerSelection($event)" [sailors]="sailorsInClass" [showSearchBar]="true" [classTitle]="classDetails?.name" [allowSailorSelection]="true"></sailor-list>
+        </div>
+            <div style="width: 30%;">
+                <div class="officer-image-container">
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                        <button matButton="elevated" style="margin-bottom: 1rem;" (click)="fileInput.click()">Upload picture</button>
+                    </div>
+                    <img *ngIf="officerImageUrl; else defaultImage" [src]="officerImageUrl" alt="Navy Icon" class="officer-image"/>
+                    <ng-template #defaultImage>
+                        <img src="/default-image.png" alt="Navy Icon" class="officer-image"/>
+                    </ng-template>
+                </div>
+                <form [formGroup]="personalInformationForm" class="data-entry-form">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Sailor ID</mat-label>
+                        <input matInput formControlName="sailorId" readonly/>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Sailor Name</mat-label>
+                        <input matInput formControlName="name" readonly/>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Father Name</mat-label>
+                        <input matInput formControlName="fatherName" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>CNIC</mat-label>
+                        <input matInput formControlName="cnic" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Marital Status</mat-label>
+                        <input matInput formControlName="maritalStatus" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Date of Birth</mat-label>
+                        <input matInput formControlName="dateOfBirth" [matDatepicker]="picker" readonly (click)="picker.open()"/>
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Date of enrollment</mat-label>
+                        <input matInput formControlName="dateOfEnrollment" [matDatepicker]="enrollmentPicker" readonly (click)="enrollmentPicker.open()"/>
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="enrollmentPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #enrollmentPicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Blood Group</mat-label>
+                        <input matInput formControlName="bloodGroup" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Contact Number</mat-label>
+                        <input matInput formControlName="contactNumber" />
+                    </mat-form-field>
+                </form>
+                <h2>Emergency Contact Details</h2>
+                <form [formGroup]="emergencyContactFormGroup" class="data-entry-form">
+                    <mat-form-field appearance="outline">
+                        <mat-label>CNIC</mat-label>
+                        <input matInput formControlName="cnic" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Contact Number</mat-label>
+                        <input matInput formControlName="contactNumber" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Name</mat-label>
+                        <input matInput formControlName="name" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Relation</mat-label>
+                        <input matInput formControlName="relation" />
+                    </mat-form-field>
+                </form>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-block: 1rem;">
+                    <h2>Additional Family Information</h2>
+                    <button matButton="elevated" (click)="addFamilyMember()">Add Family Member +</button>
+                </div>
+                <form [formGroup]="personalInformationForm">
+                    <div formArrayName="additionalFamilyInformation">
+                        <div *ngFor="let member of familyArray.controls; let i = index" [formGroupName]="i" class="data-entry-form" style="margin-bottom: 1rem;">
+        
+                            <mat-form-field appearance="outline">
+                            <mat-label>Name</mat-label>
+                            <input matInput formControlName="name" />
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                            <mat-label>Relation</mat-label>
+                            <input matInput formControlName="relation" />
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                            <mat-label>CNIC</mat-label>
+                            <input matInput formControlName="cnic" />
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                            <mat-label>Contact Number</mat-label>
+                            <input matInput formControlName="contactNumber" />
+                            </mat-form-field>
+
+                            <!-- Optional delete -->
+                            <button matButton="elevated" (click)="removeFamilyMember(i)">Remove</button>
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+    </div>
+</div>

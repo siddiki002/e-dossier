@@ -1,7 +1,6 @@
 .sailor-container {
-  max-width: 450px;
+  width: 100%;
   margin: auto;
-  padding: 1rem;
   border-radius: 12px;
   background: black;
   display: flex;
@@ -17,6 +16,12 @@
   background: black;
   color: white;
   z-index: 10;
+}
+
+.header  h2 {
+  flex: 1;
+  text-align: center;
+  margin: 0;
 }
 
 .sailor-list {
@@ -77,4 +82,8 @@
 
 .search-icon {
   color: white;
+}
+
+.selected {
+  border: 2px solid #e11919;
 }

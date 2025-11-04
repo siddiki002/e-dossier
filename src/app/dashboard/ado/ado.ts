@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CdkNoDataRow } from "@angular/cdk/table";
+import { Router } from '@angular/router';
 
 type Option = {
   name: string;
@@ -30,6 +31,7 @@ export class Ado {
   protected sailorsInClass: Officer[] = [];
   protected dialogRef: any;
   protected newSailorName: string = '';
+  protected newSailorId: string = 'OF';
   protected newClassName: string = '';
   protected instructors: Instructor[] = [];
   protected newClassInstructorId: string = '';
@@ -40,7 +42,7 @@ export class Ado {
   @ViewChild('selectOptionDialog') selectOptionDialogTemplate: any;
 
 
-  constructor(private http: HttpClient, private dialog: MatDialog) {}
+  constructor(private http: HttpClient, private dialog: MatDialog, private router: Router) {}
   
   ngOnInit() {
     this.fetchClasses();
@@ -76,6 +78,7 @@ export class Ado {
     console.log('Adding New Sailor:', this.newSailorName);
     if(!this.newSailorName) return;
     const body: Partial<Officer> = {
+      officerId: this.newSailorId,
       name: this.newSailorName
     }
     this.http.post<{id : string}>(`${baseUrl}/data-entry/officer`, body, {observe: 'response'}).subscribe((response : HttpResponse<{id: string}>) => {
@@ -144,7 +147,8 @@ export class Ado {
   }
 
   protected selectOption(option: Option) {
-    console.log('Selected Option:', option);
+    this.dialogRef.close();
+    this.router.navigate([`dashboard/${option.route}/${this.selectedClassId}`], {state: {data : this.sailorsInClass}});
   }
 
 }
