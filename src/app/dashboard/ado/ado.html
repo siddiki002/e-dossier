@@ -5,6 +5,10 @@
     <div class="class-list-container">
         @for (class of classes; track $index) {
             <mat-card style="text-align: center; padding: 1rem;" class="class-card" (click)="selectClass(class)">
+                <div style="align-self: flex-end; gap:0.5rem; display: flex;">
+                    <mat-icon matCardAvatar class="card-icon" (click)="editClass($event, class)">edit</mat-icon>
+                    <mat-icon matCardAvatar class="card-icon" (click)="deleteClass($event, class)">delete</mat-icon>
+                </div>
                 <mat-card-title>Name: {{ class.name }}</mat-card-title>
                 <mat-card-subtitle>Number of Students: {{class.numberOfStudents || 0}}</mat-card-subtitle>
             </mat-card>
@@ -40,6 +44,39 @@
     <mat-dialog-actions align="end">
         <button matButton="elevated" (click)="dialogRef.close()">Cancel</button>
         <button matButton="elevated" color="primary" (click)="confirmAddSailor()">Add</button>
+    </mat-dialog-actions>
+</ng-template>
+
+<ng-template #editClassDialog let-data>
+    <h2 mat-dialog-title>Edit Class</h2>
+    <mat-dialog-content>
+        <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-label>Class Name</mat-label>
+            <input matInput [(ngModel)]="newClassName" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-label>Class Instructor</mat-label>
+            <mat-select [(ngModel)]="newClassInstructorId">
+                @for (instructor of instructors; track $index) {
+                    <mat-option [value]="instructor.id">{{ instructor?.name }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button matButton="elevated" (click)="editDialogRef.close()">Cancel</button>
+        <button matButton="elevated" color="primary" (click)="confirmEditClass(data.class)">Save</button>
+    </mat-dialog-actions>
+</ng-template>
+
+<ng-template #confirmDeleteDialog let-data>
+    <h2 mat-dialog-title>Confirm Delete <mat-icon style="color: red;">dangerous</mat-icon></h2>
+    <mat-dialog-content>
+        Are you sure you want to delete the class "{{ data.class.name }}"?
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button matButton="elevated" (click)="deleteDialogRef.close()">Cancel</button>
+        <button matButton="elevated" color="warn" (click)="confirmDeleteClass(data.class)">Delete</button>
     </mat-dialog-actions>
 </ng-template>
 

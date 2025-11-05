@@ -1,4 +1,5 @@
 <header *ngIf="isUserAuthenticated" class="app-header">
+    <mat-icon (click)="goBack()">arrow_back</mat-icon>
     <mat-icon (click)="logout()">logout</mat-icon>
 </header>
 <app-loader></app-loader>

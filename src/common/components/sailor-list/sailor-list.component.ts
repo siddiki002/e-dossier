@@ -66,9 +66,16 @@ export class SailorListComponent implements OnInit, OnDestroy {
     if (!this.searchTerm) {
       return this.sailors;
     }
+
     const lowerTerm = this.searchTerm.toLowerCase();
-    return this.sailors.filter(sailor =>
+
+    const sailorsWithSameId = this.sailors.filter(sailor =>
+      sailor.officerId.toLowerCase().includes(lowerTerm));
+
+    const sailorsWithSameName = this.sailors.filter(sailor =>
       sailor.name.toLowerCase().includes(lowerTerm));
+
+    return [...sailorsWithSameId, ...sailorsWithSameName];
   }
 
   protected addNewSailor() {

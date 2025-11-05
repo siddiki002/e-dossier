@@ -1,7 +1,7 @@
 import { userType } from "@app/authentication/authentication.const"
 
 export type Officer = {
-    officerId?: string,
+    officerId: string,
     id: string,
     name: string,
     fatherName: string,
@@ -11,6 +11,8 @@ export type Officer = {
     bloodGroup: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-' | null,
     contactNumber: string,
     classId: string[],
+    rate: string,
+    permanentAddress: string,
     courseMarks: 
         {
             courseId: string,

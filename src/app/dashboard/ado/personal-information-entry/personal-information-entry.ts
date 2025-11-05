@@ -11,13 +11,13 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { forkJoin, Observable } from 'rxjs';
-import { MatDialog, MatDialogRef, MatDialogContainer, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from "@angular/material/icon";
 
 type ApiCalls = {[key: string]: Observable<Object>};
 @Component({
   selector: 'personal-information-entry',
-  imports: [SailorListComponent, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatButtonModule, CommonModule, MatDialogContainer, MatDialogModule, MatIconModule],
+  imports: [SailorListComponent, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatButtonModule, CommonModule, MatDialogModule, MatIconModule],
   templateUrl: './personal-information-entry.html',
   styleUrl: './personal-information-entry.css'
 })
@@ -36,6 +36,8 @@ export class PersonalInformationEntry {
     dateOfEnrollment: new FormControl(new Date(), Validators.required),
     bloodGroup: new FormControl('', Validators.required),
     contactNumber: new FormControl('', Validators.required),
+    rate: new FormControl('', Validators.required),
+    permanentAddress: new FormControl('', Validators.required),
     emergencyContact: new FormGroup({
       cnic: new FormControl('', Validators.required),
       contactNumber: new FormControl('', Validators.required),
@@ -78,6 +80,8 @@ export class PersonalInformationEntry {
     this.personalInformationForm.get('dateOfBirth')?.setValue(officer?.dateOfBirth);
     this.personalInformationForm.get('bloodGroup')?.setValue(officer?.bloodGroup);
     this.personalInformationForm.get('contactNumber')?.setValue(officer?.contactNumber);
+    this.personalInformationForm.get('rate')?.setValue(officer?.rate);
+    this.personalInformationForm.get('permanentAddress')?.setValue(officer?.permanentAddress);
     this.personalInformationForm.get('emergencyContact.cnic')?.setValue(officer?.emergencyContact?.cnic);
     this.personalInformationForm.get('emergencyContact.contactNumber')?.setValue(officer?.emergencyContact?.contactNumber);
     this.personalInformationForm.get('emergencyContact.name')?.setValue(officer?.emergencyContact?.name);
@@ -163,6 +167,8 @@ export class PersonalInformationEntry {
       dateOfBirth: formValue.dateOfBirth,
       bloodGroup: formValue.bloodGroup,
       contactNumber: formValue.contactNumber,
+      rate: formValue.rate,
+      permanentAddress: formValue.permanentAddress,
       emergencyContact: {
         cnic: formValue.emergencyContact.cnic,
         contactNumber: formValue.emergencyContact.contactNumber,

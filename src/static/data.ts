@@ -3,6 +3,7 @@ import { Class, Course, Instructor, Officer } from "src/common/common.types";
 export const officers : Officer[] = [
     {
         id: "OFF1001",
+        officerId: "OFF1001",
         name: "Ali Raza",
         fatherName: "Mohammad Raza",
         cnic: "35202-1234567-1",
@@ -21,10 +22,13 @@ export const officers : Officer[] = [
             relation: 'Wife',
             contactNumber: '03007654321',
             cnic: '35202-7654321-0'
-        }
+        },
+        rate: 'Lieutenant',
+        permanentAddress: '123 Marine Drive, Karachi'
     },
     {
         id: "OFF1002",
+        officerId: "OFF1002",
         name: "Sara Ahmed",
         fatherName: "Ahmed Khan",
         cnic: "35202-7654321-0",
@@ -42,10 +46,13 @@ export const officers : Officer[] = [
             relation: 'Father',
             contactNumber: '03001234567',
             cnic: '35202-1234567-1'
-        }
+        },
+        rate: 'Lieutenant',
+        permanentAddress: '123 Marine Drive, Karachi'
     },
     {
         id: "OFF1003",
+        officerId: "OFF1003",
         name: "Hassan Ali",
         fatherName: "Ali Hassan",
         cnic: "35202-1122334-5",
@@ -63,9 +70,12 @@ export const officers : Officer[] = [
             relation: 'Mother',
             contactNumber: '03005556677',
             cnic: '35202-5566778-9'
-        }
+        },
+        rate: 'Lieutenant',
+        permanentAddress: '123 Marine Drive, Karachi'
     },
     {
+        officerId: "OFF1004",
         id: "OFF1004",
         name: "Ayesha Siddiqui",
         fatherName: "Siddiqui Khan",
@@ -84,7 +94,9 @@ export const officers : Officer[] = [
             relation: 'Father',
             contactNumber: '03002223334',
             cnic: '35202-2233445-6'
-        }
+        },
+        rate: 'Lieutenant',
+        permanentAddress: '123 Marine Drive, Karachi'
     }
 ]
 

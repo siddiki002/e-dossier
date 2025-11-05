@@ -15,7 +15,7 @@
       </div>
     </div>
     <mat-card *ngFor="let sailor of sailorList; let index = index" class="sailor-item" (click)="selectSailor(sailor)" [class.hover-enabled]="allowSailorSelection" [class.selected]="sailor.id === selectedOfficerId">
-      <span>{{index + 1}}</span>
+      <span>{{ sailor?.officerId}}</span>
 			<span>{{ sailor.name }}</span>
     </mat-card>
 

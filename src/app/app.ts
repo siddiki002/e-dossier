@@ -26,4 +26,8 @@ export class App {
     this.userService.setIsAuthenticated(false);
     this.router.navigate(['/auth'], { replaceUrl: true });
   }
+
+  goBack() {
+    history.back();
+  }
 }

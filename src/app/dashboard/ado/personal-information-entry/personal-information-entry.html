@@ -66,8 +66,16 @@
                         <mat-label>Contact Number</mat-label>
                         <input matInput formControlName="contactNumber" />
                     </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Rate</mat-label>
+                        <input matInput formControlName="rate" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Permanent Address</mat-label>
+                        <input matInput formControlName="permanentAddress" />
+                    </mat-form-field>
                 </form>
-                <h2>Emergency Contact Details</h2>
+                <h2>Next of Kin (NOK) Details</h2>
                 <form [formGroup]="emergencyContactFormGroup" class="data-entry-form">
                     <mat-form-field appearance="outline">
                         <mat-label>CNIC</mat-label>

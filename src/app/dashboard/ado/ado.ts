@@ -10,8 +10,8 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { CdkNoDataRow } from "@angular/cdk/table";
 import { Router } from '@angular/router';
+import { MatIconModule } from "@angular/material/icon";
 
 type Option = {
   name: string;
@@ -20,7 +20,7 @@ type Option = {
 
 @Component({
   selector: 'ado',
-  imports: [MatCardModule, MatSelectModule, SailorListComponent, MatDialogModule, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, CdkNoDataRow],
+  imports: [MatCardModule, MatSelectModule, SailorListComponent, MatDialogModule, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
   templateUrl: './ado.html',
   styleUrls: ['./ado.css', './ado.scss']
 })
@@ -30,6 +30,8 @@ export class Ado {
   protected selectedClassId: string = '';
   protected sailorsInClass: Officer[] = [];
   protected dialogRef: any;
+  protected editDialogRef: any;
+  protected deleteDialogRef: any;
   protected newSailorName: string = '';
   protected newSailorId: string = 'OF';
   protected newClassName: string = '';
@@ -41,12 +43,15 @@ export class Ado {
   @ViewChild('addSailorDialog') addSailorDialogTemplate: any;
   @ViewChild('addClassDialog') addClassDialogTemplate: any;
   @ViewChild('selectOptionDialog') selectOptionDialogTemplate: any;
+  @ViewChild('editClassDialog') editClassDialogTemplate: any;
+  @ViewChild('confirmDeleteDialog') confirmDeleteDialogTemplate: any;
 
 
   constructor(private http: HttpClient, private dialog: MatDialog, private router: Router) {}
   
   ngOnInit() {
     this.fetchClasses();
+    this.getInstructors();
   }
 
   protected fetchClasses() {
@@ -121,12 +126,10 @@ export class Ado {
   }
   protected openAddClassDialog() {
     this.dialogRef = this.dialog.open(this.addClassDialogTemplate);
-    this.getInstructors();
   }
 
   private getInstructors() {
     this.http.get<Instructor[]>(`${baseUrl}/instructors`).subscribe((data) => {
-      console.log('Instructors fetched:', data);
       this.instructors = data;
     });
   }
@@ -147,14 +150,59 @@ export class Ado {
     ];
   }
 
-  private navigateToPersonalInformationEntry(classId: string, sailorsInClass: Officer[]) {
-    this.router.navigate([`dashboard/personal-information-entry/${classId}`], {state: {data : sailorsInClass}});
+  private navigateToRoute(route: string, classId: string, sailorsInClass: Officer[]) {
+    this.router.navigate([`dashboard/${route}/${classId}`], {state: {data : sailorsInClass}});
   }
 
   protected selectOption(option: Option) {
     this.dialogRef.close();
     if(!this.clickedClass) return;
-    this.getSailorsInClass(this.clickedClass.id, (data) => this.navigateToPersonalInformationEntry(this.clickedClass!.id, data));
+    this.getSailorsInClass(this.clickedClass.id, (data) => this.navigateToRoute(option.route, this.clickedClass!.id, data));
+  }
+
+  protected editClass(event: MouseEvent, param: Class) {
+    event.stopPropagation();
+    this.newClassName = param.name;
+    this.newClassInstructorId = param.instructorId || '';
+    this.editDialogRef = this.dialog.open(this.editClassDialogTemplate, {data: {class: param}});
+  }
+
+  protected confirmEditClass(classToEdit: Class) {
+    this.editDialogRef.close();
+    if(!this.newClassName) return;
+    const className = this.newClassName;
+    const instructorIdToUse = this.newClassInstructorId || classToEdit.instructorId;
+    const body: Partial<Class> = {
+      name: className,
+      instructorId: instructorIdToUse
+    }
+    this.http.put(`${baseUrl}/data-entry/class/${classToEdit.id}`, body, {observe: 'response'}).subscribe((response : HttpResponse<any>) => {
+      if(response.status === 200) {
+        const classIndex = this.classes.findIndex(c => c.id === classToEdit.id);
+        if(classIndex !== -1) {
+          this.classes[classIndex] = {...this.classes[classIndex], name: className, instructorId: instructorIdToUse};
+        }
+      }
+    })
+    this.newClassName = '';
+    this.newClassInstructorId = '';
+  }
+
+  protected deleteClass(event:MouseEvent, param: Class) {
+    event.stopPropagation();
+    this.deleteDialogRef = this.dialog.open(this.confirmDeleteDialogTemplate, {data: {class: param}});
+  }
+
+  protected confirmDeleteClass(classToDelete: Class) {
+    this.deleteDialogRef.close();
+    this.http.delete(`${baseUrl}/data-entry/class/${classToDelete.id}`, {observe: 'response'}).subscribe((response : HttpResponse<any>) => {
+      if(response.status === 200) {
+        const classIndex = this.classes.findIndex(c => c.id === classToDelete.id);
+        if(classIndex !== -1) {
+          this.classes.splice(classIndex, 1);
+        }
+      }
+    })
   }
 
 }
