@@ -35,6 +35,7 @@ export class Ado {
   protected newClassName: string = '';
   protected instructors: Instructor[] = [];
   protected newClassInstructorId: string = '';
+  protected clickedClass: Class | null = null;
   
 
   @ViewChild('addSailorDialog') addSailorDialogTemplate: any;
@@ -53,7 +54,7 @@ export class Ado {
       this.classes = data;
       if(this.classes?.length > 0) {
         this.selectedClassId = this.classes[0].id;
-        this.getSailorsInClass();
+        this.getSailorsInClass(this.selectedClassId);
       }
     })
   }
@@ -62,20 +63,21 @@ export class Ado {
     return this.classes.find(c => c.id === this.selectedClassId);
   }
 
-  protected getSailorsInClass() {
-    if(!this.selectedClassId) return;
-    this.http.get<Officer[]>(`${baseUrl}/class/${this.selectedClassId}/officers`).subscribe((data) => {
+  protected getSailorsInClass(classId: string, callback?: (data: Officer[]) => void) {
+    if(!classId) return;
+    this.http.get<Officer[]>(`${baseUrl}/class/${classId}/officers`).subscribe((data) => {
       this.sailorsInClass = data;
+      if(callback) callback(data);
     })
   }
 
   protected selectClass(param: Class) {
+    this.clickedClass = param;
     this.dialogRef = this.dialog.open(this.selectOptionDialogTemplate);
   }
 
   protected confirmAddSailor() {
     this.dialogRef.close();
-    console.log('Adding New Sailor:', this.newSailorName);
     if(!this.newSailorName) return;
     const body: Partial<Officer> = {
       officerId: this.newSailorId,
@@ -100,7 +102,6 @@ export class Ado {
   }
 
   protected confirmAddClass() {
-    console.log('Adding New Class:', this.newClassName);
     this.dialogRef.close();
     if(!this.newClassName) return;
     const body: Partial<Class> = {
@@ -132,7 +133,7 @@ export class Ado {
 
   protected onClassSelectionChange(newClassId: string) {
     this.selectedClassId = newClassId;
-    this.getSailorsInClass();
+    this.getSailorsInClass(newClassId);
   }
 
   protected get options () {
@@ -146,9 +147,14 @@ export class Ado {
     ];
   }
 
+  private navigateToPersonalInformationEntry(classId: string, sailorsInClass: Officer[]) {
+    this.router.navigate([`dashboard/personal-information-entry/${classId}`], {state: {data : sailorsInClass}});
+  }
+
   protected selectOption(option: Option) {
     this.dialogRef.close();
-    this.router.navigate([`dashboard/${option.route}/${this.selectedClassId}`], {state: {data : this.sailorsInClass}});
+    if(!this.clickedClass) return;
+    this.getSailorsInClass(this.clickedClass.id, (data) => this.navigateToPersonalInformationEntry(this.clickedClass!.id, data));
   }
 
 }
