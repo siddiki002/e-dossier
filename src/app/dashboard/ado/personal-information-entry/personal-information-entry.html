@@ -124,3 +124,16 @@
             </div>
     </div>
 </div>
+
+<ng-template #successDialog>
+        <h2 mat-dialog-title>Success</h2>
+        <mat-dialog-content style="text-align: center; align-items: center;">
+            <p>Officer information saved successfully!</p>
+            <div class="tick-animate">
+                <mat-icon>check_circle</mat-icon>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button matButton="elevated" color="primary" (click)="closeSuccessDialog()">OK</button>
+        </mat-dialog-actions>
+</ng-template>

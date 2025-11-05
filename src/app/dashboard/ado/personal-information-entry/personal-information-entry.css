@@ -33,3 +33,16 @@
     gap: 1rem;
     margin-bottom: 1rem;
 }
+
+.tick-animate mat-icon {
+  color: #4caf50; /* Material Green 500 */
+  font-size: 48px;
+  animation: popIn 0.4s ease-out;
+  overflow: visible;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0); opacity: 0; }
+  80% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); }
+}

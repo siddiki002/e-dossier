@@ -1,5 +1,5 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { baseUrl } from 'src/common/base';
 import { Class, Officer } from 'src/common/common.types';
@@ -10,10 +10,14 @@ import { MatInputModule } from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { forkJoin, Observable } from 'rxjs';
+import { MatDialog, MatDialogRef, MatDialogContainer, MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from "@angular/material/icon";
 
+type ApiCalls = {[key: string]: Observable<Object>};
 @Component({
   selector: 'personal-information-entry',
-  imports: [SailorListComponent, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatButtonModule, CommonModule],
+  imports: [SailorListComponent, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatButtonModule, CommonModule, MatDialogContainer, MatDialogModule, MatIconModule],
   templateUrl: './personal-information-entry.html',
   styleUrl: './personal-information-entry.css'
 })
@@ -43,8 +47,11 @@ export class PersonalInformationEntry {
   protected officerImageUrl: string = '';
   protected selectedOfficer: Officer | null = null;
   private selectedFile: File | null = null;
+  private successDialogRef: MatDialogRef<any,any> | null = null;
 
-  constructor(private router: Router, private activatedRouter: ActivatedRoute, private http: HttpClient) {
+  @ViewChild('successDialog') successDialogTemplate: any;
+
+  constructor(private router: Router, private activatedRouter: ActivatedRoute, private http: HttpClient, private dialog: MatDialog) {
     this.sailorsInClass = this.router?.currentNavigation()?.extras?.state?.['data'] || [];
     this.activatedRouter?.params?.subscribe((params) => {
       this.classId = params['classId'];
@@ -143,7 +150,6 @@ export class PersonalInformationEntry {
   }
 
   protected saveOfficerInformation() {
-    this.submitOfficerImage();
 
     if(!this.selectedOfficer) return;
 
@@ -166,16 +172,35 @@ export class PersonalInformationEntry {
       additionalFamilyInformation: formValue.additionalFamilyInformation
     };
 
-    this.http.put(`${baseUrl}/data-entry/officer/${this.selectedOfficer.id}`, body).subscribe((response: any) => {
-      console.log(response);
-    });
+    const calls: ApiCalls = {
+      infoUpdate: this.http.put(`${baseUrl}/data-entry/officer/${this.selectedOfficer.id}`, body)
+    }
 
-    this.navigateBack();
+    if(this.selectedFile) {
+      calls['imageUpload'] = this.http.post(`${baseUrl}/data-entry/officer/${this.selectedOfficer?.id}/image`, new FormData().append('image', this.selectedFile));
+    }
+
+    forkJoin(calls).subscribe({
+      next: (results) => {
+        console.log('All API calls completed successfully:', results);
+        this.openSuccessDialog();
+      }
+    });
+    
 
   }
 
   protected navigateBack() {
     this.router?.navigate(['dashboard/ado'])
+  }
+
+  protected openSuccessDialog() {
+    this.successDialogRef = this.dialog.open(this.successDialogTemplate);
+  }
+
+  protected closeSuccessDialog() {
+    this.successDialogRef?.close(); 
+    this.navigateBack();
   }
 
 }
