@@ -196,17 +196,12 @@ export class PersonalInformationEntry {
 
   }
 
-  protected navigateBack() {
-    this.router?.navigate(['dashboard/ado'])
-  }
-
   protected openSuccessDialog() {
     this.successDialogRef = this.dialog.open(this.successDialogTemplate);
   }
 
   protected closeSuccessDialog() {
     this.successDialogRef?.close(); 
-    this.navigateBack();
   }
 
 }
