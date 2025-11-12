@@ -5,6 +5,7 @@
   background: black;
   display: flex;
   flex-direction: column;
+  max-height: 450px;
 }
 
 .header {

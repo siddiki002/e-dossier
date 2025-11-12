@@ -17,7 +17,8 @@ export type Officer = {
         {
             courseId: string,
             marks: number
-        }[]
+        }[],
+    compulsoryCourses? : CompulsoryCourses[],
     emergencyContact? : {
         name: string,
         relation: string,
@@ -31,6 +32,8 @@ export type Officer = {
         contactNumber: string,
         cnic?: string
     }[]
+    marks? : number,
+    percentage?: string
     
 }
 
@@ -60,3 +63,30 @@ export type User = {
 }
 
 export type Intent = 'positive' | 'negative' | 'warning' | 'info'
+
+export type Assessment = {
+    id: string,
+    assessmentName: string,
+    courseId: string,
+    totalMarks: number
+}
+
+export type Marks = {
+    id: string,
+    assessmentId: string,
+    officerId: string,
+    marks: number
+}
+
+export type CompulsoryCourses = {
+    courseId: string,
+    courseName: string,
+    marksArray : Array<"P" | "F">
+}
+
+export type Courses = {
+    id: string,
+    courseName: string,
+    category: string,
+    type: "Optional" | "Compulsory"
+}

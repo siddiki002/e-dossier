@@ -5,7 +5,7 @@
     <div class="class-list-container">
         @for (class of classes; track $index) {
             <mat-card style="text-align: center; padding: 1rem;" class="class-card" (click)="selectClass(class)">
-                <div style="align-self: flex-end; gap:0.5rem; display: flex;">
+                <div *ngIf="isAdo" style="align-self: flex-end; gap:0.5rem; display: flex;">
                     <mat-icon matCardAvatar class="card-icon" (click)="editClass($event, class)">edit</mat-icon>
                     <mat-icon matCardAvatar class="card-icon" (click)="deleteClass($event, class)">delete</mat-icon>
                 </div>
@@ -13,7 +13,7 @@
                 <mat-card-subtitle>Number of Students: {{class.numberOfStudents || 0}}</mat-card-subtitle>
             </mat-card>
         }
-        <button matButton="elevated" style="color: black;" (click)="openAddClassDialog()">Add new class +</button>
+        <button *ngIf="isAdo" matButton="elevated" style="color: black;" (click)="openAddClassDialog()">Add new class +</button>
     </div>
     <div class="class-filter-container">
         <mat-select placeholder="Select a class" class="class-select" [ngModel]="selectedClassId" (ngModelChange)="onClassSelectionChange($event)">
@@ -21,7 +21,7 @@
                 <mat-option value="{{class.id}}">{{class.name}}</mat-option>
             }
         </mat-select>
-        <sailor-list [classTitle]="selectedClass?.name" [sailors]="sailorsInClass" (addSailor)="openAddSailorDialog()" [allowAddSailor]="true"></sailor-list>
+        <sailor-list [classTitle]="selectedClass?.name" [sailors]="sailorsInClass" (addSailor)="openAddSailorDialog()" [allowAddSailor]="isAdo"></sailor-list>
     </div>
 </div>
 

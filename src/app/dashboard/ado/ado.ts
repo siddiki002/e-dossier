@@ -10,8 +10,12 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatIconModule } from "@angular/material/icon";
+import { UserService } from '@app/user.service';
+import { userType } from '@app/authentication/authentication.const';
+import { Subject, takeUntil } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 type Option = {
   name: string;
@@ -20,7 +24,7 @@ type Option = {
 
 @Component({
   selector: 'ado',
-  imports: [MatCardModule, MatSelectModule, SailorListComponent, MatDialogModule, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
+  imports: [RouterModule, CommonModule, MatCardModule, MatSelectModule, SailorListComponent, MatDialogModule, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
   templateUrl: './ado.html',
   styleUrls: ['./ado.css', './ado.scss']
 })
@@ -38,7 +42,8 @@ export class Ado {
   protected instructors: Instructor[] = [];
   protected newClassInstructorId: string = '';
   protected clickedClass: Class | null = null;
-  
+  protected destroy$: Subject<userType> = new Subject<userType>();
+  protected isAdo: boolean = false;
 
   @ViewChild('addSailorDialog') addSailorDialogTemplate: any;
   @ViewChild('addClassDialog') addClassDialogTemplate: any;
@@ -47,11 +52,21 @@ export class Ado {
   @ViewChild('confirmDeleteDialog') confirmDeleteDialogTemplate: any;
 
 
-  constructor(private http: HttpClient, private dialog: MatDialog, private router: Router) {}
-  
+  constructor(private http: HttpClient, private dialog: MatDialog, private router: Router, private userService: UserService) {}
+
   ngOnInit() {
     this.fetchClasses();
     this.getInstructors();
+    this.userService.userType.pipe(takeUntil(this.destroy$)).subscribe((userType) => {
+      if(userType === 'ado') {
+        this.isAdo = true;
+      }
+    })
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(null);
+    this.destroy$.complete();
   }
 
   protected fetchClasses() {
@@ -78,7 +93,11 @@ export class Ado {
 
   protected selectClass(param: Class) {
     this.clickedClass = param;
-    this.dialogRef = this.dialog.open(this.selectOptionDialogTemplate);
+    if(this.isAdo){
+      this.dialogRef = this.dialog.open(this.selectOptionDialogTemplate);
+    } else {
+      this.getSailorsInClass(param.id, (data) => this.navigateToRoute(`chief-exam/class-overview`, param.id, data));
+    }
   }
 
   protected confirmAddSailor() {

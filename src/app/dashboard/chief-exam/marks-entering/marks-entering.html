@@ -1,0 +1,358 @@
+<div class="marks-entering-container">
+    <div class="page-header">
+        <mat-card class="header-card">
+            <mat-card-header>
+                <div mat-card-avatar class="header-avatar">
+                    <mat-icon>{{option === 'pttAssessment' ? 'assessment' : 'school'}}</mat-icon>
+                </div>
+                <mat-card-title>{{class?.name}}</mat-card-title>
+                <mat-card-subtitle>{{option === 'pttAssessment' ? 'PTT Assessment Management' : 'Compulsory Module Management'}}</mat-card-subtitle>
+            </mat-card-header>
+            
+            <mat-card-content>
+                <div class="course-selection-section">
+                    <div class="selection-group">
+                        <mat-form-field appearance="outline" class="course-select-field">
+                            <mat-label>
+                                <mat-icon>{{option === 'pttAssessment' ? 'quiz' : 'menu_book'}}</mat-icon>
+                                {{option === 'pttAssessment' ? 'Select PTT Assessment Course' : 'Select Compulsory Module'}}
+                            </mat-label>
+                            <mat-select [ngModel]="selectedCourse" (ngModelChange)="onCourseSelection($event)">
+                                @for (course of courses; track $index) {
+                                    <mat-option value="{{course.id}}">
+                                        <div class="course-option">
+                                            <span>{{course.courseName}}</span>
+                                        </div>
+                                    </mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                        
+                        <button mat-raised-button color="accent" class="add-course-btn" (click)="addNewCourse()">
+                            <mat-icon>add</mat-icon>
+                            Add New Course
+                        </button>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    @if (option === 'pttAssessment') {
+        @if (selectedCourse) {
+            <div class="assessment-actions">
+                <mat-card class="action-card">
+                    <mat-card-content>
+                        <div class="assessment-controls">
+                            <button mat-raised-button color="primary" class="add-assessment-btn" (click)="addAssessment()">
+                                <mat-icon>add_circle</mat-icon>
+                                Add New Assessment
+                            </button>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        }
+        
+        @if (assessments.length > 0) {
+            <div class="assessment-selection">
+                <mat-card class="selection-card">
+                    <mat-card-header>
+                        <div mat-card-avatar class="selection-avatar">
+                            <mat-icon>assignment_turned_in</mat-icon>
+                        </div>
+                        <mat-card-title>Assessment Selection</mat-card-title>
+                        <mat-card-subtitle>Choose an assessment to enter marks</mat-card-subtitle>
+                    </mat-card-header>
+                    
+                    <mat-card-content>
+                        <mat-form-field appearance="outline" class="assessment-select-field">
+                            <mat-label>
+                                <mat-icon>quiz</mat-icon>
+                                Select Assessment
+                            </mat-label>
+                            <mat-select [ngModel]="selectedAssessment" (ngModelChange)="onAssessmentSelection($event)">
+                                @for(assessment of assessments; track $index) {
+                                    <mat-option value="{{assessment.id}}">
+                                        <div class="assessment-option">
+                                            <span>{{assessment.assessmentName}}</span>
+                                        </div>
+                                    </mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        }
+    }
+
+    @if (selectedAssessment || option === 'compulsoryModule') {
+        <div class="marks-table">
+            <div class="table-header">
+                <h2 class="table-title">
+                    <mat-icon class="title-icon">assessment</mat-icon>
+                    Marks Entry
+                </h2>
+                <div class="action-buttons">
+                    <button mat-raised-button color="primary" class="save-btn" (click)="saveMarks()">
+                        <mat-icon>save</mat-icon>
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+
+            @if (option === 'pttAssessment') {
+                <div class="marks-table-container">
+                    <mat-card class="table-card">
+                        <mat-card-header class="assessment-info">
+                            <div class="assessment-details">
+                                <span class="assessment-label">Total Marks:</span>
+                                <span class="assessment-value">{{assessmentMarks}}</span>
+                            </div>
+                        </mat-card-header>
+                        
+                        <mat-card-content>
+                            <div class="table-wrapper">
+                                <table class="modern-table">
+                                    <thead>
+                                        <tr class="table-header-row">
+                                            <th class="table-header-cell officer-id-col">
+                                                <mat-icon class="header-icon">badge</mat-icon>
+                                                Officer ID
+                                            </th>
+                                            <th class="table-header-cell officer-name-col">
+                                                <mat-icon class="header-icon">person</mat-icon>
+                                                Officer Name
+                                            </th>
+                                            <th class="table-header-cell marks-col">
+                                                <mat-icon class="header-icon">assignment</mat-icon>
+                                                Total Marks
+                                            </th>
+                                            <th class="table-header-cell marks-col">
+                                                <mat-icon class="header-icon">edit</mat-icon>
+                                                Obtained Marks
+                                            </th>
+                                            <th class="table-header-cell percentage-col">
+                                                <mat-icon class="header-icon">trending_up</mat-icon>
+                                                Percentage
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (officer of sailorsInClass; track $index; let i = $index) {
+                                            <tr class="table-row"
+                                                [class.even-row]="i % 2 === 0"
+                                                [class.odd-row]="i % 2 === 1">
+                                                
+                                                <td class="table-cell officer-id-cell">
+                                                    <div class="cell-content">
+                                                        <span class="officer-badge">{{officer.officerId}}</span>
+                                                    </div>
+                                                </td>
+                                                
+                                                <td class="table-cell officer-name-cell">
+                                                    <div class="officer-info">
+                                                        <div class="officer-avatar">
+                                                            {{officer.name.charAt(0).toUpperCase()}}
+                                                        </div>
+                                                        <span class="officer-name">{{officer.name}}</span>
+                                                    </div>
+                                                </td>
+                                                
+                                                <td class="table-cell total-marks-cell">
+                                                    <div class="marks-display total-marks">
+                                                        {{assessmentMarks}}
+                                                    </div>
+                                                </td>
+                                                
+                                                <td class="table-cell obtained-marks-cell">
+                                                    <mat-form-field appearance="outline" class="marks-input">
+                                                        <input matInput 
+                                                               type="number" 
+                                                               [(ngModel)]="officer.marks" 
+                                                               [max]="assessmentMarks"
+                                                               min="0"
+                                                               (ngModelChange)="onMarksChange(officer.id, $event)"
+                                                               placeholder="Enter marks"/>
+                                                    </mat-form-field>
+                                                </td>
+                                                
+                                                <td class="table-cell percentage-cell">
+                                                    <div class="percentage-display">
+                                                        <span class="percentage-value">{{officer?.percentage}}</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                
+                                @if (sailorsInClass.length === 0) {
+                                    <div class="empty-state">
+                                        <mat-icon class="empty-icon">assignment</mat-icon>
+                                        <h3>No Officers Found</h3>
+                                        <p>No officers are enrolled in this class for the selected course.</p>
+                                    </div>
+                                }
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            }
+            
+            @if (option === 'compulsoryModule') {
+                <div class="marks-table-container">
+                    <mat-card class="table-card">
+                        <mat-card-header class="assessment-info">
+                            <div class="assessment-details">
+                                <span class="assessment-label">Module Type:</span>
+                                <span class="assessment-value">Compulsory Module</span>
+                            </div>
+                        </mat-card-header>
+                        
+                        <mat-card-content>
+                            <div class="table-wrapper">
+                                <table class="modern-table">
+                                    <thead>
+                                        <tr class="table-header-row">
+                                            <th class="table-header-cell officer-id-col">
+                                                <mat-icon class="header-icon">badge</mat-icon>
+                                                Officer ID
+                                            </th>
+                                            <th class="table-header-cell officer-name-col">
+                                                <mat-icon class="header-icon">person</mat-icon>
+                                                Officer Name
+                                            </th>
+                                            <th class="table-header-cell attempt-col">
+                                                <mat-icon class="header-icon">looks_one</mat-icon>
+                                                1st Attempt
+                                            </th>
+                                            <th class="table-header-cell attempt-col">
+                                                <mat-icon class="header-icon">looks_two</mat-icon>
+                                                2nd Attempt
+                                            </th>
+                                            <th class="table-header-cell attempt-col">
+                                                <mat-icon class="header-icon">looks_3</mat-icon>
+                                                3rd Attempt
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (sailor of sailorsInClass; track $index; let i = $index) {
+                                            <tr class="table-row"
+                                                [class.even-row]="i % 2 === 0"
+                                                [class.odd-row]="i % 2 === 1">
+                                                
+                                                <td class="table-cell officer-id-cell">
+                                                    <div class="cell-content">
+                                                        <span class="officer-badge">{{sailor.officerId}}</span>
+                                                    </div>
+                                                </td>
+                                                
+                                                <td class="table-cell officer-name-cell">
+                                                    <div class="officer-info">
+                                                        <div class="officer-avatar">
+                                                            {{sailor.name.charAt(0).toUpperCase()}}
+                                                        </div>
+                                                        <span class="officer-name">{{sailor.name}}</span>
+                                                    </div>
+                                                </td>
+                                                
+                                                @for(compulsoryCourse of compulsoryModuleCourseMarks[sailor.id]; track $index; let attemptIndex = $index) {
+                                                    <td class="table-cell attempt-cell">
+                                                        <mat-form-field appearance="outline" class="attempt-select">
+                                                            <mat-select [ngModel]="compulsoryCourse" 
+                                                                       (ngModelChange)="onCompulsoryModuleMarksChange(sailor.id, attemptIndex, $event)"
+                                                                       [placeholder]="'Select result'">
+                                                                <mat-option value="-">
+                                                                    <mat-icon class="option-icon neutral">remove</mat-icon>
+                                                                    Not Attempted
+                                                                </mat-option>
+                                                                <mat-option value="NA">
+                                                                    <mat-icon class="option-icon info">info</mat-icon>
+                                                                    N/A
+                                                                </mat-option>
+                                                                <mat-option value="P">
+                                                                    <mat-icon class="option-icon success">check_circle</mat-icon>
+                                                                    Pass
+                                                                </mat-option>
+                                                                <mat-option value="F">
+                                                                    <mat-icon class="option-icon error">cancel</mat-icon>
+                                                                    Fail
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                
+                                @if (sailorsInClass.length === 0) {
+                                    <div class="empty-state">
+                                        <mat-icon class="empty-icon">assignment</mat-icon>
+                                        <h3>No Officers Found</h3>
+                                        <p>No officers are enrolled in this class for the selected course.</p>
+                                    </div>
+                                }
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<ng-template #addCourseDialog>
+        <mat-dialog-content>
+            <mat-form-field appearance="fill" style="width: 100%;">
+                <mat-label>Course Name</mat-label>
+                <input matInput [(ngModel)]="newCourseName" />
+            </mat-form-field>
+            <mat-form-field appearance="fill" style="width: 100%;">
+                <mat-label>Course Type</mat-label>
+                <mat-select [(ngModel)]="newCourseType">
+                    <mat-option value="Optional">PTT</mat-option>
+                    <mat-option value="Compulsory">Compulsory</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill" style="width: 100%;">
+                <mat-label>Course Category</mat-label>
+                <mat-select [(ngModel)]="newCourseCategory">
+                    <mat-option value="Academics">Academics</mat-option>
+                    <mat-option value="Sports">Sports</mat-option>
+                </mat-select>
+            </mat-form-field>
+        <mat-dialog-actions align="end">
+            <button matButton="elevated" (click)="addCourseDialogRef?.close()">Cancel</button>
+            <button matButton="elevated" color="primary" (click)="confirmAddCourse()">Add</button>
+        </mat-dialog-actions>
+    </mat-dialog-content>
+</ng-template>
+
+<ng-template #addAssessmentDialog>
+    <mat-dialog-content>
+        <mat-form-field appearance="fill" style="width: 100%;">
+                <mat-label>Marks</mat-label>
+                <input matInput [(ngModel)]="newAssessmentMarks" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-label>Assessment Type</mat-label>
+            <mat-select [(ngModel)]="newAssessmentType">
+                <mat-option value="assignment">Assignment</mat-option>
+                <mat-option value="quiz">Quiz</mat-option>
+                <mat-option value="formativeOral">Formative - Oral</mat-option>
+                <mat-option value="formativeWritten">Formative - Written</mat-option>
+                <mat-option value="summativeWritten">Summative - Written</mat-option>
+                <mat-option value="summativeOral">Summative - Oral</mat-option>
+                <mat-option value="final">Final</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button matButton="elevated" (click)="addAssessmentDialogRef?.close()">Cancel</button>
+        <button matButton="elevated" color="primary" (click)="confirmAddAssessment()">Add</button>
+    </mat-dialog-actions>
+</ng-template>

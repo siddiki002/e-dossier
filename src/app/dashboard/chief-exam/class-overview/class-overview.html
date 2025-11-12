@@ -1,0 +1,45 @@
+<div class="class-overview-container">
+    <div class="class-option-selection-container">
+        <div class="option-selection">
+            <h2>{{classDetails?.name}}</h2>
+            <mat-card class="selected-option-card" (click)="selectOption('pttAssessment')">
+                <mat-card-title>PTT Assessment</mat-card-title>
+            </mat-card>
+            <mat-card class="selected-option-card" (click)="selectOption('compulsoryModule')">
+                <mat-card-title>Compulsory Module</mat-card-title>
+            </mat-card>
+        </div>
+        <div class="officer-list">
+            <sailor-list [sailors]="sailorsInClass"></sailor-list>
+        </div>
+    </div>
+    <div class="failed-courses-container">
+        <h1> Failed Courses </h1>
+        <div class="optional-failed-courses">
+            <mat-card class="course-card">
+                <mat-card-title> PTT Courses </mat-card-title>
+            </mat-card>
+            <div class="class-filter-container">
+                <mat-select placeholder="Select PTT Course" class="class-select" [ngModel]="selectedPttCourse" (ngModelChange)="onPttCourseSelectionChange($event)">
+                    @for (course of optionalCourses; track $index) {
+                        <mat-option value="{{course.id}}">{{course.courseName}}</mat-option>
+                    }
+                </mat-select>
+                <sailor-list [sailors]="failedOfficerInPttCourse"></sailor-list>
+            </div>
+        </div>
+        <div class="compulsory-failed-courses">
+            <mat-card class="course-card">
+                <mat-card-title> Compulsory Module </mat-card-title>
+            </mat-card>
+            <div class="class-filter-container">
+                <mat-select placeholder="Select Compulsory Course" class="class-select" [ngModel]="selectedCompulsoryCourse" (ngModelChange)="onCompulsoryCourseSelectionChange($event)">
+                    @for (course of compulsoryCourses; track $index) {
+                        <mat-option value="{{course.id}}">{{course.courseName}}</mat-option>
+                    }
+                </mat-select>
+                <sailor-list [sailors]="failedOfficerInCompulsoryCourse"></sailor-list>
+            </div>
+        </div>
+    </div>
+</div>

@@ -51,6 +51,7 @@ export class SailorListComponent implements OnInit, OnDestroy {
   }
 
   protected selectSailor(sailor: Officer) {
+    if(!this.allowSailorSelection) return;
     this.selectedOfficerId = sailor.id;
     this.onSailorSelection.emit(sailor);
   }
