@@ -15,6 +15,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { forkJoin } from 'rxjs';
 
+const assessments = ["Quiz", "Final", "Summative - Written", "Summative - Oral", "Formative - Written", "Formative - Oral", "Assignment"];
+
 @Component({
   selector: 'marks-entering',
   imports: [CommonModule, MatSelectModule, FormsModule, MatButtonModule, MatDialogModule, MatInputModule, MatFormFieldModule, MatIconModule, MatCardModule, MatTableModule],
@@ -174,6 +176,10 @@ export class MarksEntering {
     this.selectedAssessment = assessmentId;
     this.assessmentMarks = this.assessments.find(assessment => assessment.id === assessmentId)?.totalMarks || 0;
     this.fetchOfficerMarksOfAssessment();
+  }
+
+  protected get assessmentOptions() {
+    return assessments.filter((assessment) => !this.assessments.find(a => a.assessmentName.toLowerCase() === assessment.toLowerCase()));
   }
 
   protected calculatePercentage(marksObtained: number | null) : string {

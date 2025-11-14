@@ -37,7 +37,7 @@
                         <mat-form-field appearance="outline" class="course-select-field">
                             <mat-label>
                                 <mat-icon>{{option === 'pttAssessment' ? 'quiz' : 'menu_book'}}</mat-icon>
-                                {{option === 'pttAssessment' ? 'Select PTT Assessment Course' : 'Select Compulsory Module'}}
+                                {{option === 'pttAssessment' ? 'Select PTT Course' : 'Select Compulsory Coursee'}}
                             </mat-label>
                             <mat-select [ngModel]="selectedCourse" (ngModelChange)="onCourseSelection($event)">
                                 @for (course of courses; track $index) {
@@ -368,13 +368,9 @@
         <mat-form-field appearance="fill" style="width: 100%;">
             <mat-label>Assessment Type</mat-label>
             <mat-select [(ngModel)]="newAssessmentType">
-                <mat-option value="assignment">Assignment</mat-option>
-                <mat-option value="quiz">Quiz</mat-option>
-                <mat-option value="formativeOral">Formative - Oral</mat-option>
-                <mat-option value="formativeWritten">Formative - Written</mat-option>
-                <mat-option value="summativeWritten">Summative - Written</mat-option>
-                <mat-option value="summativeOral">Summative - Oral</mat-option>
-                <mat-option value="final">Final</mat-option>
+                @for(assessment of assessmentOptions; track $index) {
+                    <mat-option [value]="assessment">{{ assessment }}</mat-option>
+                }
             </mat-select>
         </mat-form-field>
     </mat-dialog-content>
