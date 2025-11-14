@@ -24,6 +24,9 @@ export class App {
 
   logout() {
     this.userService.setIsAuthenticated(false);
+    // remove data from local storage
+    localStorage.removeItem('user');
+    localStorage.removeItem('userType');
     this.router.navigate(['/auth'], { replaceUrl: true });
   }
 
