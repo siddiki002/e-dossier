@@ -9,8 +9,9 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule } from "@angular/material/card";
 
 type FailedCourses = {
-  [courseName: string]: Officer[];
+  [courseId: string]: Officer[];
 }
+
 
 @Component({
   selector: 'class-overview',
@@ -23,6 +24,7 @@ export class ClassOverview {
   protected classId: string = '';
   protected sailorsInClass: Officer[] = [];
   protected failedCompulsoryCourses: FailedCourses = {};
+  protected failedOptionalCourses: FailedCourses = {};
   protected courses: Courses[] = [];
   protected selectedPttCourse: string = '';
   protected selectedCompulsoryCourse: string = '';
@@ -41,6 +43,14 @@ export class ClassOverview {
     this.fetchClassDetails();
     this.fetchAllCourses();
     this.fetchFailedCompulsoryCourses();
+    this.fetchFailedOptionalCourses();
+  }
+
+  private fetchFailedOptionalCourses() {
+    this.http.get<{failedOfficersDetails : FailedCourses}>(`${baseUrl}/data-entry/class/${this.classId}/failed-optional-courses`).subscribe(({failedOfficersDetails}) => {
+      console.log(failedOfficersDetails);
+      this.failedOptionalCourses = failedOfficersDetails;
+    });
   }
 
   private fetchFailedCompulsoryCourses() {
@@ -73,14 +83,14 @@ export class ClassOverview {
     return this.courses.filter((course) => course.type === "Optional");
   }
 
-  protected onPttCourseSelectionChange(courseId: string) {}
+  protected onPttCourseSelectionChange(courseId: string) {
+    this.selectedPttCourse = courseId;
+    this.failedOfficerInPttCourse = this.failedOptionalCourses[courseId] || [];
+  }
 
   protected onCompulsoryCourseSelectionChange(courseId: string) {
     this.selectedCompulsoryCourse = courseId;
-    const selectedCourse = this.courses.find(course => course.id === courseId);
-    if(selectedCourse && selectedCourse?.courseName) {
-      this.failedOfficerInCompulsoryCourse = this.failedCompulsoryCourses[selectedCourse.courseName] || [];
-    }
+    this.failedOfficerInCompulsoryCourse = this.failedCompulsoryCourses[courseId] || [];
   }
 
   protected selectOption(option: 'pttAssessment' | 'compulsoryModule'){

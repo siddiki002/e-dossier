@@ -12,22 +12,46 @@ export class UserService {
     private _isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     get userType() {
-        return this._userType.asObservable();
+        if(!!this._userType.value){
+            return this._userType.asObservable();
+        } else {
+            // return value saved in local storage
+            const userType = JSON.parse(localStorage.getItem('userType') || 'null');
+            this._userType.next(userType);
+            return this._userType.asObservable();
+        }
     }
     
     setUserType(user: userType) {
         this._userType.next(user);
+        // save value in local storage
+        localStorage.setItem('userType', JSON.stringify(user));
     }
 
     get User() {
-        return this._user.asObservable();
+        if(!!this._user.value){
+            return this._user.asObservable();
+        } else {
+            const user = JSON.parse(localStorage.getItem('user') || 'null') as User | null;
+            this._user.next(user);
+            return this._user.asObservable();
+        }
     }
 
     setUser(user: User | null) {
         this._user.next(user);
+        // save value in local storage
+        localStorage.setItem('user', JSON.stringify(user));
     }
 
     get isAuthenticated() {
+        if(!!this._isAuthenticated.value){
+            return this._isAuthenticated.asObservable();
+        } else {
+            if(this.User) {
+                this._isAuthenticated.next(true);
+            }
+        }
         return this._isAuthenticated.asObservable();
     }
 

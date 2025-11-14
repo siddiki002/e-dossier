@@ -113,7 +113,7 @@ export class Ado {
         // add officer in class too
         this.http.post(`${baseUrl}/data-entry/class/${this.selectedClassId}/officer/${newOfficerId}`, {}, {observe: 'response'}).subscribe((classAdditionResponse : HttpResponse<any>) => {
           if(classAdditionResponse.status === 201) {
-            this.sailorsInClass.push({id: newOfficerId,  name: this.newSailorName} as Officer);
+            this.sailorsInClass.push({officerId: this.newSailorId,  name: this.newSailorName} as Officer);
             // update officer count in class list
             const classIndex = this.classes.findIndex(c => c.id === this.selectedClassId);
             if(classIndex !== -1) {

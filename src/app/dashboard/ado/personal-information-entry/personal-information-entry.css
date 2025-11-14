@@ -46,3 +46,34 @@
   80% { transform: scale(1.2); opacity: 1; }
   100% { transform: scale(1); }
 }
+
+/* Family Members Table Styles */
+.family-table {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.family-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.family-row:hover {
+  background-color: #e8e8e8;
+}
+
+.selected-row {
+  background-color: #3f51b5 !important;
+  color: white !important;
+}
+
+.family-table th {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+.family-table td, .family-table th {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}

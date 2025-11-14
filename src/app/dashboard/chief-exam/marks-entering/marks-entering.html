@@ -9,7 +9,29 @@
                 <mat-card-subtitle>{{option === 'pttAssessment' ? 'PTT Assessment Management' : 'Compulsory Module Management'}}</mat-card-subtitle>
             </mat-card-header>
             
-            <mat-card-content>
+            <mat-card-content *ngIf="option === 'pttAssessment'">
+                <div class="course-selection-section">
+                    <div class="selection-group">
+                        <mat-form-field appearance="outline" class="course-select-field">
+                            <mat-label>
+                                <mat-icon>{{option === 'pttAssessment' ? 'quiz' : 'menu_book'}}</mat-icon>
+                                Select Module
+                            </mat-label>
+                            <mat-select [ngModel]="selectedModule" (ngModelChange)="onModuleSelection($event)">
+                                @for (module of modules; track $index) {
+                                    <mat-option value="{{module.value}}">
+                                        <div class="course-option">
+                                            <span>{{module.label}}</span>
+                                        </div>
+                                    </mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-card-content>
+            
+            <mat-card-content *ngIf="option === 'pttAssessment' ? selectedModule : true">
                 <div class="course-selection-section">
                     <div class="selection-group">
                         <mat-form-field appearance="outline" class="course-select-field">
@@ -313,16 +335,21 @@
             </mat-form-field>
             <mat-form-field appearance="fill" style="width: 100%;">
                 <mat-label>Course Type</mat-label>
-                <mat-select [(ngModel)]="newCourseType">
+                <mat-select [(ngModel)]="newCourseType" disabled>
                     <mat-option value="Optional">PTT</mat-option>
                     <mat-option value="Compulsory">Compulsory</mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="fill" style="width: 100%;">
-                <mat-label>Course Category</mat-label>
-                <mat-select [(ngModel)]="newCourseCategory">
-                    <mat-option value="Academics">Academics</mat-option>
-                    <mat-option value="Sports">Sports</mat-option>
+            <mat-form-field appearance="fill" style="width: 100%;" *ngIf="option === 'pttAssessment'">
+                <mat-label>Module</mat-label>
+                <mat-select [(ngModel)]="newCourseModule">
+                    <mat-option value="Module 1">Module I</mat-option>
+                    <mat-option value="Module 2">Module II</mat-option>
+                    <mat-option value="Module 3">Module III</mat-option>
+                    <mat-option value="Module 4">Module IV</mat-option>
+                    <mat-option value="Module 5">Module V</mat-option>
+                    <mat-option value="Module 6">Module VI</mat-option>
+                    <mat-option value="Module 7">Module VII</mat-option>
                 </mat-select>
             </mat-form-field>
         <mat-dialog-actions align="end">

@@ -31,7 +31,7 @@ export class MarksEntering {
   protected addCourseDialogRef: MatDialogRef<any, any> | null = null;
   protected newCourseName: string = '';
   protected newCourseType: string = '';
-  protected newCourseCategory: string = '';
+  protected newCourseModule: string = '';
   protected newAssessmentType: string = '';
   protected addAssessmentDialogRef: MatDialogRef<any, any> | null = null;
   protected newAssessmentMarks: string = '';
@@ -41,6 +41,18 @@ export class MarksEntering {
   protected marksList: Marks[] = [];
   protected assessmentMarks : number = 0;
   protected compulsoryModuleCourseMarks : Record<string, Array<string>> = {}; // officerId -> ["P", "F", "NA"]
+  protected modules : Array<{label: string, value: string}> = [
+    {label: 'Module I', value: 'Module 1'},
+    {label: 'Module II', value: 'Module 2'},
+    {label: 'Module III', value: 'Module 3'},
+    {label: 'Module IV', value: 'Module 4'},
+    {label: 'Module V', value: 'Module 5'},
+    {label: 'Module VI', value: 'Module 6'},
+    {label: 'Module VII', value: 'Module 7'},
+  ];
+  protected selectedModule: string = '';
+
+  private originalCourseList : Courses[] = [];
 
   @ViewChild('addCourseDialog') addCourseDialogTemplate: any;
   @ViewChild('addAssessmentDialog') addAssessmentDialogTemplate: any;
@@ -51,6 +63,7 @@ export class MarksEntering {
       this.classId = params['classId'];
       this.option = params['option'];
     });
+    this.newCourseType = this.option === 'pttAssessment' ? 'Optional' : 'Compulsory';
   }
 
   ngOnInit() {
@@ -62,10 +75,12 @@ export class MarksEntering {
     if(this.option === 'pttAssessment') {
       this.http.get<Courses[]>(`${baseUrl}/data-entry/course/optional`).subscribe((courses) => {
         this.courses = courses;
+        this.originalCourseList = courses;
       });
     } else if(this.option === 'compulsoryModule') {
       this.http.get<Courses[]>(`${baseUrl}/data-entry/course/compulsory`).subscribe((courses) => {
         this.courses = courses;
+        this.originalCourseList = courses;
       });
     }
   }
@@ -128,7 +143,7 @@ export class MarksEntering {
     this.addCourseDialogRef?.close();
     const payload = {
       courseName: this.newCourseName,
-      category: this.newCourseCategory,
+      module: this.newCourseModule,
       type: this.newCourseType
     };
 
@@ -265,6 +280,12 @@ export class MarksEntering {
         alert('Marks saved successfully!');
       }
     });
+  }
+
+  protected onModuleSelection(moduleValue: string) {
+    this.selectedModule = moduleValue;
+    const filteredCourses = this.originalCourseList.filter(course => course.module === moduleValue);
+    this.courses = [...filteredCourses];
   }
 
 }

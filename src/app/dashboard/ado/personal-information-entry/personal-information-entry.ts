@@ -13,11 +13,13 @@ import { CommonModule } from '@angular/common';
 import { forkJoin, Observable } from 'rxjs';
 import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from "@angular/material/icon";
+import { MatSelectModule } from "@angular/material/select";
+import { MatTableModule } from "@angular/material/table";
 
 type ApiCalls = {[key: string]: Observable<Object>};
 @Component({
   selector: 'personal-information-entry',
-  imports: [SailorListComponent, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatButtonModule, CommonModule, MatDialogModule, MatIconModule],
+  imports: [SailorListComponent, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatButtonModule, CommonModule, MatDialogModule, MatIconModule, MatSelectModule, MatTableModule],
   templateUrl: './personal-information-entry.html',
   styleUrl: './personal-information-entry.css'
 })
@@ -36,7 +38,7 @@ export class PersonalInformationEntry {
     dateOfEnrollment: new FormControl(new Date(), Validators.required),
     bloodGroup: new FormControl('', Validators.required),
     contactNumber: new FormControl('', Validators.required),
-    rate: new FormControl('', Validators.required),
+    rate: new FormControl('Sailor', Validators.required),
     permanentAddress: new FormControl('', Validators.required),
     emergencyContact: new FormGroup({
       cnic: new FormControl('', Validators.required),
@@ -48,6 +50,8 @@ export class PersonalInformationEntry {
   });
   protected officerImageUrl: string = '';
   protected selectedOfficer: Officer | null = null;
+  protected selectedFamilyMemberIndex: number = -1; // Track selected family member for editing
+  protected displayedColumns: string[] = ['name', 'relation', 'cnic', 'contactNumber'];
   private selectedFile: File | null = null;
   private successDialogRef: MatDialogRef<any,any> | null = null;
 
@@ -87,6 +91,7 @@ export class PersonalInformationEntry {
     this.personalInformationForm.get('emergencyContact.name')?.setValue(officer?.emergencyContact?.name);
     this.personalInformationForm.get('emergencyContact.relation')?.setValue(officer?.emergencyContact?.relation);
     this.familyArray.clear();
+    this.selectedFamilyMemberIndex = -1; // Reset family member selection
     if(officer?.additionalFamilyInformation && officer.additionalFamilyInformation.length > 0) {
       officer.additionalFamilyInformation.forEach(member => {
         const memberGroup = this.createFamilyMember();
@@ -123,12 +128,35 @@ export class PersonalInformationEntry {
 
   protected addFamilyMember() {
     this.familyArray.push(this.createFamilyMember());
+    // Select the newly added family member for editing
+    this.selectedFamilyMemberIndex = this.familyArray.length - 1;
   }
 
   protected removeFamilyMember(index: number) {
     this.familyArray.removeAt(index);
+    // Reset selection if the selected member was removed
+    if (this.selectedFamilyMemberIndex === index) {
+      this.selectedFamilyMemberIndex = -1;
+    } else if (this.selectedFamilyMemberIndex > index) {
+      this.selectedFamilyMemberIndex--; // Adjust index after removal
+    }
   }
-  
+
+  protected selectFamilyMember(index: number) {
+    this.selectedFamilyMemberIndex = index;
+  }
+
+  protected get selectedFamilyMemberForm(): FormGroup | null {
+    if (this.selectedFamilyMemberIndex >= 0 && this.selectedFamilyMemberIndex < this.familyArray.length) {
+      return this.familyArray.at(this.selectedFamilyMemberIndex) as FormGroup;
+    }
+    return null;
+  }
+
+  protected get hasFamilyMembers(): boolean {
+    return this.familyArray.length > 0;
+  }
+
   protected onFileSelected(event: Event) {
     console.log(this.selectedOfficer);
     if(!this.selectedOfficer) return;

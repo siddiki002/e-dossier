@@ -89,4 +89,5 @@ export type Courses = {
     courseName: string,
     category: string,
     type: "Optional" | "Compulsory"
+    module?: string
 }
