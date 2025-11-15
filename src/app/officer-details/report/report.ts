@@ -146,4 +146,22 @@ export class Report {
     return (this.officer as any)?.department || 'Not Specified';
   }
 
+  protected getGroupedCourses(): { [module: string]: Courses[] } {
+    const groupedCourses: { [module: string]: Courses[] } = {};
+    
+    this.optionalCourses.forEach(course => {
+      const module = course.module || 'Other';
+      if (!groupedCourses[module]) {
+        groupedCourses[module] = [];
+      }
+      groupedCourses[module].push(course);
+    });
+    
+    return groupedCourses;
+  }
+
+  protected getModuleNames(): string[] {
+    return Object.keys(this.getGroupedCourses()).sort();
+  }
+
 }

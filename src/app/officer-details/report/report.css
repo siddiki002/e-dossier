@@ -258,6 +258,28 @@
   background: #dc3545;
 }
 
+/* Module Header Styling */
+.module-header {
+  background: linear-gradient(135deg, #2d5aa0 0%, #1f4e79 100%) !important;
+}
+
+.module-header:hover {
+  background: linear-gradient(135deg, #2d5aa0 0%, #1f4e79 100%) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.module-name {
+  color: white !important;
+  font-weight: bold !important;
+  font-size: 16px !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  padding: 15px 8px !important;
+  border: none !important;
+}
+
 /* Column Widths */
 .col-sno { width: 60px; }
 .col-subject { width: 200px; }

@@ -56,24 +56,31 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let course of optionalCourses; let i = index" 
-              [class.high-performance]="getPercentage(course.id) >= 80"
-              [class.medium-performance]="getPercentage(course.id) >= 60 && getPercentage(course.id) < 80"
-              [class.low-performance]="getPercentage(course.id) < 60 && getPercentage(course.id) > 0">
-            <td class="text-center">{{ i + 1 }}</td>
-            <td class="subject-name">{{ course.courseName }}</td>
-            <td class="marks-cell">{{ getObtainedMarks(course.id, 'Formative - Written') || '-' }}</td>
-            <td class="marks-cell">{{ getObtainedMarks(course.id, 'Formative - Practical') || '-' }}</td>
-            <td class="marks-cell">{{ getObtainedMarks(course.id, 'Summative - Written') || '-' }}</td>
-            <td class="marks-cell">{{ getObtainedMarks(course.id, 'Summative - Practical') || '-' }}</td>
-            <td class="marks-cell">{{ getObtainedMarks(course.id, 'Quiz') || '-' }}</td>
-            <td class="marks-cell">{{ getObtainedMarks(course.id, 'Assignments') || '-' }}</td>
-            <td class="total-marks">{{ getTotalMarks(course.id) }}</td>
-            <td class="obtained-marks">{{ getObtainedMarksForCourse(course.id) }}</td>
-            <td class="percentage-cell">
-              <span class="percentage-value">{{ getPercentage(course.id) }}%</span>
-            </td>
-          </tr>
+          <ng-container *ngFor="let module of getModuleNames(); let moduleIndex = index">
+            <!-- Module Header Row -->
+            <tr class="module-header">
+              <td colspan="11" class="module-name">{{ module }}</td>
+            </tr>
+            <!-- Course Rows for this Module -->
+            <tr *ngFor="let course of getGroupedCourses()[module]; let i = index" 
+                [class.high-performance]="getPercentage(course.id) >= 80"
+                [class.medium-performance]="getPercentage(course.id) >= 60 && getPercentage(course.id) < 80"
+                [class.low-performance]="getPercentage(course.id) < 60 && getPercentage(course.id) > 0">
+              <td class="text-center">{{ i + 1 }}</td>
+              <td class="subject-name">{{ course.courseName }}</td>
+              <td class="marks-cell">{{ getObtainedMarks(course.id, 'Formative - Written') || '-' }}</td>
+              <td class="marks-cell">{{ getObtainedMarks(course.id, 'Formative - Practical') || '-' }}</td>
+              <td class="marks-cell">{{ getObtainedMarks(course.id, 'Summative - Written') || '-' }}</td>
+              <td class="marks-cell">{{ getObtainedMarks(course.id, 'Summative - Practical') || '-' }}</td>
+              <td class="marks-cell">{{ getObtainedMarks(course.id, 'Quiz') || '-' }}</td>
+              <td class="marks-cell">{{ getObtainedMarks(course.id, 'Assignments') || '-' }}</td>
+              <td class="total-marks">{{ getTotalMarks(course.id) }}</td>
+              <td class="obtained-marks">{{ getObtainedMarksForCourse(course.id) }}</td>
+              <td class="percentage-cell">
+                <span class="percentage-value">{{ getPercentage(course.id) }}%</span>
+              </td>
+            </tr>
+          </ng-container>
         </tbody>
       </table>
     </div>
