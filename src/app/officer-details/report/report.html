@@ -1,0 +1,112 @@
+<div class="report-container">
+  <!-- Report Header -->
+  <div class="report-header">
+    <div class="header-content">
+      <div class="logo-section">
+        <h1 class="report-title">Academic Performance Report</h1>
+        <div class="report-metadata">
+          <span class="report-date">Generated on: {{ getCurrentDate() }}</span>
+          <span class="report-type">Comprehensive Academic Assessment</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Officer Information Section -->
+  <div class="officer-section">
+    <div class="officer-info">
+      <div class="officer-details">
+        <h2 class="officer-name">{{ officer?.name }}</h2>
+        <div class="officer-meta">
+          <div class="meta-item">
+            <span class="meta-label">Officer ID:</span>
+            <span class="meta-value">{{ officer?.officerId }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Rank:</span>
+            <span class="meta-value">{{ getOfficerRank() }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="officer-photo">
+        <img [src]="officer?.imageUrl ?? 'default-image.png'" alt="Officer Photo" class="photo"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- Academic Performance Section -->
+  <div class="academic-section">
+    <h3 class="section-title">Academic Performance Summary</h3>
+    
+    <div class="table-container">
+      <table class="performance-table">
+        <thead>
+          <tr>
+            <th class="col-sno">S.No</th>
+            <th class="col-subject">Course Name</th>
+            <th class="col-marks">Formative<br><small>Written</small></th>
+            <th class="col-marks">Formative<br><small>Practical</small></th>
+            <th class="col-marks">Summative<br><small>Written</small></th>
+            <th class="col-marks">Summative<br><small>Practical</small></th>
+            <th class="col-marks">Quizzes</th>
+            <th class="col-marks">Assignments</th>
+            <th class="col-total">Total<br>Marks</th>
+            <th class="col-obtained">Obtained<br>Marks</th>
+            <th class="col-percentage">Percentage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let course of optionalCourses; let i = index" 
+              [class.high-performance]="getPercentage(course.id) >= 80"
+              [class.medium-performance]="getPercentage(course.id) >= 60 && getPercentage(course.id) < 80"
+              [class.low-performance]="getPercentage(course.id) < 60 && getPercentage(course.id) > 0">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td class="subject-name">{{ course.courseName }}</td>
+            <td class="marks-cell">{{ getObtainedMarks(course.id, 'Formative - Written') || '-' }}</td>
+            <td class="marks-cell">{{ getObtainedMarks(course.id, 'Formative - Practical') || '-' }}</td>
+            <td class="marks-cell">{{ getObtainedMarks(course.id, 'Summative - Written') || '-' }}</td>
+            <td class="marks-cell">{{ getObtainedMarks(course.id, 'Summative - Practical') || '-' }}</td>
+            <td class="marks-cell">{{ getObtainedMarks(course.id, 'Quiz') || '-' }}</td>
+            <td class="marks-cell">{{ getObtainedMarks(course.id, 'Assignments') || '-' }}</td>
+            <td class="total-marks">{{ getTotalMarks(course.id) }}</td>
+            <td class="obtained-marks">{{ getObtainedMarksForCourse(course.id) }}</td>
+            <td class="percentage-cell">
+              <span class="percentage-value">{{ getPercentage(course.id) }}%</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Performance Summary -->
+  <div class="summary-section">
+    <h3 class="section-title">Performance Summary</h3>
+    <div class="summary-cards">
+      <div class="summary-card overall">
+        <h4>Overall Performance</h4>
+        <div class="summary-value">{{ getOverallPercentage() }}%</div>
+        <div class="summary-label">Average Score</div>
+      </div>
+      <div class="summary-card courses">
+        <h4>Total Courses</h4>
+        <div class="summary-value">{{ optionalCourses.length || 0 }}</div>
+        <div class="summary-label">Enrolled</div>
+      </div>
+      <div class="summary-card grade">
+        <h4>Overall Grade</h4>
+        <div class="summary-value">{{ getOverallGrade() }}</div>
+        <div class="summary-label">Performance Level</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Report Footer -->
+  <div class="report-footer">
+    <div class="footer-content">
+      <div class="footer-note">
+        <p><small>This report is computer generated and does not require a signature for validation.</small></p>
+      </div>
+    </div>
+  </div>
+</div>

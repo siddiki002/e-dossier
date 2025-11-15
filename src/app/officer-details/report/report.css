@@ -1,0 +1,458 @@
+/* Report Container Styling */
+.report-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Arial', 'Helvetica', sans-serif;
+  background: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Report Header */
+.report-header {
+  border-bottom: 3px solid #1f4e79;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.report-title {
+  color: #1f4e79;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.report-metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.report-date,
+.report-type {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.report-type {
+  font-style: italic;
+}
+
+/* Officer Information Section */
+.officer-section {
+  margin-bottom: 30px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 8px;
+  padding: 25px;
+  border-left: 5px solid #1f4e79;
+}
+
+.officer-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+.officer-details {
+  flex: 1;
+}
+
+.officer-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1f4e79;
+  margin: 0 0 15px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.officer-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.meta-label {
+  font-weight: 600;
+  color: #495057;
+  min-width: 80px;
+}
+
+.meta-value {
+  color: #1f4e79;
+  font-weight: 500;
+  background: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+}
+
+.officer-photo {
+  flex-shrink: 0;
+}
+
+.photo {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 4px solid #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Academic Performance Section */
+.academic-section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1f4e79;
+  margin: 0 0 20px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e9ecef;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Table Styling */
+.table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.performance-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-size: 14px;
+}
+
+.performance-table th {
+  background: linear-gradient(135deg, #1f4e79 0%, #2d5aa0 100%);
+  color: white;
+  font-weight: 600;
+  padding: 15px 8px;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  border-right: 1px solid #fff;
+}
+
+.performance-table th:last-child {
+  border-right: none;
+}
+
+.performance-table th small {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+
+.performance-table td {
+  padding: 12px 8px;
+  text-align: center;
+  border-bottom: 1px solid #e9ecef;
+  border-right: 1px solid #f1f3f4;
+  vertical-align: middle;
+}
+
+.performance-table td:last-child {
+  border-right: none;
+}
+
+.performance-table tbody tr {
+  transition: all 0.2s ease;
+}
+
+.performance-table tbody tr:hover {
+  background-color: #f8f9fa;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.subject-name {
+  text-align: left !important;
+  font-weight: 600;
+  color: #495057;
+}
+
+.marks-cell {
+  font-weight: 500;
+  color: #6c757d;
+}
+
+.total-marks {
+  font-weight: bold;
+  color: #495057;
+  background-color: #f8f9fa;
+}
+
+.obtained-marks {
+  font-weight: bold;
+  color: #1f4e79;
+  background-color: #e7f3ff;
+}
+
+.percentage-cell {
+  background-color: #f1f8e9;
+}
+
+.percentage-value {
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 12px;
+  background: #28a745;
+  color: white;
+  font-size: 12px;
+}
+
+/* Performance Classes */
+.high-performance {
+  background-color: rgba(40, 167, 69, 0.1) !important;
+  border-left: 4px solid #28a745;
+}
+
+.medium-performance {
+  background-color: rgba(255, 193, 7, 0.1) !important;
+  border-left: 4px solid #ffc107;
+}
+
+.low-performance {
+  background-color: rgba(220, 53, 69, 0.1) !important;
+  border-left: 4px solid #dc3545;
+}
+
+.high-performance .percentage-value {
+  background: #28a745;
+}
+
+.medium-performance .percentage-value {
+  background: #ffc107;
+  color: #212529;
+}
+
+.low-performance .percentage-value {
+  background: #dc3545;
+}
+
+/* Column Widths */
+.col-sno { width: 60px; }
+.col-subject { width: 200px; }
+.col-marks { width: 80px; }
+.col-total { width: 90px; }
+.col-obtained { width: 100px; }
+.col-percentage { width: 100px; }
+
+/* Summary Section */
+.summary-section {
+  margin-bottom: 30px;
+}
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.summary-card {
+  background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+  border-radius: 10px;
+  padding: 25px;
+  text-align: center;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.summary-card h4 {
+  margin: 0 0 15px 0;
+  color: #495057;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-value {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #1f4e79;
+}
+
+.summary-label {
+  font-size: 14px;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-card.overall {
+  border-left: 5px solid #1f4e79;
+}
+
+.summary-card.courses {
+  border-left: 5px solid #28a745;
+}
+
+.summary-card.grade {
+  border-left: 5px solid #ffc107;
+}
+
+/* Report Footer */
+.report-footer {
+  border-top: 2px solid #e9ecef;
+  padding-top: 30px;
+  margin-top: 40px;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.signature-section {
+  display: flex;
+  gap: 100px;
+}
+
+.signature-line {
+  text-align: center;
+}
+
+.signature-space {
+  width: 200px;
+  height: 60px;
+  border-bottom: 2px solid #495057;
+  margin-bottom: 10px;
+}
+
+.signature-label {
+  font-weight: 600;
+  color: #495057;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.footer-note {
+  font-style: italic;
+  color: #6c757d;
+  max-width: 300px;
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .report-container {
+    padding: 15px;
+  }
+  
+  .officer-info {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .officer-meta {
+    grid-template-columns: 1fr;
+  }
+  
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .footer-content {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .signature-section {
+    gap: 50px;
+  }
+  
+  .signature-space {
+    width: 150px;
+  }
+  
+  .performance-table {
+    font-size: 12px;
+  }
+  
+  .performance-table th,
+  .performance-table td {
+    padding: 8px 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .report-title {
+    font-size: 22px;
+  }
+  
+  .officer-name {
+    font-size: 20px;
+  }
+  
+  .section-title {
+    font-size: 18px;
+  }
+  
+  .summary-value {
+    font-size: 28px;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .report-container {
+    box-shadow: none;
+    padding: 0;
+    max-width: none;
+  }
+  
+  .performance-table {
+    page-break-inside: avoid;
+  }
+  
+  .summary-cards {
+    page-break-inside: avoid;
+  }
+  
+  .signature-section {
+    page-break-inside: avoid;
+  }
+}

@@ -7,7 +7,7 @@
     </button>
   </div>
 
-  <div class="sailor-list">
+  <div class="sailor-list" [style.height]="height">
     <div *ngIf="showSearchBar" class="search-bar">
       <div class="search-container">
         <input [ngModel]="searchTerm" (ngModelChange)="onSearch($event)" placeholder="Search sailors" class="search-input"/>

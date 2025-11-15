@@ -22,6 +22,7 @@ export class SailorListComponent implements OnInit, OnDestroy {
   @Input() showSearchBar: boolean = false;
   @Input() allowSailorSelection: boolean = false;
   @Input() allowAddSailor: boolean = false;
+  @Input() height: string = "";
 
   @Output() addSailor = new EventEmitter();
   @Output() onSailorSelection = new EventEmitter<Officer>();

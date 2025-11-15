@@ -19,6 +19,10 @@ export const routes: Routes = [
         ]
     },
     {
+        path: 'officer-details/report/:officerId',
+        loadComponent: () => import('./officer-details/report/report').then(m => m.Report)
+    },
+    {
         path: '',
         redirectTo: 'auth/login',
         pathMatch: 'full'

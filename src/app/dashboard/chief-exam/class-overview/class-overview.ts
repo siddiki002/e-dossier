@@ -97,4 +97,8 @@ export class ClassOverview {
     this.router?.navigate(['dashboard/chief-exam/marks-entering', this.classId, option], { state: { data: this.sailorsInClass } });
   }
 
+  protected openSailorReport(officer: Officer) {
+    this.router.navigate([`officer-details/report/${officer.id}`]);
+  }
+
 }
