@@ -6,8 +6,13 @@
     <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit($event)">
         <mat-form-field appearance="outline" >
             <mat-label>Username</mat-label>
-            <input matInput formControlName="username">
-            <mat-hint>Enter your email</mat-hint>
+            <mat-select formControlName="username">
+                <mat-option value="ado@edossier.com">ADO</mat-option>
+                <mat-option value="chief.exam@edossier.com">Chief Exam</mat-option>
+                <mat-option value="oic@edossier.com">OIC</mat-option>
+                <mat-option value="class.instructor@edossier.com">Instructor</mat-option>
+            </mat-select>
+            <mat-hint>Select role</mat-hint>
         </mat-form-field>
         @if(loginForm.controls.username.hasError('required') && loginForm.controls.username.touched) {
             <mat-error>Username is required</mat-error>

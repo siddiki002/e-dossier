@@ -91,3 +91,21 @@ export type Courses = {
     type: "Optional" | "Compulsory"
     module?: string
 }
+
+export type Warnings = {
+    id: string,
+    awardedBy: string,
+    date: Date,
+    offense: string,
+    officerId: string,
+    punishment: string,
+    type: "punishment" | "warningSlips" | "observations"
+}
+
+export type Medical = {
+    id: string,
+    date: Date,
+    disease: string,
+    officerId: string,
+    remarks: string,
+}

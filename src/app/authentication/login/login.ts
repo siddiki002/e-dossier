@@ -9,10 +9,11 @@ import { UserService } from '@app/user.service';
 import { Router } from '@angular/router';
 import { userType } from '../authentication.const';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from "@angular/material/select";
 
 @Component({
   selector: 'login',
-  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, CommonModule, MatIconModule],
+  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, ReactiveFormsModule, CommonModule, MatIconModule, MatSelectModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
   providers: [AuthenticationService]

@@ -1,0 +1,263 @@
+.medical-container {
+  display: flex;
+  height: 100vh;
+  gap: 20px;
+  padding: 20px;
+}
+
+.sailor-list-section {
+  background-color: black;
+  padding: 20px;
+  height: 400px;
+  width: 400px;
+}
+
+.officer-details-section {
+  flex: 1;
+  overflow-y: auto;
+  padding-left: 20px;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.officer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.officer-info h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.save-button {
+  height: fit-content;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.form-section {
+  margin-bottom: 40px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #fafafa;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h3 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 20px;
+}
+
+.add-button {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+.table-container {
+  overflow-x: auto;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.medical-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+}
+
+.medical-table thead {
+  background-color: #27ae60;
+  color: white;
+}
+
+.medical-table th,
+.medical-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+.medical-table th {
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.medical-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.medical-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table-input {
+  width: 100%;
+  min-width: 150px;
+}
+
+.table-input.large-input {
+  min-width: 200px;
+}
+
+.table-input .mat-mdc-form-field-wrapper {
+  padding: 0;
+}
+
+.table-input .mat-mdc-form-field-infix {
+  min-height: 40px;
+  padding: 8px 0;
+}
+
+.table-input input,
+.table-input textarea {
+  font-size: 14px;
+}
+
+.table-input textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* Column specific widths */
+.medical-table td:first-child {
+  width: 60px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.medical-table td:nth-child(2) {
+  width: 180px;
+}
+
+.medical-table td:nth-child(3) {
+  width: 200px;
+}
+
+.medical-table td:nth-child(4) {
+  width: 300px;
+}
+
+.medical-table td:last-child {
+  width: 80px;
+  text-align: center;
+}
+
+/* Remove button styling */
+button[mat-icon-button] {
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.no-officer-message {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+  font-size: 18px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .medical-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .sailor-list-section {
+    flex: none;
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+    padding-right: 0;
+    padding-bottom: 20px;
+  }
+
+  .officer-details-section {
+    padding-left: 0;
+    padding-top: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .medical-container {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .header-section {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+
+  .officer-info {
+    text-align: center;
+  }
+
+  .table-container {
+    font-size: 12px;
+  }
+
+  .medical-table th,
+  .medical-table td {
+    padding: 8px;
+  }
+
+  .table-input {
+    min-width: 120px;
+  }
+
+  .table-input.large-input {
+    min-width: 150px;
+  }
+}
+
+/* Custom styling for medical records theme */
+.section-header h3 {
+  color: #27ae60 !important;
+}
+
+.add-button {
+  background-color: #27ae60;
+  color: white;
+}
+
+.add-button:hover {
+  background-color: #229954;
+}
+
+.save-button {
+  background-color: #3498db;
+  color: white;
+}
+
+.save-button:hover:not(:disabled) {
+  background-color: #2980b9;
+}

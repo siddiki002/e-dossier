@@ -1,0 +1,105 @@
+<div class="medical-container">
+  <!-- Left side: Sailor list -->
+  <div class="sailor-list-section">
+    <sailor-list 
+      (onSailorSelection)="onOfficerSelection($event)" 
+      [sailors]="sailorsInClass" 
+      [showSearchBar]="true" 
+      [classTitle]="classDetails?.name" 
+      [allowSailorSelection]="true">
+    </sailor-list>
+  </div>
+
+  <!-- Right side: Officer details and medical records form -->
+  <div class="officer-details-section">
+    <!-- Officer info and save button -->
+    <div class="header-section">
+      <div class="officer-info">
+        <h4>Name: {{selectedOfficer?.name ? selectedOfficer?.name : 'No Officer Selected'}}</h4>
+        <h4>Officer No: {{selectedOfficer?.officerId ? selectedOfficer?.officerId : 'No Officer Selected'}}</h4>
+      </div>
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="onSave()" 
+        [disabled]="!selectedOfficer"
+        class="save-button">
+        Save
+      </button>
+    </div>
+
+    <!-- Medical Records Form -->
+    @if (selectedOfficer) {
+      <form [formGroup]="medicalForm">
+        <div class="form-section">
+          <div class="section-header">
+            <h3>Medical Records</h3>
+            <button 
+              type="button" 
+              mat-raised-button 
+              color="accent" 
+              (click)="addNewRow()"
+              class="add-button">
+              Add Record
+            </button>
+          </div>
+          
+          <div class="table-container">
+            <table class="medical-table">
+              <thead>
+                <tr>
+                  <th>S no</th>
+                  <th>Date</th>
+                  <th>Disease</th>
+                  <th>Remarks</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody formArrayName="medicalRecords">
+                @for (record of medicalRecordsArray.controls; track $index; let i = $index) {
+                  <tr [formGroupName]="i">
+                    <td>{{i + 1}}</td>
+                    <td>
+                      <mat-form-field appearance="outline" class="table-input">
+                        <input matInput [matDatepicker]="medicalDatePicker" formControlName="date" placeholder="Select date">
+                        <mat-datepicker-toggle matIconSuffix [for]="medicalDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #medicalDatePicker></mat-datepicker>
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field appearance="outline" class="table-input">
+                        <input matInput formControlName="disease" placeholder="Disease/Condition">
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field appearance="outline" class="table-input large-input">
+                        <textarea matInput formControlName="remarks" placeholder="Remarks/Notes" rows="2"></textarea>
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <button 
+                        type="button" 
+                        mat-icon-button 
+                        color="warn" 
+                        (click)="removeRow(i)"
+                        [disabled]="medicalRecordsArray.length <= 1">
+                        ×
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </form>
+    }
+
+    <!-- Show message when no officer is selected -->
+    @if (!selectedOfficer) {
+      <div class="no-officer-message">
+        <p>Please select an officer to view and edit medical records.</p>
+      </div>
+    }
+  </div>
+</div>

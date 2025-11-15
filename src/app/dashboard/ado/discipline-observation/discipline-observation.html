@@ -1,0 +1,240 @@
+<div class="discipline-container">
+  <!-- Left side: Sailor list -->
+  <div class="sailor-list-section">
+    <sailor-list 
+      (onSailorSelection)="onOfficerSelection($event)" 
+      [sailors]="sailorsInClass" 
+      [showSearchBar]="true" 
+      [classTitle]="classDetails?.name" 
+      [allowSailorSelection]="true">
+    </sailor-list>
+  </div>
+
+  <!-- Right side: Officer details and forms -->
+  <div class="officer-details-section">
+    <!-- Officer info and save button -->
+    <div class="header-section">
+      <div class="officer-info">
+        <h4>Name: {{selectedOfficer ? selectedOfficer.name : 'No Officer Selected' }}</h4>
+        <h4>Officer No: {{selectedOfficer ? selectedOfficer.officerId : 'No Officer Selected' }}</h4>
+      </div>
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="onSave()" 
+        [disabled]="!selectedOfficer"
+        class="save-button">
+        Save
+      </button>
+    </div>
+
+    <!-- Form sections -->
+    <form [formGroup]="disciplineForm" *ngIf="selectedOfficer">
+      <!-- Record of punishment -->
+      <div class="form-section">
+        <div class="section-header">
+          <h3>Record of punishment</h3>
+          <button 
+            type="button" 
+            mat-raised-button 
+            color="accent" 
+            (click)="addNewRow('punishment')"
+            class="add-button">
+            Add Row
+          </button>
+        </div>
+        
+        <div class="table-container">
+          <table class="discipline-table">
+            <thead>
+              <tr>
+                <th>S no</th>
+                <th>Date</th>
+                <th>Offense</th>
+                <th>Punishment</th>
+                <th>Awarded by</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="punishments">
+              <tr *ngFor="let punishment of punishmentsArray.controls; let i = index" [formGroupName]="i">
+                <td>{{i + 1}}</td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput [matDatepicker]="punishmentDatePicker" formControlName="date" placeholder="Select date">
+                    <mat-datepicker-toggle matIconSuffix [for]="punishmentDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #punishmentDatePicker></mat-datepicker>
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput formControlName="offense" placeholder="Offense">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput formControlName="punishment" placeholder="Punishment">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput formControlName="awardedBy" placeholder="Awarded by">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <button 
+                    type="button" 
+                    mat-icon-button 
+                    color="warn" 
+                    (click)="removeRow('punishment', i)"
+                    [disabled]="punishmentsArray.length <= 1">
+                    ×
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Record of warnings -->
+      <div class="form-section">
+        <div class="section-header">
+          <h3>Record of warnings</h3>
+          <button 
+            type="button" 
+            mat-raised-button 
+            color="accent" 
+            (click)="addNewRow('warningSlips')"
+            class="add-button">
+            Add Row
+          </button>
+        </div>
+        
+        <div class="table-container">
+          <table class="discipline-table">
+            <thead>
+              <tr>
+                <th>S no</th>
+                <th>Date</th>
+                <th>Offense</th>
+                <th>Punishment</th>
+                <th>Awarded by</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="warningSlips">
+              <tr *ngFor="let warning of warningSlipsArray.controls; let i = index" [formGroupName]="i">
+                <td>{{i + 1}}</td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput [matDatepicker]="warningDatePicker" formControlName="date" placeholder="Select date">
+                    <mat-datepicker-toggle matIconSuffix [for]="warningDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #warningDatePicker></mat-datepicker>
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput formControlName="offense" placeholder="Offense">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput formControlName="punishment" placeholder="Punishment">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput formControlName="awardedBy" placeholder="Awarded by">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <button 
+                    type="button" 
+                    mat-icon-button 
+                    color="warn" 
+                    (click)="removeRow('warningSlips', i)"
+                    [disabled]="warningSlipsArray.length <= 1">
+                    ×
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Record of observations -->
+      <div class="form-section">
+        <div class="section-header">
+          <h3>Record of observations</h3>
+          <button 
+            type="button" 
+            mat-raised-button 
+            color="accent" 
+            (click)="addNewRow('observations')"
+            class="add-button">
+            Add Row
+          </button>
+        </div>
+        
+        <div class="table-container">
+          <table class="discipline-table">
+            <thead>
+              <tr>
+                <th>S no</th>
+                <th>Date</th>
+                <th>Offense</th>
+                <th>Punishment</th>
+                <th>Awarded by</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="observations">
+              <tr *ngFor="let observation of observationsArray.controls; let i = index" [formGroupName]="i">
+                <td>{{i + 1}}</td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput [matDatepicker]="observationDatePicker" formControlName="date" placeholder="Select date">
+                    <mat-datepicker-toggle matIconSuffix [for]="observationDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #observationDatePicker></mat-datepicker>
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput formControlName="offense" placeholder="Offense">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput formControlName="punishment" placeholder="Punishment">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput formControlName="awardedBy" placeholder="Awarded by">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <button 
+                    type="button" 
+                    mat-icon-button 
+                    color="warn" 
+                    (click)="removeRow('observations', i)"
+                    [disabled]="observationsArray.length <= 1">
+                    ×
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </form>
+
+    <!-- Show message when no officer is selected -->
+    <div *ngIf="!selectedOfficer" class="no-officer-message">
+      <p>Please select an officer to view and edit discipline records.</p>
+    </div>
+  </div>
+</div>
