@@ -34,6 +34,12 @@ export type Officer = {
     }[]
     marks? : number,
     percentage?: string
+    pet?: {
+        event: string,
+        totalMarks: number,
+        obtainedMarks: number
+        remarks?: string
+    }[]
     
 }
 
@@ -108,4 +114,16 @@ export type Medical = {
     disease: string,
     officerId: string,
     remarks: string,
+}
+
+export type Sport = {
+    game: string,
+    performance: string,
+    remarks: string
+}
+
+export type ExtraCurricular = {
+    activity: string,
+    performance: string,
+    event: string
 }

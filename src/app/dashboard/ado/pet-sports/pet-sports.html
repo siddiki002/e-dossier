@@ -1,1 +1,196 @@
-<p>pet-sports works!</p>
+<div class="pet-sports-container">
+  <!-- Left side: Sailor list -->
+  <div class="sailor-list-section">
+    <sailor-list 
+      (onSailorSelection)="onOfficerSelection($event)" 
+      [sailors]="sailorsInClass" 
+      [showSearchBar]="true" 
+      [classTitle]="classDetails?.name" 
+      [allowSailorSelection]="true">
+    </sailor-list>
+  </div>
+
+  <!-- Right side: Officer details and forms -->
+  <div class="officer-details-section">
+    <!-- Officer info and save button -->
+    <div class="header-section">
+      <div class="officer-info">
+        <h4>Name: {{selectedOfficer ? selectedOfficer.name : 'No Officer Selected' }}</h4>
+        <h4>Officer No: {{selectedOfficer ? selectedOfficer.officerId : 'No Officer Selected' }}</h4>
+      </div>
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="savePetRecord()" 
+        [disabled]="!selectedOfficer"
+        class="save-button">
+        Save
+      </button>
+    </div>
+
+    <!-- Form sections -->
+    <form [formGroup]="petForm" *ngIf="selectedOfficer">
+      <!-- PET Events -->
+      <div class="form-section">
+        <div class="section-header">
+          <h3>PET Events</h3>
+        </div>
+        
+        <div class="table-container">
+          <table class="pet-table">
+            <thead>
+              <tr>
+                <th>Event</th>
+                <th>Total Marks</th>
+                <th>Obtained Marks</th>
+                <th>Remarks</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="petEvents">
+              <tr *ngFor="let event of petEventsArray.controls; let i = index" [formGroupName]="i">
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput formControlName="event" placeholder="Event">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput type="number" formControlName="totalMarks" placeholder="Total Marks">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput type="number" formControlName="obtainedMarks" placeholder="Obtained Marks">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput formControlName="remarks" placeholder="Remarks">
+                  </mat-form-field>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Sports -->
+      <div class="form-section">
+        <div class="section-header">
+          <h3>Sports</h3>
+          <button 
+            type="button" 
+            mat-raised-button 
+            color="accent" 
+            (click)="addNewRow('sports')"
+            class="add-button">
+            Add Row
+          </button>
+        </div>
+        
+        <div class="table-container">
+          <table class="pet-table">
+            <thead>
+              <tr>
+                <th>S no</th>
+                <th>Game</th>
+                <th>Performance</th>
+                <th>Remarks</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="sports">
+              <tr *ngFor="let sport of sportsArray.controls; let i = index" [formGroupName]="i">
+                <td>{{i + 1}}</td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput formControlName="game" placeholder="Game">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput formControlName="performance" placeholder="Performance">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput formControlName="remarks" placeholder="Remarks">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <button 
+                    type="button" 
+                    mat-icon-button 
+                    color="warn" 
+                    (click)="removeRow('sports', i)"
+                    [disabled]="sportsArray.length <= 1">
+                    ×
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Extra Curricular -->
+      <div class="form-section">
+        <div class="section-header">
+          <h3>Extra Curricular</h3>
+          <button 
+            type="button" 
+            mat-raised-button 
+            color="accent" 
+            (click)="addNewRow('extraCurricular')"
+            class="add-button">
+            Add Row
+          </button>
+        </div>
+        
+        <div class="table-container">
+          <table class="pet-table">
+            <thead>
+              <tr>
+                <th>S no</th>
+                <th>Activity</th>
+                <th>Performance</th>
+                <th>Event</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="extraCurricular">
+              <tr *ngFor="let activity of extraCurricularArray.controls; let i = index" [formGroupName]="i">
+                <td>{{i + 1}}</td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput formControlName="activity" placeholder="Activity">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput formControlName="performance" placeholder="Performance">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="table-input">
+                    <input matInput formControlName="event" placeholder="Event">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <button 
+                    type="button" 
+                    mat-icon-button 
+                    color="warn" 
+                    (click)="removeRow('extraCurricular', i)"
+                    [disabled]="extraCurricularArray.length <= 1">
+                    ×
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
