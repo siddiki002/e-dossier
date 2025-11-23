@@ -8,6 +8,10 @@
     cursor: pointer;
 }
 
+.app-header.no-back-button {
+    justify-content: flex-end;
+}
+
 .snackbar-success {
     background-color: #4CAF50; /* Green */
     color: white;

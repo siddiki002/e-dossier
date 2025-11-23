@@ -1,1 +1,110 @@
-<officers-table [dataSource]="dataSource"></officers-table>
+<div class="officers-tab-content">
+          <!-- Filter and Search Section -->
+          <div class="filters-section">
+            <div class="filter-row">
+              <mat-form-field appearance="outline" class="class-filter">
+                <mat-label>Filter by Class</mat-label>
+                <mat-select [ngModel]="selectedClasses" name="class" (ngModelChange)="onClassSelection($event)" multiple>
+                  @for (class of classes; track class) {
+                    <mat-option [value]="class.id">{{class.name}}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="search-field">
+                <mat-label>Search Officers</mat-label>
+                <input matInput 
+                       placeholder="Search by name, ID, rank, or CNIC..." 
+                       [ngModel]="searchQuery"
+                       (ngModelChange)="onSearch($event)">
+                <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+            </div>
+            
+            <div class="results-summary">
+              <span class="results-count">
+                <mat-icon>people</mat-icon>
+                {{filteredOfficers.length || 0}} officer(s) found
+                @if (selectedClasses.length > 0) {
+                  <span class="filter-info"> in {{selectedClasses.length}} selected class(es)</span>
+                }
+              </span>
+            </div>
+          </div>
+
+          <!-- Officers Grid -->
+          <div class="officers-grid">
+            @if (isLoading) {
+              <div class="loading-container">
+                <mat-spinner diameter="50"></mat-spinner>
+                <p>Loading officers...</p>
+              </div>
+            } @else {
+              @for (officer of filteredOfficers; track officer.id) {
+                <mat-card class="officer-card" appearance="outlined">
+                  <!-- ...existing code... -->
+                  <mat-card-header>
+                    <div mat-card-avatar class="officer-avatar">
+                      <mat-icon>person</mat-icon>
+                    </div>
+                    <mat-card-title class="officer-name">{{officer.name}}</mat-card-title>
+                    <mat-card-subtitle class="officer-id">ID: {{officer.officerId}}</mat-card-subtitle>
+                  </mat-card-header>
+                  
+                  <mat-card-content class="officer-info">
+                    <div class="info-row">
+                      <mat-icon class="info-icon">military_tech</mat-icon>
+                      <span class="info-label">Rank:</span>
+                      <span class="info-value">{{officer.rate ? officer.rate : '-'}}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                      <mat-icon class="info-icon">family_restroom</mat-icon>
+                      <span class="info-label">Father:</span>
+                      <span class="info-value">{{officer.fatherName ? officer.fatherName : '-'}}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                      <mat-icon class="info-icon">badge</mat-icon>
+                      <span class="info-label">CNIC:</span>
+                      <span class="info-value">{{officer.cnic ? officer.cnic : '-'}}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                      <mat-icon class="info-icon">phone</mat-icon>
+                      <span class="info-label">Contact:</span>
+                      <span class="info-value">{{officer.contactNumber ? officer.contactNumber : '-'}}</span>
+                    </div>
+                    
+                    @if (officer.bloodGroup) {
+                      <div class="info-row">
+                        <mat-icon class="info-icon">bloodtype</mat-icon>
+                        <span class="info-label">Blood Group:</span>
+                        <span class="info-value blood-group">{{officer.bloodGroup}}</span>
+                      </div>
+                    }
+                    
+                    <div class="classes-chips">
+                      @for (classId of officer.classId; track classId) {
+                        <mat-chip class="class-chip">{{classId}}</mat-chip>
+                      }
+                    </div>
+                  </mat-card-content>
+                  
+                  <mat-card-actions class="officer-actions">
+                    <button mat-stroked-button color="primary" class="action-btn" (click)="viewOfficerDetails(officer.id)">
+                      <mat-icon>visibility</mat-icon>
+                      View Details
+                    </button>
+                  </mat-card-actions>
+                </mat-card>
+              } @empty {
+                <div class="no-results">
+                  <mat-icon class="no-results-icon">search_off</mat-icon>
+                  <h3>No officers found</h3>
+                  <p>Try adjusting your search criteria or filters.</p>
+                </div>
+              }
+            }
+          </div>
+        </div>

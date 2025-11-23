@@ -1,75 +1,109 @@
-<officer-card [officerDetails]="officerDetails"></officer-card>
-
 <div class="personal-information-container">
-
-    @if(officerDetails) {
-        <h3>Additional Information</h3>
-    
-        <div class="extra-details">
-        <div class="detail">
-          <h3>Marital Status</h3>
-          <p>{{officerDetails.maritalStatus}}</p>
-        </div>
-        <div class="detail">
-          <h3>Date of Birth</h3>
-          <p>{{officerDetails.dateOfBirth.toLocaleDateString()}}</p>
-        </div>
-        <div class="detail">
-          <h3>Blood Group</h3>
-          <p>{{officerDetails.bloodGroup}}</p>
-        </div>
-        @if(officerDetails.emergencyContact){
-            <div class="detail">
-              <h3>Emergency Contact name</h3>
-              <p>{{officerDetails.emergencyContact.name}}</p>
-            </div>
-            <div class="detail">
-              <h3>Emergency Contact relation</h3>
-              <p>{{officerDetails.emergencyContact.relation}}</p>
-            </div>
-            <div class="detail">
-              <h3>Emergency Contact number</h3>
-              <p>{{officerDetails.emergencyContact.contactNumber}}</p>
-            </div>
-        }
+  <!-- Officer Profile Card -->
+  <div class="profile-card">
+    <div class="profile-header">
+      <div class="profile-image-container">
+        <img [src]="officer?.imageUrl || 'default-image.png'" alt="Officer Photo" class="officer-photo"/>
       </div>
-    }
+      <div class="profile-info">
+        <h2 class="officer-name">{{officer?.name}}</h2>
+        <p class="officer-id">Officer ID: {{officer?.officerId}}</p>
+        <span class="rank-badge">{{officer?.rate}}</span>
+      </div>
+    </div>
+  </div>
 
+  <!-- Personal Information Card -->
+  <div class="info-card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="fas fa-user"></i>
+        Personal Information
+      </h3>
+    </div>
+    <div class="card-content">
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Contact Number</label>
+          <span>{{officer?.contactNumber}}</span>
+        </div>
+        <div class="info-item">
+          <label>CNIC</label>
+          <span>{{officer?.cnic}}</span>
+        </div>
+        <div class="info-item">
+          <label>Father's Name</label>
+          <span>{{officer?.fatherName}}</span>
+        </div>
+        <div class="info-item">
+          <label>Blood Group</label>
+          <span class="blood-group">{{officer?.bloodGroup}}</span>
+        </div>
+        <div class="info-item">
+          <label>Marital Status</label>
+          <span>{{officer?.maritalStatus}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <h3>Family Particulars</h3>
-    
-    <table mat-table [dataSource]="familyParticularsDataSource" class="mat-elevation-z8 demo-table">
-        <ng-container matColumnDef="relation">
-            <th mat-header-cell *matHeaderCellDef>Relation</th>
-            <td mat-cell *matCellDef="let element">{{element.relation}}</td>
-        </ng-container>
-    
-        <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef="let element">{{element.name}}</td>
-        </ng-container>
-    
-        <ng-container matColumnDef="age">
-            <th mat-header-cell *matHeaderCellDef>Age</th>
-            <td mat-cell *matCellDef="let element">{{element.age}}</td>
-        </ng-container>
-    
-        <ng-container matColumnDef="contactNumber">
-            <th mat-header-cell *matHeaderCellDef>Contact Number</th>
-            <td mat-cell *matCellDef="let element">{{element.contactNumber}}</td>
-        </ng-container>
-    
-        <ng-container matColumnDef="occupation">
-            <th mat-header-cell *matHeaderCellDef>Occupation</th>
-            <td mat-cell *matCellDef="let element">{{element.occupation}}</td>
-        </ng-container>
-    
-        <ng-container matColumnDef="address">
-            <th mat-header-cell *matHeaderCellDef>Address</th>
-            <td mat-cell *matCellDef="let element">{{element.address}}</td>
-        </ng-container>
-    
-        <tr mat-header-row *matHeaderRowDef="familyParticularsDisplayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: familyParticularsDisplayedColumns;"></tr>
-    </table>
+  <!-- Emergency Contact Card -->
+  <div class="info-card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="fas fa-phone-alt"></i>
+        Next of Kin (NOK) Details
+      </h3>
+    </div>
+    <div class="card-content">
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Name</label>
+          <span>{{officer?.emergencyContact?.name}}</span>
+        </div>
+        <div class="info-item">
+          <label>Relation</label>
+          <span>{{officer?.emergencyContact?.relation}}</span>
+        </div>
+        <div class="info-item">
+          <label>Contact Number</label>
+          <span>{{officer?.emergencyContact?.contactNumber}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Family Details Card -->
+  <div class="info-card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="fas fa-users"></i>
+        Family Details
+      </h3>
+    </div>
+    <div class="card-content">
+      <div class="table-container">
+        <table class="family-table">
+          <thead>
+            <tr>
+              <th>S No</th>
+              <th>Name</th>
+              <th>Relation</th>
+              <th>CNIC</th>
+              <th>Contact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let member of officer?.additionalFamilyInformation; let i = index">
+              <td>{{i + 1}}</td>
+              <td>{{member.name}}</td>
+              <td>{{member.relation}}</td>
+              <td>{{member.cnic}}</td>
+              <td>{{member.contactNumber}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>

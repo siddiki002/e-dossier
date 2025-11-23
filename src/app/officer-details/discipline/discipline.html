@@ -1,0 +1,134 @@
+<div class="discipline-container">
+  <!-- Officer Details Card -->
+  <div class="officer-card">
+    <div class="officer-header">
+      <div class="officer-image">
+        <img [src]="officerDetails?.imageUrl || 'default-image.png'" alt="Officer Image" />
+      </div>
+      <div class="officer-info">
+        <h1 class="officer-name">{{ officerDetails?.name || 'Unknown Officer' }}</h1>
+        <p class="officer-id">Officer ID: {{ officerDetails?.officerId || 'N/A' }}</p>
+        <div class="discipline-badge">
+          <span>Discipline Records</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Observations Section -->
+  <div class="section-card">
+    <div class="section-header">
+      <h2 class="section-title">Observations</h2>
+      <div class="section-count" *ngIf="observations && observations.length > 0">
+        {{ observations.length }} record(s)
+      </div>
+    </div>
+    
+    <div *ngIf="observations && observations.length > 0; else observationsEmpty" class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Offense</th>
+            <th>Punishment</th>
+            <th>Awarded By</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let observation of observations">
+            <td>{{ observation.date }}</td>
+            <td>{{ observation.offense }}</td>
+            <td>{{ observation.punishment }}</td>
+            <td>{{ observation.awardedBy }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #observationsEmpty>
+      <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        <h3>No Observations Recorded</h3>
+        <p>This officer has no disciplinary observations on record.</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Punishment Section -->
+  <div class="section-card">
+    <div class="section-header">
+      <h2 class="section-title">Punishment</h2>
+      <div class="section-count" *ngIf="punishment && punishment.length > 0">
+        {{ punishment.length }} record(s)
+      </div>
+    </div>
+    
+    <div *ngIf="punishment && punishment.length > 0; else punishmentEmpty" class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Offense</th>
+            <th>Punishment</th>
+            <th>Awarded By</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let action of punishment">
+            <td>{{ action.date }}</td>
+            <td>{{ action.offense }}</td>
+            <td>{{ action.punishment }}</td>
+            <td>{{ action.awardedBy }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #punishmentEmpty>
+      <div class="empty-state">
+        <div class="empty-icon">⚖️</div>
+        <h3>No Punishments Recorded</h3>
+        <p>This officer has no disciplinary punishments on record.</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Warning Slips Section -->
+  <div class="section-card">
+    <div class="section-header">
+      <h2 class="section-title">Warning Slips</h2>
+      <div class="section-count" *ngIf="warningSlips && warningSlips.length > 0">
+        {{ warningSlips.length }} record(s)
+      </div>
+    </div>
+    
+    <div *ngIf="warningSlips && warningSlips.length > 0; else warningSlipsEmpty" class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Offense</th>
+            <th>Punishment</th>
+            <th>Awarded By</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let slip of warningSlips">
+            <td>{{ slip.date }}</td>
+            <td>{{ slip.offense }}</td>
+            <td>{{ slip.punishment }}</td>
+            <td>{{ slip.awardedBy }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #warningSlipsEmpty>
+      <div class="empty-state">
+        <div class="empty-icon">⚠️</div>
+        <h3>No Warning Slips Recorded</h3>
+        <p>This officer has no warning slips on record.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

@@ -5,6 +5,8 @@ import { Officer } from 'src/common/common.types';
 import { classes, officers } from 'src/static/data';
 import { OfficerCard } from "src/common/components/officer-card/officer-card";
 import { MatTableModule } from "@angular/material/table";
+import { HttpClient } from '@angular/common/http';
+import { baseUrl } from 'src/common/base';
 
 type familyParticular = {
   relation: string,
@@ -23,51 +25,23 @@ type familyParticular = {
 })
 export class PersonalInformation {
 
-  protected officerDetails! : Officer
-  protected familyParticularsDisplayedColumns: string[] = ['relation', 'name', 'occupation', 'contactNumber', 'address', 'age'];
-  protected familyParticularsDataSource: familyParticular[] = [
-    {
-      relation: 'Father',
-      name: this.officerDetails?.fatherName,
-      occupation: 'Retired',
-      contactNumber: '123-456-7890',
-      address: '123 Main St, City, Country',
-      age: 70
-    }, 
-    {
-      relation: 'Mother',
-      name: 'Salma Raza',
-      occupation: 'Homemaker',
-      contactNumber: '098-765-4321',
-      address: '123 Main St, City, Country',
-      age: 68
-    }, 
-    {
-      relation: 'Spouse',
-      name: 'Mehreen Raza',
-      occupation: 'Teacher',
-      contactNumber: '555-555-5555',
-      address: '123 Main St, City, Country',
-      age: 35
-    }
-  ]
-  constructor(private activatedRoute: ActivatedRoute) {}
-
-  ngOnInit() {
+  protected officer : Officer | null = null;
+  protected officerId : string = '';
+  constructor(private activatedRoute: ActivatedRoute, private http: HttpClient) {
     this.activatedRoute.parent?.params.subscribe((params) => {
-      const officerId = params['id'];
-
-      const currentOfficer = officers.find(o => o.id === officerId)
-      if(currentOfficer) {
-        this.officerDetails = currentOfficer;
-      }
-
-      this.familyParticularsDataSource[0].name = this.officerDetails?.fatherName;
+      this.officerId = params['id'];
     })
   }
 
-  public get className(): string {
-    const classInfo = classes.find(c => this.officerDetails.classId.includes(c.id));
-    return classInfo ? classInfo.name : 'Unknown';
+  ngOnInit() {
+    this.fetchOfficerDetails();
+  }
+
+  private fetchOfficerDetails() {
+    this.http.get<Officer>(`${baseUrl}/data-entry/officer/${this.officerId}`).subscribe((data) => {
+      this.officer = data;
+      console.log(data);
+    })
+
   }
 }

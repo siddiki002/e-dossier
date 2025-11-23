@@ -1,23 +1,38 @@
-<mat-drawer-container [hasBackdrop]="true" class="officer-details-layout-container" role="navigation">
-      <mat-drawer [opened]="isMenuOpened" class="drawer-container">
+<mat-drawer-container [hasBackdrop]="false" class="officer-details-layout-container" role="navigation">
+      <mat-drawer opened class="drawer-container" [mode]="'side'">
         <div class="drawer-image-container">
-            <img src="/navy-icon.png" class="drawer-image"/>
+            <img src="/e-dossier.jpg" class="drawer-image"/>
         </div>
           <mat-divider></mat-divider>
           <div class="router-container">
-              <h3 [routerLink]="['personal-information']" (click)="toggleMenu()">Personal Information</h3>
-              <h3 [routerLink]="['academics']" (click)="toggleMenu()">Academics</h3>
-              <h3 [routerLink]="['personal-information']" (click)="toggleMenu()">Discpline/Observations</h3>
-              <h3 [routerLink]="['personal-information']" (click)="toggleMenu()">Traits Assessment</h3>
-              <h3 [routerLink]="['personal-information']" (click)="toggleMenu()">Extra Curricular</h3>
-              <h3 [routerLink]="['personal-information']" (click)="toggleMenu()">Misc Records</h3>
+              <div class="nav-item" [routerLink]="['personal-information']" routerLinkActive="active">
+                <div class="nav-icon">👤</div>
+                <h3>Personal Information</h3>
+              </div>
+              <div class="nav-item" [routerLink]="['academics']" routerLinkActive="active">
+                <div class="nav-icon">🎓</div>
+                <h3>Academics</h3>
+              </div>
+              <div class="nav-item" [routerLink]="['discipline']" routerLinkActive="active">
+                <div class="nav-icon">⚖️</div>
+                <h3>Discipline/Observations</h3>
+              </div>
+              <div class="nav-item" [routerLink]="['traits-assessment']" routerLinkActive="active">
+                <div class="nav-icon">📊</div>
+                <h3>Traits Assessment</h3>
+              </div>
+              <div class="nav-item" [routerLink]="['pet']" routerLinkActive="active">
+                <div class="nav-icon">🏃‍♂️</div>
+                <h3>PET / Sports</h3>
+              </div>
+              <div class="nav-item" [routerLink]="['medical']" routerLinkActive="active">
+                <div class="nav-icon">🏥</div>
+                <h3>Medical Records</h3>
+              </div>
           </div>
       </mat-drawer>
 
       <mat-drawer-content>
-        <button matIconButton (click)="toggleMenu()" style="margin-left: 0.5rem;">
-          <mat-icon>menu</mat-icon>
-        </button>
         <router-outlet></router-outlet>
       </mat-drawer-content>
 </mat-drawer-container>

@@ -1,18 +1,230 @@
+/* Container */
 .personal-information-container {
-    padding-block: 0.5rem;
-    padding-inline: 1rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #f8fafc;
+    min-height: 100vh;
 }
 
-.extra-details {
-      max-width: 700px;
-      margin: 20px auto;
-      border-radius: 12px;
-      padding: 20px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px 40px; 
+/* Profile Card */
+.profile-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    color: white;
 }
 
-.extra-details .detail {
-    margin-bottom: 0; 
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.profile-image-container {
+    position: relative;
+}
+
+.officer-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.officer-name {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.officer-id {
+    font-size: 1.1rem;
+    margin: 0 0 1rem 0;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+.rank-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Info Cards */
+.info-card {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+.info-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+    background: linear-gradient(90deg, #f7fafc 0%, #edf2f7 100%);
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.card-title i {
+    color: #667eea;
+    font-size: 1.1rem;
+}
+
+.card-content {
+    padding: 2rem;
+}
+
+/* Info Grid */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.info-item label {
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.info-item span {
+    font-size: 1rem;
+    color: #2d3748;
+    padding: 0.75rem;
+    background: #f7fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    font-weight: 500;
+}
+
+.blood-group {
+    background: linear-gradient(45deg, #fed7d7, #fbb6ce) !important;
+    color: #c53030 !important;
+    font-weight: 700 !important;
+    text-align: center;
+}
+
+/* Table Styling */
+.table-container {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.family-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.family-table th {
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    color: white;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.875rem;
+}
+
+.family-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.family-table tbody tr:hover {
+    background: #f7fafc;
+}
+
+.family-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .personal-information-container {
+        padding: 1rem;
+    }
+    
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+    
+    .officer-name {
+        font-size: 1.5rem;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .card-content {
+        padding: 1.5rem;
+    }
+    
+    .card-header {
+        padding: 1rem 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .officer-photo {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .family-table {
+        font-size: 0.875rem;
+    }
+    
+    .family-table th,
+    .family-table td {
+        padding: 0.75rem 0.5rem;
+    }
 }

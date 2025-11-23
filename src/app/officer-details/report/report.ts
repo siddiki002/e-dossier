@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { UserService } from '@app/user.service';
+import { Subject, takeUntil } from 'rxjs';
 import { baseUrl } from 'src/common/base';
 import { Courses, Officer } from 'src/common/common.types';
 
@@ -28,10 +30,20 @@ export class Report {
   protected totalMarks: number = 0;
   protected obtainedMarks: number = 0;
 
-  constructor(private activatedRouter: ActivatedRoute, private http: HttpClient) {
-    this.activatedRouter.params.subscribe(params => {
-      this.officerId = params['officerId'];
-    });
+  private destroy$ = new Subject<void>();
+
+  constructor(private activatedRouter: ActivatedRoute, private http: HttpClient, private userService: UserService) {
+    this.userService.User.pipe(takeUntil(this.destroy$)).subscribe((user) => {
+      if(user?.role === 'oic' || user?.role === 'intructor') {
+        this.activatedRouter.parent?.params.subscribe((params) => {
+          this.officerId = params['id'];
+        })
+      } else {
+        this.activatedRouter.params.subscribe(params => {
+          this.officerId = params['officerId'];
+        });
+      }
+    })
   }
 
   ngOnInit() {
@@ -54,7 +66,7 @@ export class Report {
 
   private getMarksOfOfficerInOptionalCourses() {
     this.http.get<{result : MarksInOptionalCourse}>(`${baseUrl}/data-entry/officer/${this.officerId}/assessments`).subscribe((response) => {
-      this.marksInOptionalCourses = response.result;
+      this.marksInOptionalCourses = response.result ?? {};
     });
   }
 

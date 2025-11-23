@@ -34,13 +34,15 @@ export type Officer = {
     }[]
     marks? : number,
     percentage?: string
-    pet?: {
-        event: string,
-        totalMarks: number,
-        obtainedMarks: number
-        remarks?: string
-    }[]
+    pet?: Pet[]
     
+}
+
+export type Pet = {
+    event: string,
+    totalMarks: number,
+    obtainedMarks: number
+    remarks?: string
 }
 
 export type Course = {
@@ -126,4 +128,13 @@ export type ExtraCurricular = {
     activity: string,
     performance: string,
     event: string
+}
+
+export type TraitsAssessment = {
+    id?: string,
+    officerId: string,
+    tap: 1 | 2,
+    traitName: string,
+    score: number,
+    total: number
 }

@@ -1,0 +1,275 @@
+/* Officers Tab Content Styles */
+.officers-tab-content {
+    padding: 24px;
+    max-width: 100%;
+}
+
+/* Filters Section */
+.filters-section {
+    background: white;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter-row {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.class-filter {
+    min-width: 200px;
+    flex: 1;
+    max-width: 300px;
+}
+
+.search-field {
+    min-width: 300px;
+    flex: 2;
+    max-width: 500px;
+}
+
+.results-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.results-count {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-weight: 500;
+}
+
+.filter-info {
+    color: #1976d2;
+    font-size: 0.9rem;
+}
+
+/* Loading State */
+.loading-container {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 24px;
+    color: #666;
+}
+
+.loading-container p {
+    margin-top: 16px;
+    font-size: 1rem;
+}
+
+/* Officers Grid */
+.officers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 24px;
+    padding: 0;
+}
+
+.officer-card {
+    padding: 1rem;
+    transition: all 0.3s ease;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.officer-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+.officer-avatar {
+    background: linear-gradient(135deg, #1976d2, #42a5f5);
+    color: white !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.officer-name {
+    font-weight: 600 !important;
+    color: #1976d2 !important;
+    margin-bottom: 4px !important;
+}
+
+.officer-id {
+    color: #666 !important;
+    font-size: 0.9rem !important;
+}
+
+.officer-info {
+    padding: 16px 0 !important;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 8px;
+}
+
+.info-icon {
+    color: #666;
+    font-size: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px;
+}
+
+.info-label {
+    font-weight: 500;
+    color: #333;
+    min-width: 80px;
+}
+
+.info-value {
+    color: #666;
+    flex: 1;
+}
+
+.blood-group {
+    background: #ffebee;
+    color: #c62828;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.classes-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.class-chip {
+    background: #e3f2fd !important;
+    color: #1976d2 !important;
+    font-size: 0.75rem !important;
+    height: 24px !important;
+    border-radius: 12px !important;
+}
+
+.officer-actions {
+    display: flex;
+    gap: 12px;
+    padding: 16px !important;
+    background: #f5f5f5;
+    border-top: 1px solid #e0e0e0;
+    justify-content: space-between;
+}
+
+.action-btn {
+    flex: 1;
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem !important;
+    border-radius: 8px !important;
+}
+
+/* No Results */
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 64px 24px;
+    color: #666;
+}
+
+.no-results-icon {
+    font-size: 64px !important;
+    width: 64px !important;
+    height: 64px !important;
+    color: #bbb;
+    margin-bottom: 16px;
+}
+
+.no-results h3 {
+    margin: 0 0 8px 0;
+    font-weight: 500;
+}
+
+.no-results p {
+    margin: 0;
+    color: #999;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .officers-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .filter-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .class-filter,
+    .search-field {
+        min-width: unset;
+        max-width: unset;
+    }
+    
+    .officers-tab-content {
+        padding: 16px;
+    }
+    
+    .filters-section {
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+    
+    .officer-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .officers-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .officer-card {
+        margin-bottom: 16px;
+    }
+}
+
+/* Animation */
+.officer-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Staggered animation for cards */
+.officer-card:nth-child(1) { animation-delay: 0.1s; }
+.officer-card:nth-child(2) { animation-delay: 0.2s; }
+.officer-card:nth-child(3) { animation-delay: 0.3s; }
+.officer-card:nth-child(4) { animation-delay: 0.4s; }
+.officer-card:nth-child(5) { animation-delay: 0.5s; }
+.officer-card:nth-child(6) { animation-delay: 0.6s; }

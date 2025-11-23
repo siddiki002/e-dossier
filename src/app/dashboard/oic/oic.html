@@ -1,21 +1,335 @@
 <div>
     <mat-tab-group>
         <mat-tab label="Overview" class="tab overview-tab">
-            <demo-bar-chart [data]="classAvgChartData" chartId="academicsAvg"></demo-bar-chart>
-            <demo-bar-chart [data]="classAvgSportsChartData" chartId="sportsAvg"></demo-bar-chart>
+            <!-- Dashboard Grid Layout -->
+            <div class="dashboard-container">
+                <!-- Top Row - Charts -->
+                <div class="charts-row">
+                    <!-- Academics Chart Card -->
+                    <mat-card class="chart-card academics-chart" appearance="outlined">
+                        <mat-card-header>
+                            <mat-card-title class="card-title">
+                                <mat-icon class="card-icon">school</mat-icon>
+                                Academic Performance
+                            </mat-card-title>
+                            <mat-card-subtitle>Average marks by class</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div *ngIf="classAvgChartData.labels.length > 0; else noAcademicData" class="chart-container">
+                                <demo-bar-chart [data]="classAvgChartData" chartId="academicsAvg"></demo-bar-chart>
+                            </div>
+                            <ng-template #noAcademicData>
+                                <div class="no-data-message">
+                                    <mat-icon class="no-data-icon">trending_down</mat-icon>
+                                    <h3>No Academic Data Available</h3>
+                                    <p>Academic performance data will appear here once classes have completed assessments.</p>
+                                </div>
+                            </ng-template>
+                        </mat-card-content>
+                    </mat-card>
+
+                    <!-- Sports Chart Card -->
+                    <mat-card class="chart-card sports-chart" appearance="outlined">
+                        <mat-card-header>
+                            <mat-card-title class="card-title">
+                                <mat-icon class="card-icon">fitness_center</mat-icon>
+                                Sports & PET Performance
+                            </mat-card-title>
+                            <mat-card-subtitle>Average sports marks by class</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div *ngIf="classAvgSportsChartData.labels.length > 0; else noSportsData" class="chart-container">
+                                <demo-bar-chart [data]="classAvgSportsChartData" chartId="sportsAvg"></demo-bar-chart>
+                            </div>
+                            <ng-template #noSportsData>
+                                <div class="no-data-message">
+                                    <mat-icon class="no-data-icon">sports</mat-icon>
+                                    <h3>No Sports Data Available</h3>
+                                    <p>Physical fitness and sports performance data will be displayed here.</p>
+                                </div>
+                            </ng-template>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+
+                <!-- Second Row - Stats Cards -->
+                <div class="stats-row">
+                    <!-- Notifications Card -->
+                    <mat-card class="stats-card notifications-card" appearance="outlined">
+                        <mat-card-header>
+                            <mat-card-title class="card-title">
+                                <mat-icon class="card-icon notifications">notifications</mat-icon>
+                                Recent Notifications
+                            </mat-card-title>
+                            <div class="notification-badge">
+                                <span class="badge-count">0</span>
+                            </div>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div class="no-data-message compact">
+                                <mat-icon class="no-data-icon">notifications_off</mat-icon>
+                                <h4>No New Notifications</h4>
+                                <p>You're all caught up! New alerts and updates will appear here.</p>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-button color="primary" disabled>
+                                <mat-icon>mark_email_read</mat-icon>
+                                View All
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+
+                    <!-- Discipline Records Card -->
+                    <mat-card class="stats-card discipline-card" appearance="outlined">
+                        <mat-card-header>
+                            <mat-card-title class="card-title">
+                                <mat-icon class="card-icon disciplinary">gavel</mat-icon>
+                                Disciplinary Overview
+                            </mat-card-title>
+                            <mat-card-subtitle>Recent disciplinary actions</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div class="discipline-stats">
+                                <div class="stat-item warning-slips">
+                                    <div class="stat-number">{{ getDisciplineCount('warningCounts') }}</div>
+                                    <div class="stat-label">
+                                        <mat-icon>warning</mat-icon>
+                                        Warning Slips
+                                    </div>
+                                </div>
+                                <div class="stat-item punishments">
+                                    <div class="stat-number">{{ getDisciplineCount('punishments') }}</div>
+                                    <div class="stat-label">
+                                        <mat-icon>block</mat-icon>
+                                        Punishments
+                                    </div>
+                                </div>
+                                <div class="stat-item observations">
+                                    <div class="stat-number">{{ getDisciplineCount('observations') }}</div>
+                                    <div class="stat-label">
+                                        <mat-icon>visibility</mat-icon>
+                                        Observations
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="getTotalDisciplineCount() === 0" class="no-data-message compact">
+                                <mat-icon class="no-data-icon">check_circle</mat-icon>
+                                <h4>No Disciplinary Actions</h4>
+                                <p>Excellent! No recent disciplinary records to report.</p>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-button color="primary">
+                                <mat-icon>list_alt</mat-icon>
+                                View Details
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+
+                    <!-- Medical Records Card -->
+                    <mat-card class="stats-card medical-card" appearance="outlined">
+                        <mat-card-header>
+                            <mat-card-title class="card-title">
+                                <mat-icon class="card-icon medical">local_hospital</mat-icon>
+                                Medical Overview
+                            </mat-card-title>
+                            <mat-card-subtitle>Health and medical status</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div class="medical-summary">
+                                <div class="medical-stat">
+                                    <div class="medical-icon-container healthy">
+                                        <mat-icon>favorite</mat-icon>
+                                    </div>
+                                    <div class="medical-info">
+                                        <div class="medical-number">{{ getTotalOfficersCount() }}</div>
+                                        <div class="medical-label">Officers Tracked</div>
+                                    </div>
+                                </div>
+                                <mat-divider class="medical-divider"></mat-divider>
+                                <div class="no-data-message compact">
+                                    <mat-icon class="no-data-icon">healing</mat-icon>
+                                    <h4>Medical Data Unavailable</h4>
+                                    <p>Medical records system is being updated. Check back soon.</p>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-button color="primary" disabled>
+                                <mat-icon>medical_services</mat-icon>
+                                View Records
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+
+                <!-- Third Row - Quick Actions & Summary -->
+                <div class="summary-row">
+                    <!-- Quick Actions Card -->
+                    <mat-card class="summary-card actions-card" appearance="outlined">
+                        <mat-card-header>
+                            <mat-card-title class="card-title">
+                                <mat-icon class="card-icon">flash_on</mat-icon>
+                                Quick Actions
+                            </mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div class="quick-actions-grid">
+                                <button mat-raised-button color="primary" class="quick-action-btn">
+                                    <mat-icon>person_search</mat-icon>
+                                    <span>Find Officer</span>
+                                </button>
+                                <button mat-raised-button color="accent" class="quick-action-btn">
+                                    <mat-icon>assessment</mat-icon>
+                                    <span>View AI Report</span>
+                                </button>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+
+                    <!-- System Status Card -->
+                    <mat-card class="summary-card status-card" appearance="outlined">
+                        <mat-card-header>
+                            <mat-card-title class="card-title">
+                                <mat-icon class="card-icon">info</mat-icon>
+                                System Status
+                            </mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div class="system-status">
+                                <div class="status-item">
+                                    <mat-icon class="status-icon online">circle</mat-icon>
+                                    <span class="status-text">System Online</span>
+                                </div>
+                                <div class="status-item">
+                                    <mat-icon class="status-icon">storage</mat-icon>
+                                    <span class="status-text">Database Connected</span>
+                                </div>
+                                <div class="status-item">
+                                    <mat-icon class="status-icon">security</mat-icon>
+                                    <span class="status-text">Security Active</span>
+                                </div>
+                                <div class="last-updated">
+                                    <small>Last updated: {{ getCurrentTime() }}</small>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
         </mat-tab>
       <mat-tab label="All Officers" class="tab">
-        <div class="class-selection">
-          <mat-form-field appearance="fill" class="class-filter">
-            <mat-label>Filter by Class</mat-label>
-            <mat-select [ngModel]="selectedClasses" name="class" (ngModelChange)="onClassSelection($event)" multiple>
-              @for (class of classes; track class) {
-                <mat-option [value]="class.id">{{class.name}}</mat-option>
+        <div class="officers-tab-content">
+          <!-- Filter and Search Section -->
+          <div class="filters-section">
+            <div class="filter-row">
+              <mat-form-field appearance="outline" class="class-filter">
+                <mat-label>Filter by Class</mat-label>
+                <mat-select [ngModel]="selectedClasses" name="class" (ngModelChange)="onClassSelection($event)" multiple>
+                  @for (class of classes; track class) {
+                    <mat-option [value]="class.id">{{class.name}}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" class="search-field">
+                <mat-label>Search Officers</mat-label>
+                <input matInput 
+                       placeholder="Search by name, ID, rank, or CNIC..." 
+                       [ngModel]="searchQuery"
+                       (ngModelChange)="onSearch($event)">
+                <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+            </div>
+            
+            <div class="results-summary">
+              <span class="results-count">
+                <mat-icon>people</mat-icon>
+                {{filteredOfficers.length || 0}} officer(s) found
+                @if (selectedClasses.length > 0) {
+                  <span class="filter-info"> in {{selectedClasses.length}} selected class(es)</span>
+                }
+              </span>
+            </div>
+          </div>
+
+          <!-- Officers Grid -->
+          <div class="officers-grid">
+            @if (isLoading) {
+              <div class="loading-container">
+                <mat-spinner diameter="50"></mat-spinner>
+                <p>Loading officers...</p>
+              </div>
+            } @else {
+              @for (officer of filteredOfficers; track officer.id) {
+                <mat-card class="officer-card" appearance="outlined">
+                  <!-- ...existing code... -->
+                  <mat-card-header>
+                    <div mat-card-avatar class="officer-avatar">
+                      <mat-icon>person</mat-icon>
+                    </div>
+                    <mat-card-title class="officer-name">{{officer.name}}</mat-card-title>
+                    <mat-card-subtitle class="officer-id">ID: {{officer.officerId}}</mat-card-subtitle>
+                  </mat-card-header>
+                  
+                  <mat-card-content class="officer-info">
+                    <div class="info-row">
+                      <mat-icon class="info-icon">military_tech</mat-icon>
+                      <span class="info-label">Rank:</span>
+                      <span class="info-value">{{officer.rate ? officer.rate : '-'}}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                      <mat-icon class="info-icon">family_restroom</mat-icon>
+                      <span class="info-label">Father:</span>
+                      <span class="info-value">{{officer.fatherName ? officer.fatherName : '-'}}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                      <mat-icon class="info-icon">badge</mat-icon>
+                      <span class="info-label">CNIC:</span>
+                      <span class="info-value">{{officer.cnic ? officer.cnic : '-'}}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                      <mat-icon class="info-icon">phone</mat-icon>
+                      <span class="info-label">Contact:</span>
+                      <span class="info-value">{{officer.contactNumber ? officer.contactNumber : '-'}}</span>
+                    </div>
+                    
+                    @if (officer.bloodGroup) {
+                      <div class="info-row">
+                        <mat-icon class="info-icon">bloodtype</mat-icon>
+                        <span class="info-label">Blood Group:</span>
+                        <span class="info-value blood-group">{{officer.bloodGroup}}</span>
+                      </div>
+                    }
+                    
+                    <div class="classes-chips">
+                      @for (classId of officer.classId; track classId) {
+                        <mat-chip class="class-chip">{{classId}}</mat-chip>
+                      }
+                    </div>
+                  </mat-card-content>
+                  
+                  <mat-card-actions class="officer-actions">
+                    <button mat-stroked-button color="primary" class="action-btn" (click)="viewOfficerDetails(officer.id)">
+                      <mat-icon>visibility</mat-icon>
+                      View Details
+                    </button>
+                  </mat-card-actions>
+                </mat-card>
+              } @empty {
+                <div class="no-results">
+                  <mat-icon class="no-results-icon">search_off</mat-icon>
+                  <h3>No officers found</h3>
+                  <p>Try adjusting your search criteria or filters.</p>
+                </div>
               }
-            </mat-select>
-          </mat-form-field>
+            }
+          </div>
         </div>
-        <officers-table [dataSource]="dataSource"></officers-table>
       </mat-tab>
     </mat-tab-group>
 </div>

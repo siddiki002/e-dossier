@@ -48,8 +48,9 @@
             <th class="col-marks">Formative<br><small>Practical</small></th>
             <th class="col-marks">Summative<br><small>Written</small></th>
             <th class="col-marks">Summative<br><small>Practical</small></th>
-            <th class="col-marks">Quizzes</th>
-            <th class="col-marks">Assignments</th>
+            <th class="col-marks">Quiz</th>
+            <th class="col-marks">Assignment</th>
+            <th class="col-marks">Final</th>
             <th class="col-total">Total<br>Marks</th>
             <th class="col-obtained">Obtained<br>Marks</th>
             <th class="col-percentage">Percentage</th>
@@ -73,7 +74,8 @@
               <td class="marks-cell">{{ getObtainedMarks(course.id, 'Summative - Written') || '-' }}</td>
               <td class="marks-cell">{{ getObtainedMarks(course.id, 'Summative - Practical') || '-' }}</td>
               <td class="marks-cell">{{ getObtainedMarks(course.id, 'Quiz') || '-' }}</td>
-              <td class="marks-cell">{{ getObtainedMarks(course.id, 'Assignments') || '-' }}</td>
+              <td class="marks-cell">{{ getObtainedMarks(course.id, 'Assignment') || '-' }}</td>
+              <td class="marks-cell">{{ getObtainedMarks(course.id, 'Final') || '-' }}</td>
               <td class="total-marks">{{ getTotalMarks(course.id) }}</td>
               <td class="obtained-marks">{{ getObtainedMarksForCourse(course.id) }}</td>
               <td class="percentage-cell">

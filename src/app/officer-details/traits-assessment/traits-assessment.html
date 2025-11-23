@@ -1,0 +1,229 @@
+<div class="traits-container">
+  <!-- Officer Details Card -->
+  <div class="officer-card">
+    <div class="officer-header">
+      <div class="officer-image">
+        <img [src]="officerDetails?.imageUrl || 'default-image.png'" alt="Officer Image" />
+      </div>
+      <div class="officer-info">
+        <h1 class="officer-name">{{ officerDetails?.name || 'Unknown Officer' }}</h1>
+        <p class="officer-id">Officer ID: {{ officerDetails?.officerId || 'N/A' }}</p>
+        <div class="traits-badge">
+          <span>📊 Traits Assessment</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Traits Assessment Form Section -->
+  <div class="section-card">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="section-icon">⭐</span>
+        Traits Assessment Form
+        <span *ngIf="isOic" class="readonly-badge">👁️ View Only</span>
+      </h2>
+      <div class="section-actions" *ngIf="!isOic">
+        <button class="action-btn secondary" (click)="resetForm()">
+          <span class="btn-icon">🔄</span>
+          Reset
+        </button>
+        <button class="action-btn primary" (click)="saveAssessment()">
+          <span class="btn-icon">💾</span>
+          Save Assessment
+        </button>
+      </div>
+    </div>
+    
+    <div class="form-container">
+      <!-- Instructions -->
+      <div class="instructions-card">
+        <div class="instructions-header">
+          <span class="info-icon">ℹ️</span>
+          <h3>Assessment Instructions</h3>
+        </div>
+        <div class="instructions-content">
+          <p *ngIf="!isOic">Rate each trait on a scale based on the total marks. When you change the total marks for a TAP, it will automatically update all entries in that column.</p>
+          <p *ngIf="isOic">You are viewing the traits assessment in read-only mode. Contact an instructor to make changes to this assessment.</p>
+        </div>
+      </div>
+
+      <!-- Assessment Table -->
+      <div class="table-container">
+        <table class="assessment-table">
+          <thead>
+            <tr class="header-row">
+              <th rowspan="2" class="trait-header">
+                <div class="header-content">
+                  <span class="header-icon">📋</span>
+                  <span>TRAITS</span>
+                </div>
+              </th>
+              <th colspan="2" class="tap-header tap1-header">
+                <div class="tap-title">
+                  <span class="tap-icon">🎯</span>
+                  1ST TAPS
+                </div>
+              </th>
+              <th colspan="2" class="tap-header tap2-header">
+                <div class="tap-title">
+                  <span class="tap-icon">🎯</span>
+                  2ND TAPS
+                </div>
+              </th>
+            </tr>
+            <tr class="subheader-row">
+              <th class="marks-header">
+                <div class="marks-input-container">
+                  <label>TOTAL MARKS</label>
+                  <input 
+                    type="number" 
+                    class="total-marks-input"
+                    [(ngModel)]="tap1TotalMarks"
+                    (ngModelChange)="onTap1TotalChange($event)"
+                    min="1"
+                    max="20"
+                    [readonly]="isOic">
+                </div>
+              </th>
+              <th class="marks-header">OBTAINED MARKS</th>
+              <th class="marks-header">
+                <div class="marks-input-container">
+                  <label>TOTAL MARKS</label>
+                  <input 
+                    type="number" 
+                    class="total-marks-input"
+                    [(ngModel)]="tap2TotalMarks"
+                    (ngModelChange)="onTap2TotalChange($event)"
+                    min="1"
+                    max="20"
+                    [readonly]="isOic">
+                </div>
+              </th>
+              <th class="marks-header">OBTAINED MARKS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let trait of formData; let i = index" class="trait-row">
+              <td class="trait-name-cell">
+                <div class="trait-name-container">
+                  <span class="trait-number">{{ i + 1 }}</span>
+                  <span class="trait-name">{{ trait.traitName }}</span>
+                </div>
+              </td>
+              
+              <!-- TAP 1 Total -->
+              <td class="total-cell">
+                <div class="total-display">
+                  {{ trait.tap1Total }}
+                </div>
+              </td>
+              
+              <!-- TAP 1 Obtained -->
+              <td class="obtained-cell">
+                <div class="obtained-input-container">
+                  <input 
+                    type="number" 
+                    class="obtained-input"
+                    [(ngModel)]="trait.tap1Obtained"
+                    [max]="trait.tap1Total"
+                    min="0"
+                    placeholder="0"
+                    [readonly]="isOic">
+                  <div class="percentage-indicator" [ngClass]="getPerformanceClass(trait.tap1Obtained, trait.tap1Total)">
+                    {{ getPercentage(trait.tap1Obtained, trait.tap1Total) }}%
+                  </div>
+                </div>
+              </td>
+              
+              <!-- TAP 2 Total -->
+              <td class="total-cell">
+                <div class="total-display">
+                  {{ trait.tap2Total }}
+                </div>
+              </td>
+              
+              <!-- TAP 2 Obtained -->
+              <td class="obtained-cell">
+                <div class="obtained-input-container">
+                  <input 
+                    type="number" 
+                    class="obtained-input"
+                    [(ngModel)]="trait.tap2Obtained"
+                    [max]="trait.tap2Total"
+                    min="0"
+                    placeholder="0"
+                    [readonly]="isOic">
+                  <div class="percentage-indicator" [ngClass]="getPerformanceClass(trait.tap2Obtained, trait.tap2Total)">
+                    {{ getPercentage(trait.tap2Obtained, trait.tap2Total) }}%
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          
+          <!-- Totals Row -->
+          <tfoot>
+            <tr class="totals-row">
+              <td class="total-label">
+                <div class="total-label-content">
+                  <span class="total-icon">🔢</span>
+                  <span>TOTAL</span>
+                </div>
+              </td>
+              <td class="total-sum">
+                <div class="sum-display tap1-sum">
+                  {{ getTap1TotalSum() }}
+                </div>
+              </td>
+              <td class="obtained-sum">
+                <div class="sum-display tap1-obtained" [ngClass]="getPerformanceClass(getTap1ObtainedSum(), getTap1TotalSum())">
+                  <span class="sum-value">{{ getTap1ObtainedSum() }}</span>
+                  <span class="sum-percentage">{{ getPercentage(getTap1ObtainedSum(), getTap1TotalSum()) }}%</span>
+                </div>
+              </td>
+              <td class="total-sum">
+                <div class="sum-display tap2-sum">
+                  {{ getTap2TotalSum() }}
+                </div>
+              </td>
+              <td class="obtained-sum">
+                <div class="sum-display tap2-obtained" [ngClass]="getPerformanceClass(getTap2ObtainedSum(), getTap2TotalSum())">
+                  <span class="sum-value">{{ getTap2ObtainedSum() }}</span>
+                  <span class="sum-percentage">{{ getPercentage(getTap2ObtainedSum(), getTap2TotalSum()) }}%</span>
+                </div>
+              </td>
+            </tr>
+            
+            <!-- Grand Total Row -->
+            <tr class="grand-total-row">
+              <td class="grand-total-label">
+                <div class="grand-total-content">
+                  <span class="grand-total-icon">🏆</span>
+                  <span>GRAND TOTAL</span>
+                </div>
+              </td>
+              <td colspan="2" class="grand-total-cell">
+                <div class="grand-total-display">
+                  <span class="grand-obtained">{{ getGrandObtainedSum() }}</span>
+                  <span class="grand-separator">/</span>
+                  <span class="grand-total">{{ getGrandTotalSum() }}</span>
+                  <span class="grand-percentage" [ngClass]="getPerformanceClass(getGrandObtainedSum(), getGrandTotalSum())">
+                    {{ getPercentage(getGrandObtainedSum(), getGrandTotalSum()) }}%
+                  </span>
+                </div>
+              </td>
+              <td colspan="2" class="grand-total-cell">
+                <div class="performance-summary" [ngClass]="getPerformanceClass(getGrandObtainedSum(), getGrandTotalSum())">
+                  <span class="performance-text">
+                    {{ getPerformance(getGrandObtainedSum(), getGrandTotalSum()) }}
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

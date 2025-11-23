@@ -1,0 +1,93 @@
+<div class="medical-container">
+  <!-- Officer Details Card -->
+  <div class="officer-card">
+    <div class="officer-header">
+      <div class="officer-image">
+        <img [src]="officerDetails?.imageUrl || 'default-image.png'" alt="Officer Image" />
+      </div>
+      <div class="officer-info">
+        <h1 class="officer-name">{{ officerDetails?.name || 'Unknown Officer' }}</h1>
+        <p class="officer-id">Officer ID: {{ officerDetails?.officerId || 'N/A' }}</p>
+        <div class="medical-badge">
+          <span>🏥 Medical Records</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Medical Records Section -->
+  <div class="section-card">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="section-icon">📋</span>
+        Medical History & Records
+      </h2>
+      <div class="section-count" *ngIf="medicalRecords && medicalRecords.length > 0">
+        {{ medicalRecords.length }} record(s)
+      </div>
+    </div>
+    
+    <div *ngIf="medicalRecords && medicalRecords.length > 0; else medicalEmpty" class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Date</th>
+            <th>Disease/Condition</th>
+            <th>Severity</th>
+            <th>MO/SMO Remarks</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of medicalRecords; let i = index" class="medical-record-row">
+            <td class="serial-cell">
+              <span class="serial-number">{{ i + 1 }}</span>
+            </td>
+            <td class="date-cell">
+              <div class="date-display">
+                <span class="date-value">{{ formatDate(record.date) }}</span>
+                <span class="date-time">{{ getTimeAgo(record.date) }}</span>
+              </div>
+            </td>
+            <td class="disease-cell">
+              <div class="disease-info">
+                <span class="disease-name" [ngClass]="getDiseaseClass(record.disease)">
+                  {{ record.disease }}
+                </span>
+                <span class="disease-category">{{ getDiseaseCategory(record.disease) }}</span>
+              </div>
+            </td>
+            <td class="severity-cell">
+              <div class="severity-indicator" [ngClass]="getSeverityClass(record.disease)">
+                <span class="severity-dot"></span>
+                <span class="severity-text">{{ getSeverityLevel(record.disease) }}</span>
+              </div>
+            </td>
+            <td class="remarks-cell">
+              <div class="remarks-content">
+                <span class="remarks-text">{{ record.remarks || 'No remarks provided' }}</span>
+                <div class="remarks-footer" *ngIf="record.remarks">
+                  <span class="remarks-type">{{ getRemarkType(record.remarks) }}</span>
+                </div>
+              </div>
+            </td>
+            <td class="status-cell">
+              <div class="status-badge" [ngClass]="getStatusClass(record.disease, record.remarks)">
+                {{ getRecordStatus(record.disease, record.remarks) }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #medicalEmpty>
+      <div class="empty-state">
+        <div class="empty-icon">🏥</div>
+        <h3>No Medical Records Found</h3>
+        <p>This officer has no medical records on file.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

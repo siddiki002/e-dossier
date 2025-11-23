@@ -38,7 +38,7 @@ export class PersonalInformationEntry {
     dateOfEnrollment: new FormControl(new Date(), Validators.required),
     bloodGroup: new FormControl('', Validators.required),
     contactNumber: new FormControl('', Validators.required),
-    rate: new FormControl('Sailor', Validators.required),
+    rate: new FormControl('UT Sailor', Validators.required),
     permanentAddress: new FormControl('', Validators.required),
     emergencyContact: new FormGroup({
       cnic: new FormControl('', Validators.required),
@@ -58,7 +58,6 @@ export class PersonalInformationEntry {
   @ViewChild('successDialog') successDialogTemplate: any;
 
   constructor(private router: Router, private activatedRouter: ActivatedRoute, private http: HttpClient, private dialog: MatDialog) {
-    this.sailorsInClass = this.router?.currentNavigation()?.extras?.state?.['data'] || [];
     this.activatedRouter?.params?.subscribe((params) => {
       this.classId = params['classId'];
     })
@@ -66,12 +65,19 @@ export class PersonalInformationEntry {
 
   ngOnInit() {
     this.fetchClassDetails();
+    this.fetchSailorsInClass();
   }
 
   private fetchClassDetails() {
     this.http.get<Class>(`${baseUrl}/class/${this.classId}`).subscribe((data) => {
       this.classDetails = data;
     })
+  }
+
+  private fetchSailorsInClass() {
+    this.http.get<Officer[]>(`${baseUrl}/class/${this.classId}/officers`).subscribe((data) => {
+      this.sailorsInClass = data;
+    });
   }
 
   private setOfficerDetailsInForm(officer: Officer) {
@@ -84,7 +90,6 @@ export class PersonalInformationEntry {
     this.personalInformationForm.get('dateOfBirth')?.setValue(officer?.dateOfBirth);
     this.personalInformationForm.get('bloodGroup')?.setValue(officer?.bloodGroup);
     this.personalInformationForm.get('contactNumber')?.setValue(officer?.contactNumber);
-    this.personalInformationForm.get('rate')?.setValue(officer?.rate);
     this.personalInformationForm.get('permanentAddress')?.setValue(officer?.permanentAddress);
     this.personalInformationForm.get('emergencyContact.cnic')?.setValue(officer?.emergencyContact?.cnic);
     this.personalInformationForm.get('emergencyContact.contactNumber')?.setValue(officer?.emergencyContact?.contactNumber);
@@ -158,7 +163,6 @@ export class PersonalInformationEntry {
   }
 
   protected onFileSelected(event: Event) {
-    console.log(this.selectedOfficer);
     if(!this.selectedOfficer) return;
     const input = event?.target as HTMLInputElement;
     const file = input?.files?.[0]
@@ -211,7 +215,10 @@ export class PersonalInformationEntry {
     }
 
     if(this.selectedFile) {
-      calls['imageUpload'] = this.http.post(`${baseUrl}/data-entry/officer/${this.selectedOfficer?.id}/image`, new FormData().append('image', this.selectedFile));
+      const formData = new FormData();
+      formData.append('image', this.selectedFile);
+
+      calls['imageUpload'] = this.http.post(`${baseUrl}/data-entry/officer/${this.selectedOfficer?.id}/image`, formData);
     }
 
     forkJoin(calls).subscribe({
@@ -229,7 +236,8 @@ export class PersonalInformationEntry {
   }
 
   protected closeSuccessDialog() {
-    this.successDialogRef?.close(); 
+    this.successDialogRef?.close();
+    this.fetchSailorsInClass(); 
   }
 
 }

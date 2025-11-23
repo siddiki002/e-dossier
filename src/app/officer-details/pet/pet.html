@@ -1,0 +1,106 @@
+<div class="pet-container">
+  <!-- Officer Details Card -->
+  <div class="officer-card">
+    <div class="officer-header">
+      <div class="officer-image">
+        <img [src]="officerDetails?.imageUrl || defaultImage" alt="Officer Image" />
+      </div>
+      <div class="officer-info">
+        <h1 class="officer-name">{{ officerDetails?.name || 'Unknown Officer' }}</h1>
+        <p class="officer-id">Officer ID: {{ officerDetails?.officerId || 'N/A' }}</p>
+        <div class="pet-badge">
+          <span>🏃‍♂️ PET Records</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Officer's PET Details Section -->
+  <div class="section-card" *ngIf="officerDetails?.pet || officerPetRecords">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="section-icon">🏆</span>
+        Physical Efficiency Test Records
+      </h2>
+      <div class="section-count" *ngIf="getTotalRecordsCount() > 0">
+        {{ getTotalRecordsCount() }} record(s)
+      </div>
+    </div>
+    
+    <!-- Combined PET records from both sources -->
+    <div *ngIf="hasAnyPetRecords(); else petEmpty" class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Event</th>
+            <th>Obtained Marks</th>
+            <th>Total Marks</th>
+            <th>Performance</th>
+            <th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Display officerDetails.pet records -->
+          <tr *ngFor="let pet of officerDetails?.pet" class="pet-record-row">
+            <td class="event-cell">
+              <div class="event-name">{{ pet.event }}</div>
+            </td>
+            <td class="marks-cell">
+              <span class="obtained-marks">{{ pet.obtainedMarks }}</span>
+            </td>
+            <td class="marks-cell">
+              <span class="total-marks">{{ pet.totalMarks }}</span>
+            </td>
+            <td class="performance-cell">
+              <div class="performance-indicator" 
+                   [ngClass]="getPerformanceClass(pet.obtainedMarks, pet.totalMarks)">
+                <span class="percentage">{{ getPercentage(pet.obtainedMarks, pet.totalMarks) }}%</span>
+                <div class="progress-bar">
+                  <div class="progress-fill" 
+                       [style.width.%]="getPercentage(pet.obtainedMarks, pet.totalMarks)"></div>
+                </div>
+              </div>
+            </td>
+            <td class="remarks-cell">
+              <span [ngClass]="getRemarkClass(pet.remarks)">{{ pet.remarks || 'No remarks' }}</span>
+            </td>
+          </tr>
+          
+          <!-- Display officerPetRecords -->
+          <tr *ngFor="let record of officerPetRecords" class="pet-record-row">
+            <td class="event-cell">
+              <div class="event-name">{{ record.event }}</div>
+            </td>
+            <td class="marks-cell">
+              <span class="obtained-marks">{{ record.obtainedMarks }}</span>
+            </td>
+            <td class="marks-cell">
+              <span class="total-marks">{{ record.totalMarks }}</span>
+            </td>
+            <td class="performance-cell">
+              <div class="performance-indicator" 
+                   [ngClass]="getPerformanceClass(record.obtainedMarks, record.totalMarks)">
+                <span class="percentage">{{ getPercentage(record.obtainedMarks, record.totalMarks) }}%</span>
+                <div class="progress-bar">
+                  <div class="progress-fill" 
+                       [style.width.%]="getPercentage(record.obtainedMarks, record.totalMarks)"></div>
+                </div>
+              </div>
+            </td>
+            <td class="remarks-cell">
+              <span [ngClass]="getRemarkClass(record.remarks)">{{ record.remarks || 'No remarks' }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #petEmpty>
+      <div class="empty-state">
+        <div class="empty-icon">🏃‍♂️</div>
+        <h3>No PET Records Available</h3>
+        <p>This officer's Physical Efficiency Test records are not available or have not been recorded yet.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

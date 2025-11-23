@@ -15,7 +15,11 @@ export const routes: Routes = [
         children: [
             {path: '', redirectTo: 'personal-information', pathMatch: 'full'},
             { path: 'personal-information', loadComponent: () => import('./officer-details/personal-information/personal-information').then(m => m.PersonalInformation) },
-            { path: 'academics', loadComponent: () => import('./officer-details/academics/academics').then(m => m.Academics)},
+            { path: 'academics', loadComponent: () => import('./officer-details/report/report').then(m => m.Report)},
+            { path: 'discipline', loadComponent: () => import('./officer-details/discipline/discipline').then(m => m.Discipline)},
+            { path: 'traits-assessment', loadComponent: () => import('./officer-details/traits-assessment/traits-assessment').then(m => m.TraitsAssessmentComponent)},
+            { path: 'pet', loadComponent: () => import('./officer-details/pet/pet').then(m => m.PetRecords)},
+            { path: 'medical', loadComponent: () => import('./officer-details/medical-records/medical-records').then(m => m.MedicalRecords)},
         ]
     },
     {
