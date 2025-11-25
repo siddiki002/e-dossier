@@ -53,6 +53,7 @@
             <th class="col-marks">Final</th>
             <th class="col-total">Total<br>Marks</th>
             <th class="col-obtained">Obtained<br>Marks</th>
+            <th class="col-weightage">Weightage</th>
             <th class="col-percentage">Percentage</th>
           </tr>
         </thead>
@@ -60,7 +61,7 @@
           <ng-container *ngFor="let module of getModuleNames(); let moduleIndex = index">
             <!-- Module Header Row -->
             <tr class="module-header">
-              <td colspan="11" class="module-name">{{ module }}</td>
+              <td colspan="12" class="module-name">{{ module }}</td>
             </tr>
             <!-- Course Rows for this Module -->
             <tr *ngFor="let course of getGroupedCourses()[module]; let i = index" 
@@ -78,6 +79,7 @@
               <td class="marks-cell">{{ getObtainedMarks(course.id, 'Final') || '-' }}</td>
               <td class="total-marks">{{ getTotalMarks(course.id) }}</td>
               <td class="obtained-marks">{{ getObtainedMarksForCourse(course.id) }}</td>
+              <td class="weightage-cell">{{ course.weightage || '-' }}</td>
               <td class="percentage-cell">
                 <span class="percentage-value">{{ getPercentage(course.id) }}%</span>
               </td>

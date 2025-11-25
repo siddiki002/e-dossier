@@ -216,6 +216,13 @@
   background-color: #e7f3ff;
 }
 
+.weightage-cell {
+  font-weight: bold;
+  color: #6f42c1;
+  background-color: #f8f5ff;
+  text-align: center;
+}
+
 .percentage-cell {
   background-color: #f1f8e9;
 }
@@ -286,6 +293,7 @@
 .col-marks { width: 80px; }
 .col-total { width: 90px; }
 .col-obtained { width: 100px; }
+.col-weightage { width: 90px; }
 .col-percentage { width: 100px; }
 
 /* Summary Section */

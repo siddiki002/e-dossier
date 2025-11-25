@@ -117,9 +117,9 @@
               <tr>
                 <th>S no</th>
                 <th>Date</th>
-                <th>Offense</th>
-                <th>Punishment</th>
-                <th>Awarded by</th>
+                <th>Reason</th>
+                <th>Remarks</th>
+                <th>Issued by</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -178,15 +178,21 @@
           </button>
         </div>
         
+        <div class="info-message">
+          <mat-icon>info</mat-icon>
+          <span>First save the observation to upload any slip images.</span>
+        </div>
+        
         <div class="table-container">
           <table class="discipline-table">
             <thead>
               <tr>
                 <th>S no</th>
                 <th>Date</th>
-                <th>Offense</th>
-                <th>Punishment</th>
-                <th>Awarded by</th>
+                <th>Observations</th>
+                <th>Remarks</th>
+                <th>Observed by</th>
+                <th>Red/Green slips</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -216,6 +222,64 @@
                   </mat-form-field>
                 </td>
                 <td>
+                  <div class="image-upload-section">
+                    <!-- Show upload button only if observation has ID (is saved) -->
+                    @if (observation.get('id')?.value) {
+                      <div class="image-controls">
+                        <!-- File input (hidden) -->
+                        <input 
+                          type="file" 
+                          #imageFileInput
+                          (change)="onObservationImageSelected($event, i)"
+                          accept="image/*"
+                          style="display: none"
+                        />
+                        
+                        <!-- Upload button -->
+                        <button 
+                          type="button" 
+                          mat-icon-button 
+                          color="primary"
+                          (click)="imageFileInput.click()"
+                          matTooltip="Upload warning slip image">
+                          <mat-icon>cloud_upload</mat-icon>
+                        </button>
+                        
+                        <!-- Image preview -->
+                        <div class="image-preview">
+                          <img 
+                            [src]="getObservationImageUrl(i)" 
+                            alt="Warning slip"
+                            class="warning-image"
+                            (error)="onImageError($event)"
+                          />
+                          
+                          <!-- Save button (only show if there's a selected file for this row) -->
+                          @if (hasSelectedImage(i)) {
+                            <button 
+                              type="button" 
+                              mat-icon-button 
+                              color="accent"
+                              (click)="saveObservationImage(observation.get('id')?.value, i)"
+                              class="save-image-btn"
+                              matTooltip="Save image">
+                              <mat-icon>save</mat-icon>
+                            </button>
+                          }
+                        </div>
+                      </div>
+                    }
+                    
+                    <!-- Show message if observation is not saved -->
+                    @if (!observation.get('id')?.value) {
+                      <div class="no-id-message">
+                        <mat-icon>warning</mat-icon>
+                        <span>Save first</span>
+                      </div>
+                    }
+                  </div>
+                </td>
+                <td>
                   <button 
                     type="button" 
                     mat-icon-button 
@@ -233,8 +297,10 @@
     </form>
 
     <!-- Show message when no officer is selected -->
-    <div *ngIf="!selectedOfficer" class="no-officer-message">
-      <p>Please select an officer to view and edit discipline records.</p>
-    </div>
+    @if (!selectedOfficer) {
+      <div class="no-officer-message">
+        <p>Please select an officer to view and edit discipline records.</p>
+      </div>
+    }
   </div>
 </div>

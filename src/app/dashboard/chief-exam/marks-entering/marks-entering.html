@@ -129,7 +129,19 @@
                         <mat-card-header class="assessment-info">
                             <div class="assessment-details">
                                 <span class="assessment-label">Total Marks:</span>
-                                <span class="assessment-value">{{assessmentMarks}}</span>
+                                <div class="total-marks-input">
+                                    <mat-form-field appearance="outline" class="marks-input-field">
+                                        <input matInput 
+                                               type="number" 
+                                               [(ngModel)]="assessmentMarks" 
+                                               (ngModelChange)="onAssessmentMarksChange($event)"
+                                               min="1"
+                                               placeholder="Total marks"/>
+                                    </mat-form-field>
+                                    @if (hasAssessmentMarksChanged) {
+                                        <mat-icon class="change-indicator" matTooltip="Total marks changed - will be updated when saved">warning</mat-icon>
+                                    }
+                                </div>
                             </div>
                         </mat-card-header>
                         
@@ -294,6 +306,14 @@
                                                                     <mat-icon class="option-icon info">info</mat-icon>
                                                                     N/A
                                                                 </mat-option>
+                                                                <mat-option value="ATT">
+                                                                    <mat-icon class="option-icon primary">event_available</mat-icon>
+                                                                    Attended
+                                                                </mat-option>
+                                                                <mat-option value="NATT">
+                                                                    <mat-icon class="option-icon warning">event_busy</mat-icon>
+                                                                    Not Attended
+                                                                </mat-option>
                                                                 <mat-option value="P">
                                                                     <mat-icon class="option-icon success">check_circle</mat-icon>
                                                                     Pass
@@ -328,35 +348,74 @@
 </div>
 
 <ng-template #addCourseDialog>
-        <mat-dialog-content>
-            <mat-form-field appearance="fill" style="width: 100%;">
-                <mat-label>Course Name</mat-label>
-                <input matInput [(ngModel)]="newCourseName" />
-            </mat-form-field>
-            <mat-form-field appearance="fill" style="width: 100%;">
-                <mat-label>Course Type</mat-label>
-                <mat-select [(ngModel)]="newCourseType" disabled>
-                    <mat-option value="Optional">PTT</mat-option>
-                    <mat-option value="Compulsory">Compulsory</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="fill" style="width: 100%;" *ngIf="option === 'pttAssessment'">
-                <mat-label>Module</mat-label>
-                <mat-select [(ngModel)]="newCourseModule">
-                    <mat-option value="Module 1">Module I</mat-option>
-                    <mat-option value="Module 2">Module II</mat-option>
-                    <mat-option value="Module 3">Module III</mat-option>
-                    <mat-option value="Module 4">Module IV</mat-option>
-                    <mat-option value="Module 5">Module V</mat-option>
-                    <mat-option value="Module 6">Module VI</mat-option>
-                    <mat-option value="Module 7">Module VII</mat-option>
-                </mat-select>
-            </mat-form-field>
-        <mat-dialog-actions align="end">
-            <button matButton="elevated" (click)="addCourseDialogRef?.close()">Cancel</button>
-            <button matButton="elevated" color="primary" (click)="confirmAddCourse()">Add</button>
-        </mat-dialog-actions>
+    
+    <h2 class="course-dialog-title" mat-dialog-title>
+        <mat-icon>add_circle</mat-icon>
+        Add New Course(s)
+    </h2>
+    <mat-dialog-content class="course-dialog-content">
+        <div class="course-form-container">
+            @for (course of newCourses; track $index; let i = $index) {
+                <div class="course-form-group">
+                    <div class="course-form-header">
+                        <h4>Course {{i + 1}}</h4>
+                        @if (newCourses.length > 1) {
+                            <button mat-icon-button color="warn" (click)="removeCourseField(i)" class="remove-course-btn">
+                                <mat-icon>remove_circle</mat-icon>
+                            </button>
+                        }
+                    </div>
+                    
+                    <mat-form-field appearance="outline" class="course-field">
+                        <mat-label>Course Name</mat-label>
+                        <input matInput [(ngModel)]="course.name" placeholder="Enter course name" />
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline" class="course-field">
+                        <mat-label>Course Type</mat-label>
+                        <mat-select [(ngModel)]="course.type" disabled>
+                            <mat-option value="Optional">PTT</mat-option>
+                            <mat-option value="Compulsory">Compulsory</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    
+                    @if (option === 'pttAssessment') {
+                        <mat-form-field appearance="outline" class="course-field">
+                            <mat-label>Module</mat-label>
+                            <mat-select [(ngModel)]="course.module">
+                                <mat-option value="Module 1">Module I</mat-option>
+                                <mat-option value="Module 2">Module II</mat-option>
+                                <mat-option value="Module 3">Module III</mat-option>
+                                <mat-option value="Module 4">Module IV</mat-option>
+                                <mat-option value="Module 5">Module V</mat-option>
+                                <mat-option value="Module 6">Module VI</mat-option>
+                                <mat-option value="Module 7">Module VII</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="course-field">
+                            <mat-label>Weightage</mat-label>
+                            <input matInput [(ngModel)]="course.weightage" placeholder="Enter weightage" />
+                        </mat-form-field>
+                    }
+                </div>
+            }
+            
+            <div class="add-more-section">
+                <button mat-raised-button color="accent" (click)="addMoreCourseFields()" class="add-more-btn">
+                    <mat-icon>add</mat-icon>
+                    Add Another Course
+                </button>
+            </div>
+        </div>
     </mat-dialog-content>
+    <mat-dialog-actions align="end" class="dialog-actions">
+        <button mat-button (click)="addCourseDialogRef?.close()">Cancel</button>
+        <button mat-raised-button color="primary" (click)="confirmAddCourse()">
+            <mat-icon>save</mat-icon>
+            Add {{newCourses.length}} Course(s)
+        </button>
+    </mat-dialog-actions>
 </ng-template>
 
 <ng-template #addAssessmentDialog>

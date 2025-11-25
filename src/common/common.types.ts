@@ -18,24 +18,25 @@ export type Officer = {
             courseId: string,
             marks: number
         }[],
-    compulsoryCourses? : CompulsoryCourses[],
-    emergencyContact? : {
+    compulsoryCourses : CompulsoryCourses[],
+    emergencyContact : {
         name: string,
         relation: string,
         contactNumber: string
         cnic?: string
     }
-    imageUrl?: string
-    additionalFamilyInformation?: {
+    imageUrl: string
+    additionalFamilyInformation: {
         name: string,
         relation: string,
         contactNumber: string,
         cnic?: string
     }[]
-    marks? : number,
-    percentage?: string
-    pet?: Pet[]
-    
+    marks : number | undefined,
+    percentage: string
+    pet: Pet[]
+    medicalCategory: 'Fit' | 'Fit ex'
+
 }
 
 export type Pet = {
@@ -97,7 +98,8 @@ export type Courses = {
     courseName: string,
     category: string,
     type: "Optional" | "Compulsory"
-    module?: string
+    module?: string,
+    weightage?: number
 }
 
 export type Warnings = {

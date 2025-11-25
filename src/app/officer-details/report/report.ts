@@ -121,19 +121,24 @@ export class Report {
   }
 
   protected getOverallPercentage(): number {
-
-    let totalPercentageByCourse = 0;
-    let courseWithZeroMarks = 0;
+    let totalWeightedMarks = 0;
+    let totalWeightage = 0;
+    
     this.optionalCourses.forEach((course) => {
       const coursePercentage = this.getPercentage(course.id);
-      if(coursePercentage === 0) {
-        courseWithZeroMarks += 1;
+      const weightage = course.weightage || 0;
+      
+      // Only include courses with marks and weightage
+      if (coursePercentage > 0 && weightage > 0) {
+        // Calculate weighted marks: (course percentage * weightage) / 100
+        totalWeightedMarks += (coursePercentage * weightage) / 100;
+        totalWeightage += weightage;
       }
-      totalPercentageByCourse += coursePercentage;
     });
 
-    if (this.optionalCourses.length > 0) {
-      return Math.round(totalPercentageByCourse / (this.optionalCourses.length - courseWithZeroMarks));
+    if (totalWeightage > 0) {
+      // Calculate overall percentage: (totalWeightedMarks / totalWeightage) * 100
+      return Math.round((totalWeightedMarks / totalWeightage) * 100);
     }
     return 0;
   }

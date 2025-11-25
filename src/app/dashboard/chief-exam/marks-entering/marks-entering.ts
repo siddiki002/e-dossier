@@ -13,13 +13,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { forkJoin } from 'rxjs';
 
 const assessments = ["Quiz", "Final", "Summative - Written", "Summative - Oral", "Formative - Written", "Formative - Oral", "Assignment"];
 
 @Component({
   selector: 'marks-entering',
-  imports: [CommonModule, MatSelectModule, FormsModule, MatButtonModule, MatDialogModule, MatInputModule, MatFormFieldModule, MatIconModule, MatCardModule, MatTableModule],
+  imports: [CommonModule, MatSelectModule, FormsModule, MatButtonModule, MatDialogModule, MatInputModule, MatFormFieldModule, MatIconModule, MatCardModule, MatTableModule, MatTooltipModule],
   templateUrl: './marks-entering.html',
   styleUrl: './marks-entering.css'
 })
@@ -31,9 +32,7 @@ export class MarksEntering {
   protected courses: Courses[] = [];
   protected selectedCourse: string = '';
   protected addCourseDialogRef: MatDialogRef<any, any> | null = null;
-  protected newCourseName: string = '';
-  protected newCourseType: string = '';
-  protected newCourseModule: string = '';
+  protected newCourses: Array<{name: string, type: string, module: string, weightage?: number}> = [];
   protected newAssessmentType: string = '';
   protected addAssessmentDialogRef: MatDialogRef<any, any> | null = null;
   protected newAssessmentMarks: string = '';
@@ -42,6 +41,8 @@ export class MarksEntering {
   protected sailorsInClass: Officer[] = [];
   protected marksList: Marks[] = [];
   protected assessmentMarks : number = 0;
+  protected originalAssessmentMarks: number = 0; // Track original value
+  protected hasAssessmentMarksChanged: boolean = false; // Track if total marks changed
   protected compulsoryModuleCourseMarks : Record<string, Array<string>> = {}; // officerId -> ["P", "F", "NA"]
   protected modules : Array<{label: string, value: string}> = [
     {label: 'Module I', value: 'Module 1'},
@@ -65,7 +66,6 @@ export class MarksEntering {
       this.classId = params['classId'];
       this.option = params['option'];
     });
-    this.newCourseType = this.option === 'pttAssessment' ? 'Optional' : 'Compulsory';
   }
 
   ngOnInit() {
@@ -138,21 +138,75 @@ export class MarksEntering {
   }
 
   protected addNewCourse() {
-    this.addCourseDialogRef = this.dialog.open(this.addCourseDialogTemplate);
+    // Initialize with one empty course
+    this.newCourses = [{
+      name: '',
+      type: this.option === 'pttAssessment' ? 'Optional' : 'Compulsory',
+      module: ''
+    }];
+    if(this.option === 'pttAssessment') {
+      this.newCourses[0].weightage = 0;
+    }
+    this.addCourseDialogRef = this.dialog.open(this.addCourseDialogTemplate, {
+      width: '500px',
+      maxHeight: '80vh'
+    });
+  }
+
+  protected addMoreCourseFields() {
+    this.newCourses.push({
+      name: '',
+      type: this.option === 'pttAssessment' ? 'Optional' : 'Compulsory',
+      module: '',
+    });
+    if(this.option === 'pttAssessment') {
+      this.newCourses[this.newCourses.length - 1].weightage = 0;
+    }
+  }
+
+  protected removeCourseField(index: number) {
+    if (this.newCourses.length > 1) {
+      this.newCourses.splice(index, 1);
+    }
   }
 
   protected confirmAddCourse(){
-    this.addCourseDialogRef?.close();
-    const payload = {
-      courseName: this.newCourseName,
-      module: this.newCourseModule,
-      type: this.newCourseType
-    };
+    // Filter out empty courses
+    const validCourses = this.newCourses.filter(course => course.name.trim() !== '');
+    
+    if (validCourses.length === 0) {
+      alert('Please enter at least one course name');
+      return;
+    }
 
-    this.http.post(`${baseUrl}/data-entry/course`, payload, {observe: 'response'}).subscribe((response : HttpResponse<any>) => {
+    this.addCourseDialogRef?.close();
+
+    let payload : Array<{courseName: string, module: string, type: string, weightage?: number}> = validCourses.map(course => ({
+      courseName: course.name,
+      module: course.module,
+      type: course.type
+    }));
+
+    if(this.option === 'pttAssessment') {
+      // Include weightage if option is pttAssessment
+      payload = payload.map(course => ({
+        ...course,
+        weightage: Number(course.weightage) || 0
+      }));
+    }
+
+    this.http.post(`${baseUrl}/data-entry/courses/bulk`, payload, {observe: 'response'}).subscribe((response : HttpResponse<any>) => {
       if(response.status === 201) {
         this.fetchCourses();
+        if(this.selectedModule){
+          this.onModuleSelection(this.selectedModule);
+        }
+        this.newCourses = [];
+        alert(`${validCourses.length} course(s) added successfully!`);
       }
+    }, error => {
+      console.error('Error adding courses:', error);
+      alert('Error adding courses. Please try again.');
     });
   }
 
@@ -175,6 +229,8 @@ export class MarksEntering {
   protected onAssessmentSelection(assessmentId: string) {
     this.selectedAssessment = assessmentId;
     this.assessmentMarks = this.assessments.find(assessment => assessment.id === assessmentId)?.totalMarks || 0;
+    this.originalAssessmentMarks = this.assessmentMarks; // Store original value
+    this.hasAssessmentMarksChanged = false; // Reset change flag
     this.fetchOfficerMarksOfAssessment();
   }
 
@@ -198,6 +254,12 @@ export class MarksEntering {
   protected onMarksChange(officerId: string, newMarks: Event) {
     const marksValue = Number(newMarks);
     if(isNaN(marksValue) || marksValue < 0 || marksValue > this.assessmentMarks) {
+      // Reset to previous value if invalid
+      const officer = this.sailorsInClass.find(o => o.id === officerId);
+      if (officer) {
+        const originalMarks = this.marksList.find(mark => mark.officerId === officerId)?.marks || 0;
+        officer.marks = originalMarks;
+      }
       return;
     }
 
@@ -223,39 +285,54 @@ export class MarksEntering {
 
   protected saveMarks() {
     if(this.option === 'pttAssessment') {
-      const updateMarksPayload = this.sailorsInClass.map((officer) => {
-        const marksId = this.marksList.find(mark => mark.officerId === officer.id)?.id || null;
-        if(marksId) {
-          return {
-            id: marksId,
-            marks: officer?.marks || 0
-          }
+      try{
+        // First update assessment total marks if changed
+        if(this.hasAssessmentMarksChanged){
+          this.updateAssessmentTotalMarks();
         }
-        return null
-      }).filter(item => item !== null);
-
-      
-      const newMarksPayload = this.sailorsInClass.map((officer) => {
-        const marksId = this.marksList.find(mark => mark.officerId === officer.id)?.id || null;
-        if(!marksId) {
-          return {
-            officerId: officer.id,
-            marks: officer?.marks || 0
+          // Then proceed with saving individual marks
+          const updateMarksPayload = this.sailorsInClass.map((officer) => {
+            const marksId = this.marksList.find(mark => mark.officerId === officer.id)?.id || null;
+            if(marksId) {
+              return {
+                marksId,
+                marks: officer?.marks || 0
+              }
+            }
+            return null
+          }).filter(item => item !== null);
+  
+          
+          const newMarksPayload = this.sailorsInClass.map((officer) => {
+            const marksId = this.marksList.find(mark => mark.officerId === officer.id)?.id || null;
+            if(!marksId) {
+              return {
+                officerId: officer.id,
+                marks: officer?.marks || 0
+              }
+            }
+            return null;
+          }).filter(item => item !== null);
+          
+          const calls = {
+            putMarks: this.putPttMarks(updateMarksPayload as {marksId: string, marks: number}[]),
+            postMarks: this.postPttMarks(newMarksPayload as {officerId: string, marks: number}[])
           }
-        }
-        return null;
-      }).filter(item => item !== null);
-      
-      const calls = {
-        putMarks: this.putPttMarks(updateMarksPayload as {id: string, marks: number}[]),
-        postMarks: this.postPttMarks(newMarksPayload as {officerId: string, marks: number}[])
+          forkJoin(calls).subscribe({
+            next: (responses) => {
+              console.log(responses);
+              alert('Marks saved successfully!');
+            },
+            error: (error) => {
+              console.error('Error saving marks:', error);
+              alert('Error saving marks. Please try again.');
+            }
+          });
       }
-      forkJoin(calls).subscribe({
-        next: (responses) => {
-          console.log(responses);
-          alert('Marks saved successfully!');
-        }
-      });
+      catch(error){
+        console.error('Error updating assessment total marks:', error);
+        alert('Error updating assessment total marks. Please try again.');
+      }
     }
     else if (this.option === 'compulsoryModule') {
       const marksPayload = this.sailorsInClass.map((officer) => {
@@ -271,7 +348,7 @@ export class MarksEntering {
     }
   }
 
-  private putPttMarks(marksPayload: {id: string, marks: number}[]) {
+  private putPttMarks(marksPayload: {marksId: string, marks: number}[]) {
     return this.http.put(`${baseUrl}/data-entry/marks/update-all`, marksPayload, {observe: 'response'})
   }
 
@@ -292,6 +369,42 @@ export class MarksEntering {
     this.selectedModule = moduleValue;
     const filteredCourses = this.originalCourseList.filter(course => course.module === moduleValue);
     this.courses = [...filteredCourses];
+  }
+
+  protected onAssessmentMarksChange(newMarks: number) {
+    if (newMarks !== this.originalAssessmentMarks) {
+      this.hasAssessmentMarksChanged = true;
+      this.assessmentMarks = newMarks;
+      // Recalculate all percentages when total marks change
+      this.recalculateAllPercentages();
+    } else {
+      this.hasAssessmentMarksChanged = false;
+    }
+  }
+
+  private recalculateAllPercentages() {
+    this.sailorsInClass = this.sailorsInClass.map(officer => ({
+      ...officer,
+      percentage: this.calculatePercentage(officer.marks ?? null)
+    }));
+  }
+
+  private updateAssessmentTotalMarks() {
+    const payload = {
+      totalMarks: this.assessmentMarks
+    };
+
+    this.http.put(`${baseUrl}/data-entry/assessment/${this.selectedAssessment}`, payload, {observe: 'response'})
+      .subscribe((response: HttpResponse<any>) => {
+        if (response.status === 200) {
+          this.originalAssessmentMarks = this.assessmentMarks;
+          this.hasAssessmentMarksChanged = false;
+          console.log('Assessment total marks updated successfully');
+        }
+      }, (error) => {
+        console.error('Error updating assessment total marks:', error);
+        throw error
+      });
   }
 
 }

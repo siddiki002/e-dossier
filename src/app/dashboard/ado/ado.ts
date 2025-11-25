@@ -44,12 +44,20 @@ export class Ado {
   protected clickedClass: Class | null = null;
   protected destroy$: Subject<userType> = new Subject<userType>();
   protected isAdo: boolean = false;
+  
+  // Bulk officer addition properties
+  protected numberOfOfficersToAdd: number = 1;
+  protected newOfficers: Array<{id: string, name: string}> = [];
+  protected officerCountDialogRef: any;
 
   @ViewChild('addSailorDialog') addSailorDialogTemplate: any;
+  @ViewChild('addSailorChoiceDialog') addSailorChoiceDialogTemplate: any;
   @ViewChild('addClassDialog') addClassDialogTemplate: any;
   @ViewChild('selectOptionDialog') selectOptionDialogTemplate: any;
   @ViewChild('editClassDialog') editClassDialogTemplate: any;
   @ViewChild('confirmDeleteDialog') confirmDeleteDialogTemplate: any;
+  @ViewChild('officerCountDialog') officerCountDialogTemplate: any;
+  @ViewChild('bulkAddSailorDialog') bulkAddSailorDialogTemplate: any;
 
 
   constructor(private http: HttpClient, private dialog: MatDialog, private router: Router, private userService: UserService) {}
@@ -141,7 +149,117 @@ export class Ado {
   }
 
   protected openAddSailorDialog() {
+    // Open choice dialog first
+    this.dialogRef = this.dialog.open(this.addSailorChoiceDialogTemplate);
+  }
+
+  protected openSingleSailorDialog() {
+    this.dialogRef.close(); // Close choice dialog
+    // Open the original single sailor dialog
     this.dialogRef = this.dialog.open(this.addSailorDialogTemplate);
+  }
+
+  protected proceedToBulkAdd() {
+    this.dialogRef.close(); // Close choice dialog
+    // First dialog to ask for the number of officers
+    this.numberOfOfficersToAdd = 1;
+    this.officerCountDialogRef = this.dialog.open(this.officerCountDialogTemplate);
+  }
+
+  protected confirmOfficerCount() {
+    if (this.numberOfOfficersToAdd < 1 || this.numberOfOfficersToAdd > 50) {
+      alert('Please enter a valid number of officers (1-50)');
+      return;
+    }
+
+    this.officerCountDialogRef.close();
+    
+    // Initialize the officers array
+    this.newOfficers = [];
+    for (let i = 0; i < this.numberOfOfficersToAdd; i++) {
+      this.newOfficers.push({
+        id: 'OF',
+        name: ''
+      });
+    }
+    
+    // Open the bulk add dialog
+    this.dialogRef = this.dialog.open(this.bulkAddSailorDialogTemplate, {
+      width: '600px',
+      maxHeight: '80vh'
+    });
+  }
+
+  protected addMoreOfficerFields() {
+    this.newOfficers.push({
+      id: 'OF',
+      name: ''
+    });
+  }
+
+  protected removeOfficerField(index: number) {
+    if (this.newOfficers.length > 1) {
+      this.newOfficers.splice(index, 1);
+    }
+  }
+
+  protected confirmAddSailors() {
+    // Filter out officers with empty names
+    const validOfficers = this.newOfficers.filter(officer => officer.name.trim() !== '' && officer.id.trim() !== '');
+    
+    if (validOfficers.length === 0) {
+      alert('Please enter at least one officer with valid details');
+      return;
+    }
+
+    this.dialogRef.close();
+    
+    // Prepare bulk payload
+    const officerPayloads = validOfficers.map(officer => ({
+      officerId: officer.id,
+      name: officer.name
+    }));
+
+    // Send bulk request to backend
+    this.http.post<{ids: string[]}>(`${baseUrl}/data-entry/officers/bulk`, officerPayloads, {observe: 'response'})
+      .subscribe((response: HttpResponse<{ids: string[]}>) => {
+        if (response.status === 201 && response?.body?.ids) {
+          const newOfficerIds = response.body.ids;
+          
+          // Add all officers to the class
+          const classAdditionPayload = { officerIds: newOfficerIds };
+          
+          this.http.post(`${baseUrl}/data-entry/class/${this.selectedClassId}/officers`, 
+            classAdditionPayload, {observe: 'response'})
+            .subscribe((classAdditionResponse: HttpResponse<any>) => {
+              if (classAdditionResponse.status === 201) {
+                // Update local state
+                const newSailors = validOfficers.map((officer, index) => ({
+                  id: newOfficerIds[index],
+                  officerId: officer.id,
+                  name: officer.name
+                } as Officer));
+                
+                this.sailorsInClass.push(...newSailors);
+                
+                // Update officer count in class list
+                const classIndex = this.classes.findIndex(c => c.id === this.selectedClassId);
+                if (classIndex !== -1) {
+                  this.classes[classIndex] = {
+                    ...this.classes[classIndex], 
+                    numberOfStudents: (this.classes[classIndex].numberOfStudents || 0) + validOfficers.length
+                  };
+                }
+                
+                alert(`${validOfficers.length} officer(s) added successfully!`);
+                this.newOfficers = [];
+              }
+            });
+        }
+      }, error => {
+        console.error('Error adding officers:', error);
+        alert('Error adding officers. Please try again.');
+      });
   }
   protected openAddClassDialog() {
     this.dialogRef = this.dialog.open(this.addClassDialogTemplate);

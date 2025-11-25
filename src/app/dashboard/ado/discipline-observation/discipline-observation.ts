@@ -9,13 +9,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { baseUrl } from 'src/common/base';
 import { Class, Officer, Warnings } from 'src/common/common.types';
 import { SailorListComponent } from "src/common/components/sailor-list/sailor-list.component";
 
 @Component({
   selector: 'discipline-observation',
-  imports: [SailorListComponent, CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDatepickerModule, MatIconModule],
+  imports: [SailorListComponent, CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDatepickerModule, MatIconModule, MatTooltipModule],
   templateUrl: './discipline-observation.html',
   styleUrl: './discipline-observation.css'
 })
@@ -26,6 +27,10 @@ export class DisciplineObservation {
   protected classDetails: Class | null = null;
   protected selectedOfficerObservations: Warnings[] = [];
   protected selectedOfficer: Officer | null = null;
+  
+  // Image upload related properties
+  private selectedImages: Map<number, File> = new Map();
+  private imageUrls: Map<number, string> = new Map();
 
   protected disciplineForm: FormGroup = new FormGroup({
     punishments: new FormArray([]),
@@ -98,12 +103,16 @@ export class DisciplineObservation {
       date: new FormControl(obs?.date || '', Validators.required),
       offense: new FormControl(obs?.offense || '', Validators.required),
       punishment: new FormControl(obs?.punishment || '', Validators.required),
-      awardedBy: new FormControl(obs?.awardedBy || '', Validators.required)
+      awardedBy: new FormControl(obs?.awardedBy || '', Validators.required),
+      imageUrl: new FormControl((obs as any)?.imageUrl || '')
     });
   }
 
   protected onOfficerSelection(selectedOfficer: Officer) {
     this.selectedOfficer = selectedOfficer;
+    // Clear image maps when switching officers
+    this.selectedImages.clear();
+    this.imageUrls.clear();
     this.fetchOfficerDisciplineObservations(selectedOfficer.id);
   }
 
@@ -235,6 +244,69 @@ export class DisciplineObservation {
     }
   }
 
+  // Image upload methods
+  protected onObservationImageSelected(event: Event, rowIndex: number) {
+    const input = event?.target as HTMLInputElement;
+    const file = input?.files?.[0];
+    if (!file) return;
 
+    this.selectedImages.set(rowIndex, file);
+    
+    // Create preview URL
+    const previewUrl = URL.createObjectURL(file);
+    this.imageUrls.set(rowIndex, previewUrl);
+  }
+
+  protected getObservationImageUrl(rowIndex: number): string {
+    // First check if there's a selected image for preview
+    if (this.imageUrls.has(rowIndex)) {
+      return this.imageUrls.get(rowIndex)!;
+    }
+    
+    // Otherwise check if there's an existing imageUrl from backend
+    const observation = this.observationsArray.at(rowIndex);
+    const existingImageUrl = observation?.get('imageUrl')?.value;
+    
+    if (existingImageUrl) {
+      return existingImageUrl;
+    }
+    
+    // Return placeholder image (using a default image from public folder)
+    return 'default-image.png';
+  }
+
+  protected hasSelectedImage(rowIndex: number): boolean {
+    return this.selectedImages.has(rowIndex);
+  }
+
+  protected onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.src = 'default-image.png';
+  }
+
+  protected saveObservationImage(warningId: string, rowIndex: number) {
+    if (!warningId || !this.selectedImages.has(rowIndex)) return;
+
+    const file = this.selectedImages.get(rowIndex)!;
+    const formData = new FormData();
+    formData.append('image', file);
+
+    this.http.put(`${baseUrl}/data-entry/warning/${warningId}`, formData).subscribe((response: any) => {
+      alert('Image uploaded successfully');
+      
+      // Update the form control with the new image URL if provided by backend
+      if (response?.imageUrl) {
+        const observation = this.observationsArray.at(rowIndex);
+        observation?.get('imageUrl')?.setValue(response.imageUrl);
+        this.imageUrls.set(rowIndex, response.imageUrl);
+      }
+      
+      // Clear the selected file
+      this.selectedImages.delete(rowIndex);
+    }, (error) => {
+      alert('Failed to upload image');
+      console.error('Image upload error:', error);
+    });
+  }
 
 }

@@ -2,8 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Officer } from 'src/common/common.types';
-import { classes, officers } from 'src/static/data';
-import { OfficerCard } from "src/common/components/officer-card/officer-card";
 import { MatTableModule } from "@angular/material/table";
 import { HttpClient } from '@angular/common/http';
 import { baseUrl } from 'src/common/base';
@@ -19,7 +17,7 @@ type familyParticular = {
 
 @Component({
   selector: 'personal-information',
-  imports: [CommonModule, OfficerCard, MatTableModule],
+  imports: [CommonModule, MatTableModule],
   templateUrl: './personal-information.html',
   styleUrl: './personal-information.css'
 })

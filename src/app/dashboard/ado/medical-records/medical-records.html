@@ -17,6 +17,7 @@
       <div class="officer-info">
         <h4>Name: {{selectedOfficer?.name ? selectedOfficer?.name : 'No Officer Selected'}}</h4>
         <h4>Officer No: {{selectedOfficer?.officerId ? selectedOfficer?.officerId : 'No Officer Selected'}}</h4>
+        <h4>Blood group: {{selectedOfficer?.bloodGroup ? selectedOfficer?.bloodGroup : 'No Officer Selected'}}</h4>
       </div>
       <button 
         mat-raised-button 
@@ -30,6 +31,30 @@
 
     <!-- Medical Records Form -->
     @if (selectedOfficer) {
+      <div class="medical-category-section">
+        <h3 class="category-title">Medical Classification</h3>
+        <mat-form-field appearance="outline" class="medical-category-field" subscriptSizing="dynamic">
+          <mat-label>
+            <mat-icon>local_hospital</mat-icon>
+            Medical Category
+          </mat-label>
+          <mat-select [(ngModel)]="officerMedicalCategory" placeholder="Select Category">
+            <mat-option value="Fit">
+              <span class="category-option">
+                <span class="status-indicator fit-status"></span>
+                Fit
+              </span>
+            </mat-option>
+            <mat-option value="Fit ex">
+              <span class="category-option">
+                <span class="status-indicator fit-ex-status"></span>
+                Fit ex
+              </span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      
       <form [formGroup]="medicalForm">
         <div class="form-section">
           <div class="section-header">
@@ -51,7 +76,7 @@
                   <th>S no</th>
                   <th>Date</th>
                   <th>Disease</th>
-                  <th>Remarks</th>
+                  <th>MO/SMO Remarks</th>
                   <th>Actions</th>
                 </tr>
               </thead>

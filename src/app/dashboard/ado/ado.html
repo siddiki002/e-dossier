@@ -47,6 +47,35 @@
     </mat-dialog-actions>
 </ng-template>
 
+<ng-template #addSailorChoiceDialog>
+    <h2 mat-dialog-title>
+        <mat-icon>person_add</mat-icon>
+        Add Officers
+    </h2>
+    <mat-dialog-content class="choice-content">
+        <div class="choice-options">
+            <mat-card class="choice-card" (click)="openSingleSailorDialog()">
+                <mat-card-content>
+                    <mat-icon class="choice-icon">person_add</mat-icon>
+                    <h3>Add Single Officer</h3>
+                    <p>Add one officer at a time</p>
+                </mat-card-content>
+            </mat-card>
+            
+            <mat-card class="choice-card" (click)="proceedToBulkAdd()">
+                <mat-card-content>
+                    <mat-icon class="choice-icon">group_add</mat-icon>
+                    <h3>Add Multiple Officers</h3>
+                    <p>Add multiple officers at once</p>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button (click)="dialogRef.close()">Cancel</button>
+    </mat-dialog-actions>
+</ng-template>
+
 <ng-template #editClassDialog let-data>
     <h2 mat-dialog-title>Edit Class</h2>
     <mat-dialog-content>
@@ -111,5 +140,83 @@
     </mat-dialog-content>
     <mat-dialog-actions align="end">
         <button matButton="elevated" (click)="dialogRef.close()">Cancel</button>
+    </mat-dialog-actions>
+</ng-template>
+
+<ng-template #officerCountDialog>
+    <h2 mat-dialog-title>
+        <mat-icon>group_add</mat-icon>
+        How many officers do you want to add?
+    </h2>
+    <mat-dialog-content class="officer-count-content">
+        <mat-form-field appearance="outline" class="count-field">
+            <mat-label>Number of Officers</mat-label>
+            <input matInput 
+                   type="number" 
+                   [(ngModel)]="numberOfOfficersToAdd" 
+                   min="1" 
+                   max="50"
+                   placeholder="Enter number (1-50)" />
+        </mat-form-field>
+        <div class="count-info">
+            <mat-icon class="info-icon">info</mat-icon>
+            <span>You can add 1-50 officers at once</span>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button (click)="officerCountDialogRef.close()">Cancel</button>
+        <button mat-raised-button color="primary" (click)="confirmOfficerCount()">
+            <mat-icon>arrow_forward</mat-icon>
+            Continue
+        </button>
+    </mat-dialog-actions>
+</ng-template>
+
+<ng-template #bulkAddSailorDialog>
+    <h2 mat-dialog-title>
+        <mat-icon>group_add</mat-icon>
+        Add {{newOfficers.length}} Officer(s)
+    </h2>
+    <mat-dialog-content class="bulk-sailor-content">
+        <div class="officer-form-container">
+            @for (officer of newOfficers; track $index; let i = $index) {
+                <div class="officer-form-group">
+                    <div class="officer-form-header">
+                        <h4>Officer {{i + 1}}</h4>
+                        @if (newOfficers.length > 1) {
+                            <button mat-icon-button color="warn" (click)="removeOfficerField(i)" class="remove-officer-btn">
+                                <mat-icon>remove_circle</mat-icon>
+                            </button>
+                        }
+                    </div>
+                    
+                    <div class="officer-form-fields">
+                        <mat-form-field appearance="outline" class="officer-field">
+                            <mat-label>Officer ID</mat-label>
+                            <input matInput [(ngModel)]="officer.id" placeholder="Enter officer ID" />
+                        </mat-form-field>
+                        
+                        <mat-form-field appearance="outline" class="officer-field">
+                            <mat-label>Officer Name</mat-label>
+                            <input matInput [(ngModel)]="officer.name" placeholder="Enter officer name" />
+                        </mat-form-field>
+                    </div>
+                </div>
+            }
+            
+            <div class="add-more-section">
+                <button mat-raised-button color="accent" (click)="addMoreOfficerFields()" class="add-more-btn">
+                    <mat-icon>add</mat-icon>
+                    Add Another Officer
+                </button>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end" class="dialog-actions">
+        <button mat-button (click)="dialogRef.close()">Cancel</button>
+        <button mat-raised-button color="primary" (click)="confirmAddSailors()">
+            <mat-icon>save</mat-icon>
+            Add {{newOfficers.length}} Officer(s)
+        </button>
     </mat-dialog-actions>
 </ng-template>

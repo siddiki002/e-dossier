@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,10 +12,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { baseUrl } from 'src/common/base';
 import { Class, Medical, Officer } from 'src/common/common.types';
 import { SailorListComponent } from "src/common/components/sailor-list/sailor-list.component";
+import { MatSelectModule } from "@angular/material/select";
 
 @Component({
   selector: 'medical-records',
-  imports: [SailorListComponent, CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDatepickerModule, MatIconModule],
+  imports: [SailorListComponent, CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDatepickerModule, MatIconModule, MatSelectModule],
   templateUrl: './medical-records.html',
   styleUrl: './medical-records.css'
 })
@@ -26,6 +27,7 @@ export class MedicalRecords {
   protected classDetails: Class | null = null;
   protected selectedOfficer: Officer | null = null;
   protected officerMedicalRecords: Medical[] = [];
+  protected officerMedicalCategory : 'Fit' | 'Fit ex' | null = null;
 
   protected medicalForm: FormGroup = new FormGroup({
     medicalRecords: new FormArray([])
@@ -51,6 +53,9 @@ export class MedicalRecords {
   protected onOfficerSelection(selectedOfficer: Officer) {
     this.selectedOfficer = selectedOfficer;
     this.resetForm(); // Reset form before loading new data
+    if(this.selectedOfficer.medicalCategory) {
+      this.officerMedicalCategory = this.selectedOfficer.medicalCategory;
+    }
     this.fetchOfficerMedicalRecords(selectedOfficer.id);
   }
 
@@ -127,6 +132,8 @@ export class MedicalRecords {
       return;
     }
 
+    this.updateOfficerMedicalCategory()
+
     const formValue = this.medicalForm.value;
     const { medicalRecords } = formValue;
 
@@ -171,6 +178,17 @@ export class MedicalRecords {
 
       this.fetchOfficerMedicalRecords(this.selectedOfficer!.id);
     });
+  }
+
+  private updateOfficerMedicalCategory() {
+    if(this.selectedOfficer?.medicalCategory !== this.officerMedicalCategory && this.officerMedicalCategory) {
+      const payload : Partial<Officer> = {
+        medicalCategory: this.officerMedicalCategory
+      }
+      this.http.put<Partial<Officer>>(`${baseUrl}/data-entry/officer/${this.selectedOfficer?.id}`, payload).subscribe(() => {
+        console.log("Officer record updated successfully");
+      });
+    }
   }
 
   private removeMedicalRecord(formArray: FormArray, index: number) {

@@ -29,13 +29,16 @@ export class TraitsAssessmentComponent {
   protected isOic: boolean = false;
   
   protected traits = [
-    'SELF DISCIPLINE',
-    'INTEGRITY',
-    'MILITARY BEARING',
-    'PHYSICAL FITNESS',
-    'COURAGE',
-    'DETERMINATION',
-    'ADAPTABILITY'
+    'Professional and practical knowledge',
+    'Proficiency in duties deployed',
+    'Boldness, courage and stamina',
+    'Attitude towards services',
+    'Integrity & moral values',
+    'Sense of duty and readiness to accept responsibility',
+    'Discipline',
+    'Phyical fitness and military bearing',
+    'Intelligence, mental alertness',
+    'Adaptability'
   ];
 
   protected formData: TraitFormData[] = [];
