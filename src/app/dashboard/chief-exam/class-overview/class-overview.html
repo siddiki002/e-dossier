@@ -1,45 +1,130 @@
-<div class="class-overview-container">
-    <div class="class-option-selection-container">
-        <div class="option-selection">
-            <h2>{{classDetails?.name}}</h2>
-            <mat-card class="selected-option-card" (click)="selectOption('pttAssessment')">
-                <mat-card-title>PTT Assessment</mat-card-title>
-            </mat-card>
-            <mat-card class="selected-option-card" (click)="selectOption('compulsoryModule')">
-                <mat-card-title>Compulsory Module</mat-card-title>
-            </mat-card>
-        </div>
-        <div class="officer-list">
-            <sailor-list [sailors]="sailorsInClass" classTitle="Officer Report" [allowSailorSelection]="true" (onSailorSelection)="openSailorReport($event)"></sailor-list>
-        </div>
+<div class="page-container">
+  <div class="page-header">
+    <div class="header-content">
+      <div class="title-section">
+        <mat-icon class="page-icon">assessment</mat-icon>
+        <h1>Class Overview</h1>
+        <div class="class-badge">{{ classDetails?.name }}</div>
+      </div>
     </div>
-    <div class="failed-courses-container">
-        <h1> Failed Courses </h1>
-        <div class="optional-failed-courses">
-            <mat-card class="course-card">
-                <mat-card-title> PTT Courses </mat-card-title>
-            </mat-card>
-            <div class="class-filter-container">
-                <mat-select placeholder="Select PTT Course" class="class-select" [ngModel]="selectedPttCourse" (ngModelChange)="onPttCourseSelectionChange($event)">
-                    @for (course of optionalCourses; track $index) {
-                        <mat-option value="{{course.id}}">{{course.courseName}}</mat-option>
-                    }
-                </mat-select>
-                <sailor-list [sailors]="failedOfficerInPttCourse" height="auto"></sailor-list>
+  </div>
+  
+  <div class="content">
+    <!-- Assessment Options Section -->
+    <div class="assessment-section">
+      <div class="section-header">
+        <h2>
+          <mat-icon>quiz</mat-icon>
+          Assessment Options
+        </h2>
+      </div>
+      
+      <div class="assessment-cards">
+        <mat-card class="assessment-card ptt-card" (click)="selectOption('pttAssessment')">
+          <div class="card-content">
+            <div class="card-icon">
+              <mat-icon>fitness_center</mat-icon>
             </div>
-        </div>
-        <div class="compulsory-failed-courses">
-            <mat-card class="course-card">
-                <mat-card-title> Compulsory Module </mat-card-title>
-            </mat-card>
-            <div class="class-filter-container">
-                <mat-select placeholder="Select Compulsory Course" class="class-select" [ngModel]="selectedCompulsoryCourse" (ngModelChange)="onCompulsoryCourseSelectionChange($event)">
-                    @for (course of compulsoryCourses; track $index) {
-                        <mat-option value="{{course.id}}">{{course.courseName}}</mat-option>
-                    }
-                </mat-select>
-                <sailor-list [sailors]="failedOfficerInCompulsoryCourse" height="auto"></sailor-list>
+            <div class="card-info">
+              <h3>PTT Assessment</h3>
+              <p>Physical Training Test evaluation</p>
             </div>
+            <mat-icon class="arrow-icon">arrow_forward</mat-icon>
+          </div>
+        </mat-card>
+        
+        <mat-card class="assessment-card compulsory-card" (click)="selectOption('compulsoryModule')">
+          <div class="card-content">
+            <div class="card-icon">
+              <mat-icon>school</mat-icon>
+            </div>
+            <div class="card-info">
+              <h3>Compulsory Module</h3>
+              <p>Required course assessments</p>
+            </div>
+            <mat-icon class="arrow-icon">arrow_forward</mat-icon>
+          </div>
+        </mat-card>
+      </div>
+      
+      <!-- Officer Selection -->
+      <div class="officer-selection">
+        <div class="subsection-header">
+          <h3>
+            <mat-icon>people</mat-icon>
+            Officer Reports
+          </h3>
         </div>
+        <sailor-list 
+          [sailors]="sailorsInClass" 
+          classTitle="Select Officer for Report" 
+          [allowSailorSelection]="true" 
+          (onSailorSelection)="openSailorReport($event)"
+          [showSearchBar]="sailorsInClass.length > 5">
+        </sailor-list>
+      </div>
     </div>
+
+    <!-- Failed Courses Section -->
+    <div class="failed-courses-section">
+      <div class="section-header">
+        <h2>
+          <mat-icon>report_problem</mat-icon>
+          Failed Courses Analysis
+        </h2>
+      </div>
+      
+      <!-- PTT Failed Courses -->
+      <div class="course-category">
+        <div class="category-header">
+          <div class="category-info">
+            <mat-icon class="category-icon">fitness_center</mat-icon>
+            <h3>PTT Courses</h3>
+          </div>
+        </div>
+        
+        <div class="course-selector">
+          <mat-form-field appearance="outline" class="course-select-field">
+            <mat-label>Select PTT Course</mat-label>
+            <mat-select [ngModel]="selectedPttCourse" (ngModelChange)="onPttCourseSelectionChange($event)">
+              @for (course of optionalCourses; track $index) {
+                <mat-option value="{{course.id}}">{{course.courseName}}</mat-option>
+              }
+            </mat-select>
+            <mat-icon matSuffix>expand_more</mat-icon>
+          </mat-form-field>
+        </div>
+        
+        <div class="failed-officers-list">
+          <sailor-list [sailors]="failedOfficerInPttCourse" height="auto" classTitle="Failed Officers"></sailor-list>
+        </div>
+      </div>
+
+      <!-- Compulsory Failed Courses -->
+      <div class="course-category">
+        <div class="category-header">
+          <div class="category-info">
+            <mat-icon class="category-icon">school</mat-icon>
+            <h3>Compulsory Module</h3>
+          </div>
+        </div>
+        
+        <div class="course-selector">
+          <mat-form-field appearance="outline" class="course-select-field">
+            <mat-label>Select Compulsory Course</mat-label>
+            <mat-select [ngModel]="selectedCompulsoryCourse" (ngModelChange)="onCompulsoryCourseSelectionChange($event)">
+              @for (course of compulsoryCourses; track $index) {
+                <mat-option value="{{course.id}}">{{course.courseName}}</mat-option>
+              }
+            </mat-select>
+            <mat-icon matSuffix>expand_more</mat-icon>
+          </mat-form-field>
+        </div>
+        
+        <div class="failed-officers-list">
+          <sailor-list [sailors]="failedOfficerInCompulsoryCourse" height="auto" classTitle="Failed Officers"></sailor-list>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

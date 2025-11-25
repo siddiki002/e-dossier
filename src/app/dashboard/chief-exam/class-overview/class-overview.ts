@@ -7,6 +7,8 @@ import { MatSelectModule } from "@angular/material/select";
 import { SailorListComponent } from "src/common/components/sailor-list/sailor-list.component";
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from "@angular/material/card";
+import { MatIconModule } from "@angular/material/icon";
+import { MatFormFieldModule } from "@angular/material/form-field";
 
 type FailedCourses = {
   [courseId: string]: Officer[];
@@ -15,7 +17,7 @@ type FailedCourses = {
 
 @Component({
   selector: 'class-overview',
-  imports: [RouterModule, MatSelectModule, SailorListComponent, FormsModule, MatCardModule],
+  imports: [RouterModule, MatSelectModule, SailorListComponent, FormsModule, MatCardModule, MatIconModule, MatFormFieldModule],
   templateUrl: './class-overview.html',
   styleUrl: './class-overview.css'
 })

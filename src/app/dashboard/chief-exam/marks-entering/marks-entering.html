@@ -50,6 +50,14 @@
                             </mat-select>
                         </mat-form-field>
                         
+                        @if (selectedCourse) {
+                            <button mat-icon-button color="primary" class="edit-course-btn" 
+                                   (click)="editCourse(getSelectedCourseObject()!)"
+                                   matTooltip="Edit Course Details">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        }
+                        
                         <button mat-raised-button color="accent" class="add-course-btn" (click)="addNewCourse()">
                             <mat-icon>add</mat-icon>
                             Add New Course
@@ -436,5 +444,57 @@
     <mat-dialog-actions align="end">
         <button matButton="elevated" (click)="addAssessmentDialogRef?.close()">Cancel</button>
         <button matButton="elevated" color="primary" (click)="confirmAddAssessment()">Add</button>
+    </mat-dialog-actions>
+</ng-template>
+
+<ng-template #editCourseDialog>
+    <h2 class="course-dialog-title" mat-dialog-title>
+        <mat-icon>edit</mat-icon>
+        Edit Course Details
+    </h2>
+    <mat-dialog-content class="course-dialog-content">
+        <div class="course-form-container">
+            <div class="course-form-group">
+                <mat-form-field appearance="outline" class="course-field">
+                    <mat-label>Course Name</mat-label>
+                    <input matInput [(ngModel)]="editingCourse!.name" placeholder="Enter course name" />
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline" class="course-field">
+                    <mat-label>Course Type</mat-label>
+                    <mat-select [(ngModel)]="editingCourse!.type" disabled>
+                        <mat-option value="Optional">PTT</mat-option>
+                        <mat-option value="Compulsory">Compulsory</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                
+                @if (option === 'pttAssessment') {
+                    <mat-form-field appearance="outline" class="course-field">
+                        <mat-label>Module</mat-label>
+                        <mat-select [(ngModel)]="editingCourse!.module">
+                            <mat-option value="Module 1">Module I</mat-option>
+                            <mat-option value="Module 2">Module II</mat-option>
+                            <mat-option value="Module 3">Module III</mat-option>
+                            <mat-option value="Module 4">Module IV</mat-option>
+                            <mat-option value="Module 5">Module V</mat-option>
+                            <mat-option value="Module 6">Module VI</mat-option>
+                            <mat-option value="Module 7">Module VII</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="course-field">
+                        <mat-label>Weightage</mat-label>
+                        <input matInput [(ngModel)]="editingCourse!.weightage" placeholder="Enter weightage" />
+                    </mat-form-field>
+                }
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end" class="dialog-actions">
+        <button mat-button (click)="editCourseDialogRef?.close()">Cancel</button>
+        <button mat-raised-button color="primary" (click)="confirmEditCourse()">
+            <mat-icon>save</mat-icon>
+            Update Course
+        </button>
     </mat-dialog-actions>
 </ng-template>

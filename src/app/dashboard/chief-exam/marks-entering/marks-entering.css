@@ -1,10 +1,184 @@
+/* Main Container */
 .marks-entering-container {
     padding: 2rem;
-    background: #f8fafc;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    gap: 2rem;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Page Header Styles */
+.page-header {
+    margin-bottom: 1.5rem;
+    animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.header-card {
+    border-radius: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 20px 60px rgba(102, 126, 234, 0.15);
+    border: none;
+    overflow: hidden;
+    position: relative;
+}
+
+.header-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+}
+
+.header-card .mat-mdc-card-header {
+    padding: 2rem 2rem 1rem 2rem;
+    background: transparent;
+}
+
+.header-avatar {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header-avatar mat-icon {
+    font-size: 2rem;
+    width: 2rem;
+    height: 2rem;
+    color: white;
+}
+
+.header-card .mat-mdc-card-title {
+    color: white;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.025em;
+}
+
+.header-card .mat-mdc-card-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+    opacity: 0.9;
+}
+
+/* Course Selection Section */
+.course-selection-section {
+    padding: 1.5rem 2rem 2rem 2rem;
+}
+
+.selection-group {
+    display: flex;
+    align-items: flex-end;
     gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.course-select-field {
+    flex: 1;
+    min-width: 320px;
+}
+
+.course-select-field .mat-mdc-form-field-wrapper {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.course-select-field.mat-focused .mat-mdc-form-field-wrapper {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+}
+
+.course-select-field .mat-mdc-form-field-label {
+    color: #1e293b !important;
+    font-weight: 600;
+}
+
+.course-select-field .mat-mdc-form-field-label mat-icon {
+    vertical-align: middle;
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    color: #667eea;
+}
+
+.course-select-field .mat-mdc-select-value {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.course-select-field .mat-mdc-select-arrow {
+    color: #64748b;
+}
+
+.course-select-field .mdc-line-ripple::before,
+.course-select-field .mdc-line-ripple::after {
+    border-bottom-color: #667eea;
+}
+
+.course-select-field .mat-mdc-form-field-focus-overlay {
+    background-color: rgba(102, 126, 234, 0.04);
+}
+
+.course-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.course-option span {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* Hover effects for dropdown options */
+.course-option:hover {
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin: -0.25rem;
+}
+
+.assessment-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.assessment-option span {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.assessment-option:hover {
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin: -0.25rem;
 }
 
 /* Table Header Styles */
@@ -456,115 +630,15 @@
     font-size: 1rem;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .marks-entering-container {
-        padding: 1rem;
-    }
-    
-    .table-header {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-    }
-    
-    .table-title {
-        font-size: 1.5rem;
-    }
-    
-    .table-wrapper {
-        overflow-x: auto;
-    }
-    
-    .modern-table {
-        min-width: 700px;
-    }
-    
-    .table-cell {
-        padding: 0.75rem 0.5rem;
-        font-size: 0.875rem;
-    }
-}
-
-@media (max-width: 1024px) {
-    .officer-name {
-        font-size: 0.9rem;
-    }
-    
-    .officer-avatar {
-        width: 36px;
-        height: 36px;
-        font-size: 1rem;
-    }
-    
-    .table-header-cell {
-        font-size: 0.85rem;
-        padding: 1rem 0.75rem;
-    }
-}
-
-/* Animation for table rows */
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.table-row {
-    animation: slideIn 0.3s ease forwards;
-}
-
-.table-row:nth-child(1) { animation-delay: 0.1s; }
-.table-row:nth-child(2) { animation-delay: 0.15s; }
-.table-row:nth-child(3) { animation-delay: 0.2s; }
-.table-row:nth-child(4) { animation-delay: 0.25s; }
-.table-row:nth-child(5) { animation-delay: 0.3s; }
-
-/* Additional enhancements */
-.loading-shimmer {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-}
-
-@keyframes shimmer {
-    0% {
-        background-position: -200% 0;
-    }
-    100% {
-        background-position: 200% 0;
-    }
-}
-
-/* Enhanced button styling */
-.save-btn mat-icon {
-    margin-right: 0.5rem;
-}
-
-/* Enhanced focus states */
-.marks-input .mat-mdc-form-field.mat-focused .mat-mdc-text-field-wrapper {
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-/* Improved accessibility */
-.table-row:focus-within {
-    outline: 2px solid #667eea;
-    outline-offset: 2px;
-}
+/* Course selection styles - REMOVED DUPLICATE */
 
 /* Course Dialog Styles */
-
 .course-dialog-title {
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100px;
+    min-height: 60px;
 }
 .course-dialog-content {
     padding: 1.5rem;
@@ -579,94 +653,131 @@
 }
 
 .course-form-group {
-    padding: 1.5rem;
+    padding: 2rem;
     border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    background: #f8fafc;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
     position: relative;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 .course-form-group:hover {
     border-color: #cbd5e0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.course-form-group::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+    border-radius: 16px 16px 0 0;
 }
 
 .course-form-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .course-form-header h4 {
     margin: 0;
-    color: #2d3748;
-    font-weight: 600;
+    color: #1e293b;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: -0.025em;
 }
 
 .remove-course-btn {
-    color: #e53e3e;
-    transition: all 0.3s ease;
+    color: #ef4444;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 8px;
 }
 
 .remove-course-btn:hover {
-    background-color: rgba(229, 62, 62, 0.1);
+    background: rgba(239, 68, 68, 0.15);
+    transform: scale(1.05);
 }
 
 .course-field {
     width: 100%;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.course-field .mat-mdc-form-field-wrapper {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.course-field.mat-focused .mat-mdc-form-field-wrapper {
+    border-color: #667eea;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+}
+
+.course-field .mat-mdc-form-field-label {
+    color: #64748b !important;
+    font-weight: 500;
+}
+
+.course-field input,
+.course-field .mat-mdc-select-value {
+    color: #1e293b;
+    font-weight: 500;
+}
+
+.course-field input::placeholder {
+    color: #64748b;
+    font-weight: 400;
+}
+
+.course-field .mat-mdc-select-placeholder {
+    color: #64748b;
 }
 
 .add-more-section {
     display: flex;
     justify-content: center;
-    padding: 1rem;
+    padding: 2rem 1rem 1rem 1rem;
+    position: relative;
+}
+
+.add-more-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+    transform: translateX(-50%);
 }
 
 .add-more-btn {
-    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     color: white;
     border: none;
     font-weight: 600;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+    padding: 0.875rem 2rem;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    font-size: 0.95rem;
 }
 
 .add-more-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(72, 187, 120, 0.4);
-}
-
-.dialog-actions {
-    padding: 1rem 1.5rem;
-    background: #f7fafc;
-    border-top: 1px solid #e2e8f0;
-}
-
-.dialog-actions button {
-    margin-left: 0.5rem;
-}
-
-/* Dialog title styling */
-h2[mat-dialog-title] {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #2d3748;
-    font-weight: 600;
-    margin-bottom: 0;
-    padding: 1rem 1.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    margin: -1.5rem -1.5rem 0 -1.5rem;
-}
-
-h2[mat-dialog-title] mat-icon {
-    font-size: 1.5rem;
-    width: 1.5rem;
-    height: 1.5rem;
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5);
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
 }

@@ -36,6 +36,8 @@ export type Officer = {
     percentage: string
     pet: Pet[]
     medicalCategory: 'Fit' | 'Fit ex'
+    oicRemarks?: string,
+    doRemarks?: string
 
 }
 

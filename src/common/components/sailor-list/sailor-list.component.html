@@ -1,26 +1,58 @@
 <div class="sailor-container">
   
   <div class="header">
-    <h2>{{ classTitle }}</h2>
-    <button *ngIf="allowAddSailor" mat-raised-button color="primary" (click)="addNewSailor()">
-      Add New Sailor
-    </button>
+    <div class="header-content">
+      <div class="title-section">
+        <mat-icon class="class-icon">groups</mat-icon>
+        <h2>{{ classTitle || 'Officers' }}</h2>
+        <span class="officer-count">{{ sailorList.length }} officer{{ sailorList.length !== 1 ? 's' : '' }}</span>
+      </div>
+      <button *ngIf="allowAddSailor" mat-raised-button color="primary" class="add-button" (click)="addNewSailor()">
+        <mat-icon>person_add</mat-icon>
+        Add Officer
+      </button>
+    </div>
   </div>
 
   <div class="sailor-list" [style.height]="height">
-    <div *ngIf="showSearchBar" class="search-bar">
+    <div *ngIf="showSearchBar" class="search-section">
       <div class="search-container">
-        <input [ngModel]="searchTerm" (ngModelChange)="onSearch($event)" placeholder="Search sailors" class="search-input"/>
         <mat-icon class="search-icon">search</mat-icon>
+        <input [ngModel]="searchTerm" (ngModelChange)="onSearch($event)" placeholder="Search by name or ID..." class="search-input"/>
+        <button *ngIf="searchTerm" mat-icon-button class="clear-search" (click)="onSearch('')">
+          <mat-icon>clear</mat-icon>
+        </button>
       </div>
     </div>
-    <mat-card *ngFor="let sailor of sailorList; let index = index" class="sailor-item" (click)="selectSailor(sailor)" [class.hover-enabled]="allowSailorSelection" [class.selected]="sailor.id === selectedOfficerId">
-      <span>{{ sailor?.officerId}}</span>
-			<span>{{ sailor.name }}</span>
-    </mat-card>
+    
+    <div class="officer-grid">
+      <mat-card *ngFor="let sailor of sailorList; let index = index" 
+                class="officer-card" 
+                (click)="selectSailor(sailor)" 
+                [class.hover-enabled]="allowSailorSelection" 
+                [class.selected]="sailor.id === selectedOfficerId"
+                [class.clickable]="allowSailorSelection">
+        <div class="officer-avatar">
+          <mat-icon class="avatar-icon">person</mat-icon>
+        </div>
+        <div class="officer-info">
+          <div class="officer-name">{{ sailor.name }}</div>
+          <div class="officer-id">ID: {{ sailor?.officerId }}</div>
+        </div>
+        <div class="officer-actions" *ngIf="allowSailorSelection">
+          <mat-icon class="selection-indicator">{{ sailor.id === selectedOfficerId ? 'radio_button_checked' : 'radio_button_unchecked' }}</mat-icon>
+        </div>
+      </mat-card>
+    </div>
 
-    <div *ngIf="sailorList.length === 0" class="empty">
-      No sailors found.
+    <div *ngIf="sailorList.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">groups_off</mat-icon>
+      <h3>{{ searchTerm ? 'No officers found' : 'No officers enrolled' }}</h3>
+      <p>{{ searchTerm ? 'Try adjusting your search criteria' : 'Get started by adding some officers to this class' }}</p>
+      <button *ngIf="allowAddSailor && !searchTerm" mat-raised-button color="primary" (click)="addNewSailor()">
+        <mat-icon>person_add</mat-icon>
+        Add First Officer
+      </button>
     </div>
   </div>
 

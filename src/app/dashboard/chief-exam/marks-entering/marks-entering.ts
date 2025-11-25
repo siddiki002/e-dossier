@@ -54,11 +54,15 @@ export class MarksEntering {
     {label: 'Module VII', value: 'Module 7'},
   ];
   protected selectedModule: string = '';
+  // Add edit course properties
+  protected editCourseDialogRef: MatDialogRef<any, any> | null = null;
+  protected editingCourse: {id: string, name: string, type: string, module: string, weightage?: number} | null = null;
 
   private originalCourseList : Courses[] = [];
 
   @ViewChild('addCourseDialog') addCourseDialogTemplate: any;
   @ViewChild('addAssessmentDialog') addAssessmentDialogTemplate: any;
+  @ViewChild('editCourseDialog') editCourseDialogTemplate: any;
 
   constructor(private http: HttpClient, private router: Router, private activatedRoute: ActivatedRoute, private dialog: MatDialog, private cdr: ChangeDetectorRef) {
     this.sailorsInClass = this.router?.currentNavigation()?.extras?.state?.['data'] || [];
@@ -208,6 +212,59 @@ export class MarksEntering {
       console.error('Error adding courses:', error);
       alert('Error adding courses. Please try again.');
     });
+  }
+
+  protected editCourse(course: Courses) {
+    this.editingCourse = {
+      id: course.id,
+      name: course.courseName,
+      type: course.type,
+      module: course.module || '',
+      weightage: course.weightage || 0
+    };
+    
+    this.editCourseDialogRef = this.dialog.open(this.editCourseDialogTemplate, {
+      width: '500px',
+      maxHeight: '80vh'
+    });
+  }
+
+  protected confirmEditCourse() {
+    if (!this.editingCourse || !this.editingCourse.name.trim()) {
+      alert('Please enter a course name');
+      return;
+    }
+
+    this.editCourseDialogRef?.close();
+
+    let payload: any = {
+      courseName: this.editingCourse.name,
+      module: this.editingCourse.module,
+      type: this.editingCourse.type
+    };
+
+    if (this.option === 'pttAssessment') {
+      payload.weightage = Number(this.editingCourse.weightage) || 0;
+    }
+
+    this.http.put(`${baseUrl}/data-entry/course/${this.editingCourse.id}`, payload, {observe: 'response'})
+      .subscribe((response: HttpResponse<any>) => {
+        if (response.status === 200) {
+          this.fetchCourses();
+          if (this.selectedModule) {
+            this.onModuleSelection(this.selectedModule);
+          }
+          this.editingCourse = null;
+          alert('Course updated successfully!');
+        }
+      }, error => {
+        console.error('Error updating course:', error);
+        alert('Error updating course. Please try again.');
+      });
+  }
+
+  protected getSelectedCourseObject(): Courses | undefined {
+    return this.courses.find(course => course.id === this.selectedCourse);
   }
 
   protected confirmAddAssessment() {
@@ -406,5 +463,15 @@ export class MarksEntering {
         throw error
       });
   }
+
+  protected openEditCourseDialog(course: {id: string, name: string, type: string, module: string, weightage?: number}) {
+    this.editingCourse = { ...course };
+    this.editCourseDialogRef = this.dialog.open(this.editCourseDialogTemplate, {
+      width: '500px',
+      maxHeight: '80vh'
+    });
+  }
+
+
 
 }

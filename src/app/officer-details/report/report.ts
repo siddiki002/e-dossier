@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '@app/user.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -17,7 +18,7 @@ type MarksInOptionalCourse = {
 
 @Component({
   selector: 'report',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './report.html',
   styleUrl: './report.css'
 })
@@ -29,11 +30,15 @@ export class Report {
   protected marksInOptionalCourses: MarksInOptionalCourse = {};
   protected totalMarks: number = 0;
   protected obtainedMarks: number = 0;
+  protected isOic: boolean = false;
+  protected oicRemarks: string = '';
+  protected doRemarks: string = '';
 
   private destroy$ = new Subject<void>();
 
   constructor(private activatedRouter: ActivatedRoute, private http: HttpClient, private userService: UserService) {
     this.userService.User.pipe(takeUntil(this.destroy$)).subscribe((user) => {
+      this.isOic = user?.role === 'oic';
       if(user?.role === 'oic' || user?.role === 'intructor') {
         this.activatedRouter.parent?.params.subscribe((params) => {
           this.officerId = params['id'];
@@ -55,6 +60,8 @@ export class Report {
   private getOfficerDetails() {
     this.http.get<Officer>(`${baseUrl}/data-entry/officer/${this.officerId}`).subscribe((data) => {
       this.officer = data;
+      this.oicRemarks = data.oicRemarks || '';
+      this.doRemarks = data.doRemarks || '';
     });
   }
 
@@ -179,6 +186,20 @@ export class Report {
 
   protected getModuleNames(): string[] {
     return Object.keys(this.getGroupedCourses()).sort();
+  }
+
+  protected saveRemarks() {
+    const payload: Partial<Officer> = {}
+
+    if(this.isOic) {
+      payload.oicRemarks = this.oicRemarks;
+    } else {
+      payload.doRemarks = this.doRemarks;
+    }
+
+    this.http.put(`${baseUrl}/data-entry/officer/${this.officerId}`, payload).subscribe(() => {
+      alert('Remarks saved successfully.');
+    })
   }
 
 }

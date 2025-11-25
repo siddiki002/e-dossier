@@ -1,28 +1,95 @@
-<div class="header">
-    <h1>Enrolled Classes</h1>
-</div>
-<div class="content">
-    <div class="class-list-container">
+<div class="page-container">
+  <div class="page-header">
+    <div class="header-content">
+      <div class="title-section">
+        <mat-icon class="page-icon">school</mat-icon>
+        <h1>Class Management</h1>
+        <span class="class-count">{{ classes.length }} class{{ classes.length !== 1 ? 'es' : '' }}</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="content">
+    <div class="class-section">
+      <div class="section-header">
+        <h2>
+          <mat-icon>groups</mat-icon>
+          Enrolled Classes
+        </h2>
+        <button *ngIf="isAdo" mat-raised-button color="primary" class="add-class-btn" (click)="openAddClassDialog()">
+          <mat-icon>add</mat-icon>
+          Add New Class
+        </button>
+      </div>
+      
+      <div class="class-grid">
         @for (class of classes; track $index) {
-            <mat-card style="text-align: center; padding: 1rem;" class="class-card" (click)="selectClass(class)">
-                <div *ngIf="isAdo" style="align-self: flex-end; gap:0.5rem; display: flex;">
-                    <mat-icon matCardAvatar class="card-icon" (click)="editClass($event, class)">edit</mat-icon>
-                    <mat-icon matCardAvatar class="card-icon" (click)="deleteClass($event, class)">delete</mat-icon>
+          <mat-card class="class-card" (click)="selectClass(class)">
+            <div class="card-header">
+              <div class="class-info">
+                <div class="class-avatar">
+                  <mat-icon>class</mat-icon>
                 </div>
-                <mat-card-title>Name: {{ class.name }}</mat-card-title>
-                <mat-card-subtitle>Number of Students: {{class.numberOfStudents || 0}}</mat-card-subtitle>
-            </mat-card>
+                <div class="class-details">
+                  <div class="class-name">{{ class.name }}</div>
+                  <div class="student-count">{{ class.numberOfStudents || 0 }} student{{ (class.numberOfStudents || 0) !== 1 ? 's' : '' }}</div>
+                </div>
+              </div>
+              <div *ngIf="isAdo" class="card-actions">
+                <button mat-icon-button class="action-btn edit-btn" (click)="editClass($event, class)" matTooltip="Edit Class">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button class="action-btn delete-btn" (click)="deleteClass($event, class)" matTooltip="Delete Class">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </mat-card>
         }
-        <button *ngIf="isAdo" matButton="elevated" style="color: black;" (click)="openAddClassDialog()">Add new class +</button>
+        
+        <div *ngIf="classes.length === 0" class="empty-classes">
+          <mat-icon class="empty-icon">school_off</mat-icon>
+          <h3>No classes found</h3>
+          <p>Get started by creating your first class</p>
+          <button *ngIf="isAdo" mat-raised-button color="primary" (click)="openAddClassDialog()">
+            <mat-icon>add</mat-icon>
+            Create First Class
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="class-filter-container">
-        <mat-select placeholder="Select a class" class="class-select" [ngModel]="selectedClassId" (ngModelChange)="onClassSelectionChange($event)">
+
+    <div class="officer-section">
+      <div class="section-header">
+        <h2>
+          <mat-icon>people</mat-icon>
+          Class Officers
+        </h2>
+      </div>
+      
+      <div class="class-selector">
+        <mat-form-field appearance="outline" class="class-select-field">
+          <mat-label>Select a class</mat-label>
+          <mat-select [ngModel]="selectedClassId" (ngModelChange)="onClassSelectionChange($event)" placeholder="Choose a class">
             @for (class of classes; track $index) {
-                <mat-option value="{{class.id}}">{{class.name}}</mat-option>
+              <mat-option value="{{class.id}}">{{class.name}}</mat-option>
             }
-        </mat-select>
-        <sailor-list [classTitle]="selectedClass?.name" [sailors]="sailorsInClass" (addSailor)="openAddSailorDialog()" [allowAddSailor]="isAdo"></sailor-list>
+          </mat-select>
+          <mat-icon matSuffix>expand_more</mat-icon>
+        </mat-form-field>
+      </div>
+      
+      <div class="officer-list-container">
+        <sailor-list 
+          [classTitle]="selectedClass?.name" 
+          [sailors]="sailorsInClass" 
+          (addSailor)="openAddSailorDialog()" 
+          [allowAddSailor]="isAdo"
+          [showSearchBar]="sailorsInClass.length > 5">
+        </sailor-list>
+      </div>
     </div>
+  </div>
 </div>
 
 <ng-template #addSailorDialog>

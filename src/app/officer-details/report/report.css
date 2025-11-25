@@ -357,47 +357,165 @@
   border-left: 5px solid #ffc107;
 }
 
-/* Report Footer */
-.report-footer {
-  border-top: 2px solid #e9ecef;
-  padding-top: 30px;
-  margin-top: 40px;
+/* Remarks Section Styling */
+.remarks-section {
+  margin-bottom: 40px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 8px;
+  padding: 30px;
+  border-left: 5px solid #1f4e79;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.footer-content {
+.remarks-container {
+  display: grid;
+  gap: 25px;
+  margin-bottom: 25px;
+}
+
+.remark-field {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.remark-field:hover {
+  border-color: #1f4e79;
+  box-shadow: 0 4px 15px rgba(31, 78, 121, 0.1);
+}
+
+.remark-field:focus-within {
+  border-color: #1f4e79;
+  box-shadow: 0 0 0 3px rgba(31, 78, 121, 0.1);
+}
+
+.remark-label {
   display: flex;
-  justify-content: space-between;
-  align-items: end;
-}
-
-.signature-section {
-  display: flex;
-  gap: 100px;
-}
-
-.signature-line {
-  text-align: center;
-}
-
-.signature-space {
-  width: 200px;
-  height: 60px;
-  border-bottom: 2px solid #495057;
-  margin-bottom: 10px;
-}
-
-.signature-label {
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 12px;
   font-weight: 600;
-  color: #495057;
+  color: #1f4e79;
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.footer-note {
+.label-text {
+  flex: 1;
+}
+
+.label-required {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.remark-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 15px;
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  font-family: 'Arial', 'Helvetica', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #495057;
+  background-color: #fff;
+  resize: vertical;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.remark-textarea:focus {
+  outline: none;
+  border-color: #1f4e79;
+  box-shadow: 0 0 0 3px rgba(31, 78, 121, 0.1);
+  background-color: #fafbfc;
+}
+
+.remark-textarea::placeholder {
+  color: #adb5bd;
   font-style: italic;
+}
+
+.remark-textarea.readonly {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
   color: #6c757d;
-  max-width: 300px;
+  cursor: not-allowed;
+}
+
+.remark-textarea.readonly:focus {
+  box-shadow: none;
+  border-color: #dee2e6;
+}
+
+/* Action Section Styling */
+.action-section {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding-top: 20px;
+  border-top: 2px solid #e9ecef;
+}
+
+.save-btn,
+.export-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  min-width: 140px;
+  justify-content: center;
+}
+
+.save-btn.primary {
+  background: linear-gradient(135deg, #1f4e79 0%, #2d5aa0 100%);
+  color: white;
+}
+
+.save-btn.primary:hover {
+  background: linear-gradient(135deg, #1a3f66 0%, #25508a 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(31, 78, 121, 0.3);
+}
+
+.save-btn.primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.export-btn.secondary {
+  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+  color: white;
+}
+
+.export-btn.secondary:hover {
+  background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+.export-btn.secondary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btn-icon {
+  font-size: 16px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
 }
 
 /* Utility Classes */
@@ -445,6 +563,26 @@
   .performance-table th,
   .performance-table td {
     padding: 8px 4px;
+  }
+  
+  .remarks-section {
+    padding: 20px;
+  }
+  
+  .action-section {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .save-btn,
+  .export-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .remark-textarea {
+    min-height: 100px;
+    font-size: 16px; /* Prevent zoom on iOS */
   }
 }
 
