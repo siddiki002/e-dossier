@@ -78,9 +78,10 @@ export class Oic implements OnInit {
           },
         ]
   };
-  protected classes: Class[] = []
-  protected selectedClasses: string[] = []
-  protected searchQuery: string = ''
+  protected classes: Class[] = [];
+  protected selectedClasses: string[] = [];
+  protected selectedClass: string = '';
+  protected searchQuery: string = '';
   protected filteredOfficers: Officer[] = []
   protected allOfficers: Officer[] = []
   protected isLoading: boolean = false
@@ -95,6 +96,14 @@ export class Oic implements OnInit {
   // Dashboard data properties
   protected disciplineRecords: Warnings[] = []
   protected medicalRecords: any[] = []
+  
+  // AI Report properties
+  protected showAiReport: boolean = false
+  protected showAiReportContainer: boolean = false
+  protected isLoadingAiReport: boolean = false
+  protected aiSummary: string = ''
+  protected displayedSummary: string = ''
+  protected isTypingAnimation: boolean = false
 
   protected onClassSelection(selectedClasses: string[]) {
     this.selectedClasses = [...selectedClasses];
@@ -269,5 +278,37 @@ export class Oic implements OnInit {
 
   protected getCurrentTime(): string {
     return new Date().toLocaleTimeString();
+  }
+
+  protected generateAiReport(): void {
+    this.showAiReport = true;
+    this.isLoadingAiReport = true;
+    this.aiSummary = '';
+
+    
+    this.http.get<{aiSummary: string}>(`${baseUrl}/class/${this.selectedClass}/ai-summary`).subscribe({
+      next: (data) => {
+        this.aiSummary = data.aiSummary;
+        this.isLoadingAiReport = false;
+      },
+      error: (error) => {
+        console.error('Error fetching AI summary:', error);
+        this.aiSummary = 'Failed to generate AI report. Please try again.';
+        this.isLoadingAiReport = false;
+      }
+    });
+  }
+
+  protected onAIReportClassSelection(classId: string): void {
+    this.selectedClass = classId;
+    this.generateAiReport();
+  }
+
+  protected closeAiReport(): void {
+    this.showAiReport = false;
+    this.aiSummary = '';
+    this.displayedSummary = '';
+    this.isTypingAnimation = false;
+    this.isLoadingAiReport = false;
   }
 }

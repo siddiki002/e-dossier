@@ -331,65 +331,114 @@
     color: #6b7280;
 }
 
-/* Responsive Design */
-@media (max-width: 1200px) {
-    .charts-row {
-        grid-template-columns: 1fr;
-    }
-    
-    .summary-row {
-        grid-template-columns: 1fr;
-    }
+/* AI Report Styles */
+.ai-report-row {
+    margin-top: 24px;
+    width: 100%;
+    animation: slideInUp 0.3s ease-out;
 }
 
-@media (max-width: 768px) {
-    .dashboard-container {
-        padding: 16px;
-        gap: 24px;
-    }
-    
-    .stats-row {
-        grid-template-columns: 1fr;
-    }
-    
-    .discipline-stats {
-        flex-direction: column;
-        gap: 16px;
-    }
-    
-    .stat-item {
-        width: 100%;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-    
-    .quick-actions-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.class-select {
+    width: 100%;
+    max-width: 350px;
+    margin-bottom: 20px;
+    transition: all 0.2s ease;
 }
 
-@media (max-width: 480px) {
-    .quick-actions-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .chart-container {
-        min-height: 250px;
-        padding: 8px;
-    }
+.class-select:hover {
+    transform: translateY(-1px);
 }
 
-/* Animation */
-.stats-card,
-.chart-card,
-.summary-card {
-    animation: fadeInUp 0.6s ease-out;
+.class-select .mat-mdc-form-field-flex {
+    background: white;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.class-select:hover .mat-mdc-form-field-flex {
+    border-color: #3b82f6;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.class-select.mat-focused .mat-mdc-form-field-flex {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.class-select .mat-mdc-form-field-label {
+    color: #64748b;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.class-select.mat-focused .mat-mdc-form-field-label {
+    color: #3b82f6;
+    font-weight: 600;
+}
+
+.class-select .mat-mdc-select-value {
+    color: #1e293b;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.class-select .mat-mdc-select-arrow {
+    color: #3b82f6;
+}
+
+.class-select .mat-mdc-form-field-icon-suffix {
+    color: #3b82f6;
+}
+
+/* Style for the dropdown panel */
+.mat-mdc-select-panel {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e2e8f0;
+    max-height: 280px;
+    overflow: hidden;
+}
+
+.mat-mdc-option {
+    padding: 14px 16px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    font-size: 14px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.mat-mdc-option:last-child {
+    border-bottom: none;
+}
+
+.mat-mdc-option:hover {
+    background: #f8fafc;
+    color: #1e293b;
+}
+
+.mat-mdc-option.mdc-list-item--selected {
+    background: #eff6ff;
+    color: #1e40af;
+    font-weight: 600;
+}
+
+.mat-mdc-option.mat-mdc-option-active {
+    background: #3b82f6;
+    color: white;
+}
+
+/* Add a subtle animation to the select field */
+.class-select {
+    animation: fadeInUp 0.3s ease-out;
 }
 
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(10px);
     }
     to {
         opacity: 1;
@@ -397,255 +446,407 @@
     }
 }
 
-.chart-card:nth-child(1) { animation-delay: 0.1s; }
-.chart-card:nth-child(2) { animation-delay: 0.2s; }
-.stats-card:nth-child(1) { animation-delay: 0.3s; }
-.stats-card:nth-child(2) { animation-delay: 0.4s; }
-.stats-card:nth-child(3) { animation-delay: 0.5s; }
-
-.officers-tab-content {
-    padding: 24px;
-    max-width: 100%;
+.ai-report-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+    border: 2px solid #3b82f6;
+    box-shadow: 0 12px 32px rgba(59, 130, 246, 0.15);
+    transition: all 0.3s ease;
+    padding: 1rem;
 }
 
-.overview-tab {
+/* Animations */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Loading animation for spinner */
+.ai-loading-container mat-spinner {
+    margin-bottom: 16px;
+}
+
+/* Action buttons styling */
+.ai-report-card mat-card-actions {
+    padding: 16px 24px;
     display: flex;
+    gap: 12px;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+}
+
+.ai-report-card mat-card-actions button {
+    flex: 1;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.ai-report-card mat-card-actions button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.report-timestamp {
+    display: flex;
+    justify-content: flex-end;
     align-items: center;
-    justify-content: center;
+    flex-direction: row;
+    gap: 4px;
+}
+
+/* All Sailors Tab Styles */
+.officers-tab-content {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    min-height: calc(100vh - 200px);
+    padding: 24px;
 }
 
 /* Filters Section */
 .filters-section {
     background: white;
     padding: 24px;
-    margin-bottom: 24px;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    margin-bottom: 32px;
+    border: 1px solid #e2e8f0;
 }
 
 .filter-row {
     display: flex;
     gap: 24px;
-    align-items: center;
+    align-items: end;
     margin-bottom: 16px;
-    flex-wrap: wrap;
 }
 
 .class-filter {
-    min-width: 200px;
-    flex: 1;
-    max-width: 300px;
+    min-width: 250px;
+    flex-shrink: 0;
 }
 
 .search-field {
-    min-width: 300px;
-    flex: 2;
-    max-width: 500px;
+    flex: 1;
+    max-width: 400px;
 }
 
+.class-filter,
+.search-field {
+    transition: all 0.2s ease;
+}
+
+.class-filter:hover,
+.search-field:hover {
+    transform: translateY(-1px);
+}
+
+/* Results Summary */
 .results-summary {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     padding-top: 16px;
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid #e5e7eb;
 }
 
 .results-count {
     display: flex;
     align-items: center;
     gap: 8px;
-    color: #666;
-    font-weight: 500;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.95rem;
+}
+
+.results-count mat-icon {
+    color: #3b82f6;
+    font-size: 1.2rem;
 }
 
 .filter-info {
-    color: #1976d2;
-    font-size: 0.9rem;
-}
-
-/* Loading State */
-.loading-container {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 64px 24px;
-    color: #666;
-}
-
-.loading-container p {
-    margin-top: 16px;
-    font-size: 1rem;
+    color: #64748b;
+    font-weight: 500;
 }
 
 /* Officers Grid */
 .officers-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
     gap: 24px;
     padding: 0;
 }
 
+/* Loading Container */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px;
+    text-align: center;
+}
+
+.loading-container p {
+    margin-top: 16px;
+    font-size: 1rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* Officer Cards */
 .officer-card {
-    padding: 1rem;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     transition: all 0.3s ease;
-    border-radius: 12px !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    overflow: hidden;
+    position: relative;
+    padding: 1rem;
+}
+
+.officer-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .officer-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    border-color: #3b82f6;
 }
 
+.officer-card:hover::before {
+    opacity: 1;
+}
+
+/* Officer Avatar */
 .officer-avatar {
-    background: linear-gradient(135deg, #1976d2, #42a5f5);
-    color: white !important;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
 }
 
+.officer-avatar mat-icon {
+    font-size: 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* Officer Header */
 .officer-name {
-    font-weight: 600 !important;
-    color: #1976d2 !important;
-    margin-bottom: 4px !important;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+    line-height: 1.4;
 }
 
 .officer-id {
-    color: #666 !important;
-    font-size: 0.9rem !important;
+    color: #64748b;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 0;
 }
 
+/* Officer Info */
 .officer-info {
-    padding: 16px 0 !important;
+    padding: 16px 0;
 }
 
 .info-row {
     display: flex;
     align-items: center;
+    gap: 12px;
     margin-bottom: 12px;
-    gap: 8px;
+    padding: 8px 0;
+}
+
+.info-row:last-of-type {
+    margin-bottom: 16px;
 }
 
 .info-icon {
-    color: #666;
-    font-size: 18px !important;
-    width: 18px !important;
-    height: 18px !important;
-    min-width: 18px;
+    color: #64748b;
+    font-size: 1.125rem;
+    width: 20px;
+    flex-shrink: 0;
 }
 
 .info-label {
     font-weight: 500;
-    color: #333;
-    min-width: 80px;
+    color: #374151;
+    min-width: 70px;
+    font-size: 0.875rem;
 }
 
 .info-value {
-    color: #666;
-    flex: 1;
+    color: #1e293b;
+    font-weight: 500;
+    font-size: 0.875rem;
+    word-break: break-word;
 }
 
 .blood-group {
-    background: #ffebee;
-    color: #c62828;
+    background: #fef3c7;
+    color: #92400e;
     padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.85rem;
-    font-weight: 500;
+    border-radius: 16px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
 }
 
+/* Classes Chips */
 .classes-chips {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid #e0e0e0;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f1f5f9;
 }
 
 .class-chip {
-    background: #e3f2fd !important;
-    color: #1976d2 !important;
-    font-size: 0.75rem !important;
-    height: 24px !important;
-    border-radius: 12px !important;
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    color: #1d4ed8;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid #93c5fd;
+    border-radius: 16px;
+    padding: 4px 12px;
+    line-height: 1.2;
 }
 
+/* Officer Actions */
 .officer-actions {
+    padding: 16px 24px;
+    background: #f8fafc;
+    border-top: 1px solid #e5e7eb;
     display: flex;
+    justify-content: center;
     gap: 12px;
-    padding: 16px !important;
-    background: #f5f5f5;
-    border-top: 1px solid #e0e0e0;
-    justify-content: space-between;
 }
 
 .action-btn {
-    flex: 1;
-    display: flex !important;
+    display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.9rem !important;
-    border-radius: 8px !important;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 1px solid #3b82f6;
+    color: #3b82f6;
+    background: white;
+    min-width: 140px;
+    justify-content: center;
+}
+
+.action-btn:hover:not(:disabled) {
+    background: #3b82f6;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.action-btn mat-icon {
+    font-size: 1.125rem;
+    width: 1.125rem;
+    height: 1.125rem;
 }
 
 /* No Results */
 .no-results {
     grid-column: 1 / -1;
     text-align: center;
-    padding: 64px 24px;
-    color: #666;
+    padding: 80px 24px;
+    color: #64748b;
 }
 
 .no-results-icon {
-    font-size: 64px !important;
-    width: 64px !important;
-    height: 64px !important;
-    color: #bbb;
-    margin-bottom: 16px;
+    font-size: 4rem;
+    color: #cbd5e1;
+    margin-bottom: 24px;
 }
 
 .no-results h3 {
-    margin: 0 0 8px 0;
-    font-weight: 500;
+    margin: 0 0 12px 0;
+    color: #374151;
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
 .no-results p {
     margin: 0;
-    color: #999;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 400px;
+    margin: 0 auto;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .officers-grid {
-        grid-template-columns: 1fr;
+/* Form Field Styling */
+.class-filter .mat-mdc-form-field-flex,
+.search-field .mat-mdc-form-field-flex {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+}
+
+.class-filter:hover .mat-mdc-form-field-flex,
+.search-field:hover .mat-mdc-form-field-flex {
+    border-color: #3b82f6;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+.class-filter.mat-focused .mat-mdc-form-field-flex,
+.search-field.mat-focused .mat-mdc-form-field-flex {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Animations */
+.officer-card {
+    animation: fadeInUp 0.3s ease-out;
+    animation-fill-mode: both;
+}
+
+.officer-card:nth-child(1) { animation-delay: 0ms; }
+.officer-card:nth-child(2) { animation-delay: 50ms; }
+.officer-card:nth-child(3) { animation-delay: 100ms; }
+.officer-card:nth-child(4) { animation-delay: 150ms; }
+.officer-card:nth-child(5) { animation-delay: 200ms; }
+.officer-card:nth-child(6) { animation-delay: 250ms; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
-    
-    .filter-row {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .class-filter,
-    .search-field {
-        min-width: unset;
-        max-width: unset;
-    }
-    
-    .tab {
-        padding: 16px;
-    }
-    
-    .filters-section {
-        padding: 16px;
-        margin-bottom: 16px;
-    }
-    
-    .officer-actions {
-        flex-direction: column;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

@@ -180,7 +180,7 @@
                                     <mat-icon>person_search</mat-icon>
                                     <span>Find Officer</span>
                                 </button>
-                                <button mat-raised-button color="accent" class="quick-action-btn">
+                                <button mat-raised-button color="accent" class="quick-action-btn" (click)="showAiReportContainer = true">
                                     <mat-icon>assessment</mat-icon>
                                     <span>View AI Report</span>
                                 </button>
@@ -214,6 +214,50 @@
                                     <small>Last updated: {{ getCurrentTime() }}</small>
                                 </div>
                             </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+
+                <!-- AI Report Section -->
+                <div *ngIf="showAiReportContainer" class="ai-report-row ai-report-card">
+                    <mat-form-field appearance="outline" class="class-select">
+                        <mat-label>Select Class for AI Report</mat-label>
+                        <mat-select [ngModel]="selectedClass" (ngModelChange)="onAIReportClassSelection($event)">
+                            <mat-option *ngFor="let class of classes" [value]="class.id">{{ class.name }}</mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>assessment</mat-icon>
+                    </mat-form-field>
+                    <mat-card *ngIf="showAiReport" appearance="outlined">
+                        <mat-card-header>
+                            <mat-card-title class="card-title">
+                                <mat-icon class="card-icon">smart_toy</mat-icon>
+                                AI-Generated Report
+                            </mat-card-title>
+                            <mat-card-subtitle>Comprehensive analysis of class performance</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div *ngIf="isLoadingAiReport; else aiReportContent" class="ai-loading-container">
+                                <mat-spinner diameter="40"></mat-spinner>
+                                <p class="loading-text">Generating AI report...</p>
+                                <small class="loading-subtitle">This may take a few moments</small>
+                            </div>
+                            <ng-template #aiReportContent>
+                                <div class="ai-summary-content">
+                                    <div class="summary-text">
+                                         <pre class="summary-pre">{{ aiSummary }}</pre>
+                                    </div>
+                                    <div class="report-metadata">
+                                        <div class="report-timestamp">
+                                            <mat-icon>schedule</mat-icon>
+                                            <small>Generated at: {{ getCurrentTime() }}</small>
+                                        </div>
+                                        <div class="report-timestamp">
+                                            <mat-icon class="status-icon success">check_circle</mat-icon>
+                                            <small>Report completed successfully</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
                         </mat-card-content>
                     </mat-card>
                 </div>

@@ -29,6 +29,10 @@
                 <div class="nav-icon">🏥</div>
                 <h3>Medical Records</h3>
               </div>
+              <div *ngIf="isOic" class="nav-item" [routerLink]="['ai-summary']" routerLinkActive="active">
+                <div class="nav-icon">🤖</div>
+                <h3>AI Summary</h3>
+              </div>
           </div>
       </mat-drawer>
 

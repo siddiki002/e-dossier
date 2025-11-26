@@ -82,6 +82,9 @@ export class MarksEntering {
       this.http.get<Courses[]>(`${baseUrl}/data-entry/course/optional`).subscribe((courses) => {
         this.courses = courses;
         this.originalCourseList = courses;
+        if(this.selectedModule){
+          this.onModuleSelection(this.selectedModule);
+        }
       });
     } else if(this.option === 'compulsoryModule') {
       this.http.get<Courses[]>(`${baseUrl}/data-entry/course/compulsory`).subscribe((courses) => {
@@ -202,9 +205,6 @@ export class MarksEntering {
     this.http.post(`${baseUrl}/data-entry/courses/bulk`, payload, {observe: 'response'}).subscribe((response : HttpResponse<any>) => {
       if(response.status === 201) {
         this.fetchCourses();
-        if(this.selectedModule){
-          this.onModuleSelection(this.selectedModule);
-        }
         this.newCourses = [];
         alert(`${validCourses.length} course(s) added successfully!`);
       }

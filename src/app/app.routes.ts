@@ -20,6 +20,7 @@ export const routes: Routes = [
             { path: 'traits-assessment', loadComponent: () => import('./officer-details/traits-assessment/traits-assessment').then(m => m.TraitsAssessmentComponent)},
             { path: 'pet', loadComponent: () => import('./officer-details/pet/pet').then(m => m.PetRecords)},
             { path: 'medical', loadComponent: () => import('./officer-details/medical-records/medical-records').then(m => m.MedicalRecords)},
+            { path: 'ai-summary', loadComponent: () => import('./officer-details/ai-summary/ai-summary').then(m => m.AiSummary)},
         ]
     },
     {
