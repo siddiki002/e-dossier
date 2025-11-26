@@ -63,7 +63,7 @@
       <div class="section-header">
         <h2>
           <mat-icon>people</mat-icon>
-          Class Officers
+          Class Sasilors
         </h2>
       </div>
       
@@ -117,23 +117,23 @@
 <ng-template #addSailorChoiceDialog>
     <h2 mat-dialog-title>
         <mat-icon>person_add</mat-icon>
-        Add Officers
+        Add Sailors
     </h2>
     <mat-dialog-content class="choice-content">
         <div class="choice-options">
             <mat-card class="choice-card" (click)="openSingleSailorDialog()">
                 <mat-card-content>
                     <mat-icon class="choice-icon">person_add</mat-icon>
-                    <h3>Add Single Officer</h3>
-                    <p>Add one officer at a time</p>
+                    <h3>Add Single Sailor</h3>
+                    <p>Add one sailor at a time</p>
                 </mat-card-content>
             </mat-card>
             
             <mat-card class="choice-card" (click)="proceedToBulkAdd()">
                 <mat-card-content>
                     <mat-icon class="choice-icon">group_add</mat-icon>
-                    <h3>Add Multiple Officers</h3>
-                    <p>Add multiple officers at once</p>
+                    <h3>Add Multiple Sailors</h3>
+                    <p>Add multiple sailors at once</p>
                 </mat-card-content>
             </mat-card>
         </div>
@@ -213,11 +213,11 @@
 <ng-template #officerCountDialog>
     <h2 mat-dialog-title>
         <mat-icon>group_add</mat-icon>
-        How many officers do you want to add?
+        How many sailors do you want to add?
     </h2>
     <mat-dialog-content class="officer-count-content">
         <mat-form-field appearance="outline" class="count-field">
-            <mat-label>Number of Officers</mat-label>
+            <mat-label>Number of Sailors</mat-label>
             <input matInput 
                    type="number" 
                    [(ngModel)]="numberOfOfficersToAdd" 
@@ -227,7 +227,7 @@
         </mat-form-field>
         <div class="count-info">
             <mat-icon class="info-icon">info</mat-icon>
-            <span>You can add 1-50 officers at once</span>
+            <span>You can add 1-50 sailors at once</span>
         </div>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
@@ -242,7 +242,7 @@
 <ng-template #bulkAddSailorDialog>
     <h2 mat-dialog-title>
         <mat-icon>group_add</mat-icon>
-        Add {{newOfficers.length}} Officer(s)
+        Add {{newOfficers.length}} Sailor(s)
     </h2>
     <mat-dialog-content class="bulk-sailor-content">
         <div class="officer-form-container">

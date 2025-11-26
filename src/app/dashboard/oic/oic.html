@@ -144,7 +144,7 @@
                                     </div>
                                     <div class="medical-info">
                                         <div class="medical-number">{{ getTotalOfficersCount() }}</div>
-                                        <div class="medical-label">Officers Tracked</div>
+                                        <div class="medical-label">Sailors Tracked</div>
                                     </div>
                                 </div>
                                 <mat-divider class="medical-divider"></mat-divider>
@@ -219,7 +219,7 @@
                 </div>
             </div>
         </mat-tab>
-      <mat-tab label="All Officers" class="tab">
+      <mat-tab label="All Sailors" class="tab">
         <div class="officers-tab-content">
           <!-- Filter and Search Section -->
           <div class="filters-section">
@@ -234,7 +234,7 @@
               </mat-form-field>
               
               <mat-form-field appearance="outline" class="search-field">
-                <mat-label>Search Officers</mat-label>
+                <mat-label>Search Sailors</mat-label>
                 <input matInput 
                        placeholder="Search by name, ID, rank, or CNIC..." 
                        [ngModel]="searchQuery"
@@ -259,7 +259,7 @@
             @if (isLoading) {
               <div class="loading-container">
                 <mat-spinner diameter="50"></mat-spinner>
-                <p>Loading officers...</p>
+                <p>Loading sailors...</p>
               </div>
             } @else {
               @for (officer of filteredOfficers; track officer.id) {
@@ -323,7 +323,7 @@
               } @empty {
                 <div class="no-results">
                   <mat-icon class="no-results-icon">search_off</mat-icon>
-                  <h3>No officers found</h3>
+                  <h3>No sailors found</h3>
                   <p>Try adjusting your search criteria or filters.</p>
                 </div>
               }
