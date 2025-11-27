@@ -272,7 +272,7 @@ export class DisciplineObservation {
     }
     
     // Return placeholder image (using a default image from public folder)
-    return 'default-image.png';
+    return 'file-image.png';
   }
 
   protected hasSelectedImage(rowIndex: number): boolean {

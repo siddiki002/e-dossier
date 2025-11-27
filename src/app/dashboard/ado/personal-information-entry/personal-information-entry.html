@@ -10,7 +10,7 @@
         />
     </div>
     <div class="content">
-        <div style="padding: 1rem; width: 30%; background-color: black; max-height: fit-content;">
+        <div style="padding: 1rem; width: 30%; max-height: fit-content;">
             <sailor-list (onSailorSelection)="onOfficerSelection($event)" [sailors]="sailorsInClass" [showSearchBar]="true" [classTitle]="classDetails?.name" [allowSailorSelection]="true"></sailor-list>
         </div>
 
@@ -207,7 +207,7 @@
 <ng-template #successDialog>
         <h2 mat-dialog-title>Success</h2>
         <mat-dialog-content style="text-align: center; align-items: center;">
-            <p>Officer information saved successfully!</p>
+            <p>Sailor information saved successfully!</p>
             <div class="tick-animate">
                 <mat-icon>check_circle</mat-icon>
             </div>

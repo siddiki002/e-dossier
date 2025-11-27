@@ -3,11 +3,11 @@
   <div class="officer-card">
     <div class="officer-header">
       <div class="officer-image">
-        <img [src]="officerDetails?.imageUrl || defaultImage" alt="Officer Image" />
+        <img [src]="officerDetails?.imageUrl || defaultImage" alt="Sailor Image" />
       </div>
       <div class="officer-info">
-        <h1 class="officer-name">{{ officerDetails?.name || 'Unknown Officer' }}</h1>
-        <p class="officer-id">Officer ID: {{ officerDetails?.officerId || 'N/A' }}</p>
+        <h1 class="officer-name">{{ officerDetails?.name || 'Unknown Sailor' }}</h1>
+        <p class="officer-id">O No: {{ officerDetails?.officerId || 'N/A' }}</p>
         <div class="pet-badge">
           <span>🏃‍♂️ PET Records</span>
         </div>
@@ -99,7 +99,7 @@
       <div class="empty-state">
         <div class="empty-icon">🏃‍♂️</div>
         <h3>No PET Records Available</h3>
-        <p>This officer's Physical Efficiency Test records are not available or have not been recorded yet.</p>
+        <p>This sailor's Physical Efficiency Test records are not available or have not been recorded yet.</p>
       </div>
     </ng-template>
   </div>

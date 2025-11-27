@@ -24,7 +24,7 @@
             <div class="results-summary">
               <span class="results-count">
                 <mat-icon>people</mat-icon>
-                {{filteredOfficers.length || 0}} officer(s) found
+                {{filteredOfficers.length || 0}} sailor(s) found
                 @if (selectedClasses.length > 0) {
                   <span class="filter-info"> in {{selectedClasses.length}} selected class(es)</span>
                 }
@@ -48,7 +48,7 @@
                       <mat-icon>person</mat-icon>
                     </div>
                     <mat-card-title class="officer-name">{{officer.name}}</mat-card-title>
-                    <mat-card-subtitle class="officer-id">ID: {{officer.officerId}}</mat-card-subtitle>
+                    <mat-card-subtitle class="officer-id">O No: {{officer.officerId}}</mat-card-subtitle>
                   </mat-card-header>
                   
                   <mat-card-content class="officer-info">

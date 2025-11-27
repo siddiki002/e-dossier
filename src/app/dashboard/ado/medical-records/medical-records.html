@@ -15,9 +15,9 @@
     <!-- Officer info and save button -->
     <div class="header-section">
       <div class="officer-info">
-        <h4>Name: {{selectedOfficer?.name ? selectedOfficer?.name : 'No Officer Selected'}}</h4>
-        <h4>Officer No: {{selectedOfficer?.officerId ? selectedOfficer?.officerId : 'No Officer Selected'}}</h4>
-        <h4>Blood group: {{selectedOfficer?.bloodGroup ? selectedOfficer?.bloodGroup : 'No Officer Selected'}}</h4>
+        <h4>Name: {{selectedOfficer?.name ? selectedOfficer?.name : 'No Sailor Selected'}}</h4>
+        <h4>O No: {{selectedOfficer?.officerId ? selectedOfficer?.officerId : 'No Sailor Selected'}}</h4>
+        <h4>Blood group: {{selectedOfficer?.bloodGroup ? selectedOfficer?.bloodGroup : 'No Sailor Selected'}}</h4>
       </div>
       <button 
         mat-raised-button 
@@ -123,7 +123,7 @@
     <!-- Show message when no officer is selected -->
     @if (!selectedOfficer) {
       <div class="no-officer-message">
-        <p>Please select an officer to view and edit medical records.</p>
+        <p>Please select a sailor to view and edit medical records.</p>
       </div>
     }
   </div>

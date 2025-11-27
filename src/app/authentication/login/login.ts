@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { userType } from '../authentication.const';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from "@angular/material/select";
+import { HttpClient } from '@angular/common/http';
+import { baseUrl } from 'src/common/base';
 
 @Component({
   selector: 'login',
@@ -27,7 +29,7 @@ export class Login {
   protected userType: userType = null;
   protected isPasswordVisible: boolean = false;
 
-  constructor(private authenticationService: AuthenticationService, private userService: UserService, private router: Router) {
+  constructor(private authenticationService: AuthenticationService, private userService: UserService, private router: Router, private http: HttpClient) {
     this.loginForm.valueChanges.subscribe(() => {
       if(this.showInvalidCredentialsError) {
         this.showInvalidCredentialsError = false;
@@ -37,6 +39,10 @@ export class Login {
       this.userType = user;
     })
     this.userService.setIsAuthenticated(false);
+  }
+
+  ngOnInit(){
+    this.http.get(`${baseUrl}/ping`).subscribe((response) => {})
   }
 
   public onSubmit(event : SubmitEvent) {

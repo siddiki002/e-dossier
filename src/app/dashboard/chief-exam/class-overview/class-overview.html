@@ -52,12 +52,12 @@
         <div class="subsection-header">
           <h3>
             <mat-icon>people</mat-icon>
-            Officer Reports
+            Sailor Reports
           </h3>
         </div>
         <sailor-list 
           [sailors]="sailorsInClass" 
-          classTitle="Select Officer for Report" 
+          classTitle="Select Sailor for Report" 
           [allowSailorSelection]="true" 
           (onSailorSelection)="openSailorReport($event)"
           [showSearchBar]="sailorsInClass.length > 5">
@@ -91,7 +91,6 @@
                 <mat-option value="{{course.id}}">{{course.courseName}}</mat-option>
               }
             </mat-select>
-            <mat-icon matSuffix>expand_more</mat-icon>
           </mat-form-field>
         </div>
         
@@ -117,7 +116,6 @@
                 <mat-option value="{{course.id}}">{{course.courseName}}</mat-option>
               }
             </mat-select>
-            <mat-icon matSuffix>expand_more</mat-icon>
           </mat-form-field>
         </div>
         

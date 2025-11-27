@@ -5,11 +5,11 @@
       <div class="title-section">
         <mat-icon class="class-icon">groups</mat-icon>
         <h2>{{ classTitle || 'Sailors' }}</h2>
-        <span class="officer-count">{{ sailorList.length }} officer{{ sailorList.length !== 1 ? 's' : '' }}</span>
+        <span class="officer-count">{{ sailorList.length }} sailor{{ sailorList.length !== 1 ? 's' : '' }}</span>
       </div>
       <button *ngIf="allowAddSailor" mat-raised-button color="primary" class="add-button" (click)="addNewSailor()">
         <mat-icon>person_add</mat-icon>
-        Add Officer
+        Add Sailor
       </button>
     </div>
   </div>
@@ -37,7 +37,7 @@
         </div>
         <div class="officer-info">
           <div class="officer-name">{{ sailor.name }}</div>
-          <div class="officer-id">ID: {{ sailor?.officerId }}</div>
+          <div class="officer-id">O No: {{ sailor?.officerId }}</div>
         </div>
         <div class="officer-actions" *ngIf="allowSailorSelection">
           <mat-icon class="selection-indicator">{{ sailor.id === selectedOfficerId ? 'radio_button_checked' : 'radio_button_unchecked' }}</mat-icon>
@@ -51,7 +51,7 @@
       <p>{{ searchTerm ? 'Try adjusting your search criteria' : 'Get started by adding some sailors to this class' }}</p>
       <button *ngIf="allowAddSailor && !searchTerm" mat-raised-button color="primary" (click)="addNewSailor()">
         <mat-icon>person_add</mat-icon>
-        Add First Officer
+        Add First Sailor
       </button>
     </div>
   </div>

@@ -272,7 +272,7 @@
   color: #60a5fa;
 }
 
-.course-select-field .mat-mdc-select-value,
+.course-select-field .mat-mdc-select,
 .course-select-field .mat-mdc-select-placeholder {
   color: white;
 }
@@ -296,6 +296,10 @@
 ::ng-deep .mat-mdc-option {
   color: white !important;
   background-color: transparent !important;
+}
+
+::ng-deep .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled):not(.mat-mdc-option-multiple) .mdc-list-item__primary-text {
+  color: white !important;
 }
 
 ::ng-deep .mat-mdc-option:hover {

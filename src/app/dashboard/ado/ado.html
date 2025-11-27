@@ -63,7 +63,7 @@
       <div class="section-header">
         <h2>
           <mat-icon>people</mat-icon>
-          Class Sasilors
+          Class Sailors
         </h2>
       </div>
       
@@ -249,7 +249,7 @@
             @for (officer of newOfficers; track $index; let i = $index) {
                 <div class="officer-form-group">
                     <div class="officer-form-header">
-                        <h4>Officer {{i + 1}}</h4>
+                        <h4>Sailor {{i + 1}}</h4>
                         @if (newOfficers.length > 1) {
                             <button mat-icon-button color="warn" (click)="removeOfficerField(i)" class="remove-officer-btn">
                                 <mat-icon>remove_circle</mat-icon>
@@ -259,13 +259,13 @@
                     
                     <div class="officer-form-fields">
                         <mat-form-field appearance="outline" class="officer-field">
-                            <mat-label>Officer ID</mat-label>
-                            <input matInput [(ngModel)]="officer.id" placeholder="Enter officer ID" />
+                            <mat-label>Official Number</mat-label>
+                            <input matInput [(ngModel)]="officer.id" placeholder="Enter official number" />
                         </mat-form-field>
                         
                         <mat-form-field appearance="outline" class="officer-field">
-                            <mat-label>Officer Name</mat-label>
-                            <input matInput [(ngModel)]="officer.name" placeholder="Enter officer name" />
+                            <mat-label>Sailor Name</mat-label>
+                            <input matInput [(ngModel)]="officer.name" placeholder="Enter sailor name" />
                         </mat-form-field>
                     </div>
                 </div>
@@ -274,7 +274,7 @@
             <div class="add-more-section">
                 <button mat-raised-button color="accent" (click)="addMoreOfficerFields()" class="add-more-btn">
                     <mat-icon>add</mat-icon>
-                    Add Another Officer
+                    Add Another Sailor
                 </button>
             </div>
         </div>
@@ -283,7 +283,7 @@
         <button mat-button (click)="dialogRef.close()">Cancel</button>
         <button mat-raised-button color="primary" (click)="confirmAddSailors()">
             <mat-icon>save</mat-icon>
-            Add {{newOfficers.length}} Officer(s)
+            Add {{newOfficers.length}} Sailor(s)
         </button>
     </mat-dialog-actions>
 </ng-template>

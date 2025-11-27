@@ -5,7 +5,7 @@ import { inject } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { LoaderService } from '../service/loader.service';
 
-const blacklistedUrls: string[] = ["ai-summary"];
+const blacklistedUrls: string[] = ["ai-summary", "ping"];
 
 export const loaderInterceptor: HttpInterceptorFn = (req, next) => {
   const loader = inject(LoaderService);
