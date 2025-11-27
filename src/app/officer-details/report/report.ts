@@ -39,7 +39,7 @@ export class Report {
   constructor(private activatedRouter: ActivatedRoute, private http: HttpClient, private userService: UserService) {
     this.userService.User.pipe(takeUntil(this.destroy$)).subscribe((user) => {
       this.isOic = user?.role === 'oic';
-      if(user?.role === 'oic' || user?.role === 'intructor') {
+      if(user?.role === 'oic' || user?.role === 'instructor') {
         this.activatedRouter.parent?.params.subscribe((params) => {
           this.officerId = params['id'];
         })
@@ -162,8 +162,8 @@ export class Report {
     return 'F';
   }
 
-  protected getOfficerRank(): string {
-    return (this.officer as any)?.rank || 'Not Specified';
+  protected getOfficerRate(): string {
+    return this.officer?.rate || 'Not Specified';
   }
 
   protected getOfficerDepartment(): string {

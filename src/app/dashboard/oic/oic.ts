@@ -83,6 +83,7 @@ export class Oic implements OnInit {
   protected classes: Class[] = [];
   protected selectedClasses: string[] = [];
   protected selectedClass: string = '';
+  protected selectedTabIndex: number = 0;
   protected searchQuery: string = '';
   protected filteredOfficers: Officer[] = []
   protected allOfficers: Officer[] = []
