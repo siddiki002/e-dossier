@@ -1,33 +1,50 @@
 <div class="login-container">
-    <img src="/e-dossier.png" alt="Navy Icon" class="login-image"/>
-    @if (showInvalidCredentialsError) {
-        <mat-error>Invalid username or password</mat-error>
-    }
-    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit($event)">
-        <mat-form-field appearance="outline" >
-            <mat-label>Username</mat-label>
-            <mat-select formControlName="username">
-                <mat-option value="ado@edossier.com">ADO</mat-option>
-                <mat-option value="chief.exam@edossier.com">Chief Exam</mat-option>
-                <mat-option value="oic@edossier.com">OIC</mat-option>
-                <mat-option value="class.instructor@edossier.com">DO</mat-option>
-            </mat-select>
-            <mat-hint>Select role</mat-hint>
-        </mat-form-field>
-        @if(loginForm.controls.username.hasError('required') && loginForm.controls.username.touched) {
-            <mat-error>Username is required</mat-error>
-        }
-        @if(loginForm.controls.username.hasError('email') && loginForm.controls.username.touched) {
-            <mat-error>Invalid email format</mat-error>
-        }
-        <mat-form-field appearance="outline" >
-            <mat-label>Password</mat-label>
-            <input matInput formControlName="password" [type]="isPasswordVisible ? 'text' : 'password'">
-            <mat-icon class="visibility-icon" matSuffix (click)="isPasswordVisible = !isPasswordVisible">{{isPasswordVisible ? 'visibility' : 'visibility_off'}}</mat-icon>
-        </mat-form-field>
-        @if(loginForm.controls.password.hasError('required') && loginForm.controls.password.touched) {
-            <mat-error>Password is required</mat-error>
-        }
-        <button matButton="elevated" class="login-button">Login</button>
-    </form>
+    <div class="login-left">
+        <div class="login-header">
+            <h1 class="login-title">E-Dossier</h1>
+        </div>
+        <img src="/e-dossier.png" alt="Navy Icon" class="login-image"/>
+    </div>
+    
+    <div class="login-right">
+        <div class="wave-container"></div>
+        
+        <div class="login-content">
+            @if (showInvalidCredentialsError) {
+                <div class="form-error">Invalid username or password</div>
+            }
+            
+            <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit($event)">
+                <mat-form-field appearance="outline">
+                    <mat-label>Username</mat-label>
+                    <mat-select formControlName="username">
+                        <mat-option value="ado@edossier.com">ADO</mat-option>
+                        <mat-option value="chief.exam@edossier.com">Chief Exam</mat-option>
+                        <mat-option value="oic@edossier.com">OIC</mat-option>
+                        <mat-option value="class.instructor@edossier.com">DO</mat-option>
+                    </mat-select>
+                    <mat-hint>Select role</mat-hint>
+                </mat-form-field>
+                @if(loginForm.controls.username.hasError('required') && loginForm.controls.username.touched) {
+                    <mat-error>Username is required</mat-error>
+                }
+                @if(loginForm.controls.username.hasError('email') && loginForm.controls.username.touched) {
+                    <mat-error>Invalid email format</mat-error>
+                }
+                
+                <mat-form-field appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput formControlName="password" [type]="isPasswordVisible ? 'text' : 'password'">
+                    <mat-icon class="visibility-icon" matSuffix (click)="isPasswordVisible = !isPasswordVisible">
+                        {{isPasswordVisible ? 'visibility' : 'visibility_off'}}
+                    </mat-icon>
+                </mat-form-field>
+                @if(loginForm.controls.password.hasError('required') && loginForm.controls.password.touched) {
+                    <mat-error>Password is required</mat-error>
+                }
+                
+                <button mat-raised-button class="login-button" type="submit">Login</button>
+            </form>
+        </div>
+    </div>
 </div>
