@@ -5,7 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { baseUrl } from 'src/common/base';
 import { Officer } from 'src/common/common.types';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import {marked} from 'marked';
 
 @Component({
   selector: 'ai-summary',
@@ -18,8 +19,8 @@ export class AiSummary {
 
   protected officerId: string = '';
   protected officer: Officer | null = null;
-  protected aiSummary: string = '';
   protected loadingSummary: boolean = true;
+  protected summaryHtml: SafeHtml = '';
 
   constructor(private http: HttpClient, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {
     this.activatedRoute.parent?.params.subscribe((params) => {
@@ -45,18 +46,26 @@ export class AiSummary {
     });
   }
 
-  private fetchOfficerAISummary() {
+  private async fetchOfficerAISummary() {
+    const cachedSummary = this.getCachedSummary();
+    if(cachedSummary) {
+      this.summaryHtml = await this.convertSummaryToMarkdown(cachedSummary);
+      this.loadingSummary = false;
+      this.cdr.detectChanges();
+      return;
+    }
     this.http.get<{aiSummary: string}>(`${baseUrl}/officer/${this.officerId}/ai-summary`).subscribe({
-      next: (response) => {
-        this.aiSummary = response.aiSummary;
-        console.log('Fetched AI Summary:', this.aiSummary);
+      next: async (response) => {
+        this.cacheSummary(response.aiSummary);
+        this.summaryHtml = await this.convertSummaryToMarkdown(response.aiSummary);
         this.loadingSummary = false;
         this.cdr.detectChanges();
       },
-      error: (error) => {
+      error: async (error) => {
         console.error('Error fetching AI summary:', error);
-        this.aiSummary = 'Failed to generate AI summary. Please try again later.';
+        this.summaryHtml = await this.convertSummaryToMarkdown('Failed to generate AI summary. Please try again later.');
         this.loadingSummary = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -101,4 +110,18 @@ export class AiSummary {
     });
   }
 
+  private cacheSummary(summary: string) {
+    // Save in local storage with officer ID as key
+    localStorage.setItem(`ai-summary-${this.officerId}`, summary);
+  }
+
+  private getCachedSummary(): string | null {
+    return localStorage.getItem(`ai-summary-${this.officerId}`);
+  }
+
+  private async convertSummaryToMarkdown(summary: string) : Promise<SafeHtml> {
+    const html = await marked(summary);
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
 }
+

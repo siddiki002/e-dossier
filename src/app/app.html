@@ -1,5 +1,5 @@
 <header *ngIf="isUserAuthenticated" class="app-header" [ngClass]="{'no-back-button': !showBackButton}">
-    <mat-icon *ngIf="showBackButton" (click)="goBack()">arrow_back</mat-icon>
+    <mat-icon (click)="goBack()">arrow_back</mat-icon>
     <mat-icon (click)="logout()">logout</mat-icon>
 </header>
 <app-loader></app-loader>
