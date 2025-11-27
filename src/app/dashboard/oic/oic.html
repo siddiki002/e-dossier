@@ -180,7 +180,7 @@
                                     <mat-icon>person_search</mat-icon>
                                     <span>Find Officer</span>
                                 </button>
-                                <button mat-raised-button color="accent" class="quick-action-btn" (click)="showAiReportContainer = true">
+                                <button mat-raised-button color="accent" class="quick-action-btn" (click)="onShowAiReportCard()">
                                     <mat-icon>assessment</mat-icon>
                                     <span>View AI Report</span>
                                 </button>
@@ -244,7 +244,7 @@
                             <ng-template #aiReportContent>
                                 <div class="ai-summary-content">
                                     <div class="summary-text">
-                                         <pre class="summary-pre">{{ aiSummary }}</pre>
+                                         <pre class="summary-pre" [innerHTML]="summaryHtml"></pre>
                                     </div>
                                     <div class="report-metadata">
                                         <div class="report-timestamp">

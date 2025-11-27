@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Class, Officer, Pet, Warnings } from 'src/common/common.types';
 import {MatTabsModule} from '@angular/material/tabs';
 import { DemoBarChart } from "./demo-line-chart/demo-bar-chart";
@@ -16,6 +16,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { HttpClient } from '@angular/common/http';
 import { baseUrl } from 'src/common/base';
 import { Router } from '@angular/router';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { marked } from 'marked';
 
 type averageMarksByClass = {
   classId: string,
@@ -101,9 +103,9 @@ export class Oic implements OnInit {
   protected showAiReport: boolean = false
   protected showAiReportContainer: boolean = false
   protected isLoadingAiReport: boolean = false
-  protected aiSummary: string = ''
   protected displayedSummary: string = ''
-  protected isTypingAnimation: boolean = false
+  protected isTypingAnimation: boolean = false;
+  protected summaryHtml: SafeHtml = '';
 
   protected onClassSelection(selectedClasses: string[]) {
     this.selectedClasses = [...selectedClasses];
@@ -142,11 +144,15 @@ export class Oic implements OnInit {
     );
 
     Promise.all(officerPromises).then((results) => {
-      // Flatten and deduplicate officers from multiple classes
       const allClassOfficers = results.flat().filter(Boolean) as Officer[];
-      const uniqueOfficers = allClassOfficers.filter((officer, index, self) => 
-        index === self.findIndex(o => o.id === officer.id)
-      );
+      
+      const officerMap = new Map();
+      allClassOfficers.forEach(officer => {
+        if (!officerMap.has(officer.id)) {
+          officerMap.set(officer.id, officer);
+        }
+      });
+      const uniqueOfficers = Array.from(officerMap.values());
       
       this.allOfficers = uniqueOfficers;
       this.applySearchFilter();
@@ -164,7 +170,7 @@ export class Oic implements OnInit {
     this.router.navigate(['officer-details', officerId]);
   }
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.fetchOfficers();
@@ -172,6 +178,14 @@ export class Oic implements OnInit {
     this.fetchAverageMarks();
     this.fetchAveragePetMarks();
     this.fetchWarningCount();
+  }
+
+  ngOnDestroy() {
+    if(this.classes.length) {
+      this.classes.forEach((cls) => {
+        localStorage.removeItem(`oic-ai-summary-${cls.id}`);
+      })
+    }
   }
 
   private fetchWarningCount() {
@@ -280,21 +294,31 @@ export class Oic implements OnInit {
     return new Date().toLocaleTimeString();
   }
 
-  protected generateAiReport(): void {
+  protected async generateAiReport(): Promise<void> {
     this.showAiReport = true;
     this.isLoadingAiReport = true;
-    this.aiSummary = '';
+    this.summaryHtml = '';
 
-    
+    const cachedSummary = this.getCachedSummary();
+    if (cachedSummary) {
+      this.summaryHtml = await this.convertSummaryFromMarkdown(cachedSummary);
+      this.isLoadingAiReport = false;
+      this.cdr.detectChanges();
+      return;
+    }
+
     this.http.get<{aiSummary: string}>(`${baseUrl}/class/${this.selectedClass}/ai-summary`).subscribe({
-      next: (data) => {
-        this.aiSummary = data.aiSummary;
+      next: async (data) => {
+        this.cacheSummary(data.aiSummary);
+        this.summaryHtml = await this.convertSummaryFromMarkdown(data.aiSummary);
         this.isLoadingAiReport = false;
+        this.cdr.detectChanges();
       },
-      error: (error) => {
+      error: async (error) => {
         console.error('Error fetching AI summary:', error);
-        this.aiSummary = 'Failed to generate AI report. Please try again.';
+        this.summaryHtml = await this.convertSummaryFromMarkdown('Failed to generate AI report. Please try again.');
         this.isLoadingAiReport = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -304,11 +328,28 @@ export class Oic implements OnInit {
     this.generateAiReport();
   }
 
+  protected onShowAiReportCard(): void {
+    this.showAiReportContainer = true;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
   protected closeAiReport(): void {
     this.showAiReport = false;
-    this.aiSummary = '';
     this.displayedSummary = '';
     this.isTypingAnimation = false;
     this.isLoadingAiReport = false;
+  }
+
+  private async convertSummaryFromMarkdown(summary: string): Promise<SafeHtml> {
+    const markdown = await marked(summary);
+    return this.sanitizer.bypassSecurityTrustHtml(markdown);
+  }
+
+  private cacheSummary(summary: string): void {
+    localStorage.setItem(`oic-ai-summary-${this.selectedClass}`, summary);
+  }
+
+  private getCachedSummary(): string | null {
+    return localStorage.getItem(`oic-ai-summary-${this.selectedClass}`);
   }
 }
