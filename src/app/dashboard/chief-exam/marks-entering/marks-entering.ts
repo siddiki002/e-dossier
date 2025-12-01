@@ -16,7 +16,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { forkJoin } from 'rxjs';
 
-const assessments = ["Quiz", "Final", "Summative - Written", "Summative - Oral", "Formative - Written", "Formative - Oral", "Assignment"];
+const assessments = ["Oral - Quiz","Written - Quiz", "Summative - Written", "Summative - Oral", "Formative - Written", "Formative - Oral", "Assignment", "Formative - Practical", "Summative - Practical"];
 
 @Component({
   selector: 'marks-entering',

@@ -157,6 +157,11 @@
   box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.3);
 }
 
+.dee-status {
+  background-color: #f44336;
+  box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.3);
+}
+
 /* Responsive design for medical category */
 @media (max-width: 768px) {
   .medical-category-section {
