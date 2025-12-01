@@ -1,4 +1,4 @@
-<div class="kit-container">
+<div class="movement-container">
   <!-- Left side: Sailor list -->
   <div class="sailor-list-section">
     <sailor-list 
@@ -10,7 +10,7 @@
     </sailor-list>
   </div>
 
-  <!-- Right side: Officer details and kit items form -->
+  <!-- Right side: Officer details and movement records form -->
   <div class="officer-details-section">
     <!-- Officer info and save button -->
     <div class="header-section">
@@ -28,60 +28,64 @@
       </button>
     </div>
 
-    <!-- Kit Items Form -->
+    <!-- Movement Records Form -->
     @if (selectedOfficer) {
-      <form [formGroup]="kitItemForm">
+      <form [formGroup]="movementForm">
         <div class="form-section">
           <div class="section-header">
-            <h3>Kit Items Issued</h3>
+            <h3>Movement Records</h3>
             <button 
               type="button" 
               mat-raised-button 
               color="accent" 
               (click)="addNewRow()"
               class="add-button">
-              Add Item
+              Add Record
             </button>
           </div>
           
           <div class="table-container">
-            <table class="kit-table">
+            <table class="movement-table">
               <thead>
                 <tr>
                   <th>S no</th>
-                  <th>Item</th>
-                  <th>Quantity</th>
-                  <th>Issue Date</th>
-                  <th>Due Date</th>
+                  <th>Ship/Establishment From</th>
+                  <th>Ship/Establishment To</th>
+                  <th>GXS Authority Arrival</th>
+                  <th>Date</th>
+                  <th>GXS Authority Draft/TY</th>
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody formArrayName="kitItems">
-                @for (item of kitItemsArray.controls; track $index; let i = $index) {
+              <tbody formArrayName="movementRecords">
+                @for (record of movementRecordsArray.controls; track $index; let i = $index) {
                   <tr [formGroupName]="i">
                     <td>{{i + 1}}</td>
                     <td>
                       <mat-form-field appearance="outline" class="table-input">
-                        <input matInput formControlName="item" placeholder="Item name">
-                      </mat-form-field>
-                    </td>
-                    <td>
-                      <mat-form-field appearance="outline" class="table-input number-input">
-                        <input matInput type="number" formControlName="quantity" placeholder="Qty">
+                        <input matInput formControlName="from" placeholder="From location">
                       </mat-form-field>
                     </td>
                     <td>
                       <mat-form-field appearance="outline" class="table-input">
-                        <input matInput [matDatepicker]="issueDatePicker" formControlName="issueDate" placeholder="Issue date">
-                        <mat-datepicker-toggle matIconSuffix [for]="issueDatePicker"></mat-datepicker-toggle>
-                        <mat-datepicker #issueDatePicker></mat-datepicker>
+                        <input matInput formControlName="to" placeholder="To location">
                       </mat-form-field>
                     </td>
                     <td>
                       <mat-form-field appearance="outline" class="table-input">
-                        <input matInput [matDatepicker]="dueDatePicker" formControlName="dueDate" placeholder="Due date">
-                        <mat-datepicker-toggle matIconSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
-                        <mat-datepicker #dueDatePicker></mat-datepicker>
+                        <input matInput formControlName="arrival" placeholder="Arrival">
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field appearance="outline" class="table-input">
+                        <input matInput [matDatepicker]="datePicker" formControlName="date" placeholder="Date">
+                        <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #datePicker></mat-datepicker>
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field appearance="outline" class="table-input">
+                        <input matInput formControlName="draft" placeholder="Draft">
                       </mat-form-field>
                     </td>
                     <td>
@@ -90,7 +94,7 @@
                         mat-icon-button 
                         color="warn" 
                         (click)="removeRow(i)"
-                        [disabled]="kitItemsArray.length <= 1">
+                        [disabled]="movementRecordsArray.length <= 1">
                         ×
                       </button>
                     </td>
@@ -106,7 +110,7 @@
     <!-- Show message when no officer is selected -->
     @if (!selectedOfficer) {
       <div class="no-officer-message">
-        <p>Please select a sailor to view and manage kit items.</p>
+        <p>Please select a sailor to view and edit movement records.</p>
       </div>
     }
   </div>

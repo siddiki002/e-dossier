@@ -10,28 +10,27 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { baseUrl } from 'src/common/base';
-import { Class, Officer, LeaveRecord } from 'src/common/common.types';
+import { Class, Officer, MovementRecord } from 'src/common/common.types';
 import { SailorListComponent } from "src/common/components/sailor-list/sailor-list.component";
 
 @Component({
-  selector: 'leave-records',
+  selector: 'movement-records',
   imports: [SailorListComponent, CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDatepickerModule, MatIconModule],
-  templateUrl: './leave-records.html',
-  styleUrl: './leave-records.css'
+  templateUrl: './movement-records.html',
+  styleUrl: './movement-records.css'
 })
-export class LeaveRecords {
+export class MovementRecords {
   protected classId: string = '';
   protected sailorsInClass: Officer[] = [];
   protected classDetails: Class | null = null;
   protected selectedOfficer: Officer | null = null;
-  protected officerLeaveRecords: LeaveRecord[] = [];
+  protected officerMovementRecords: MovementRecord[] = [];
 
-  protected leaveForm: FormGroup = new FormGroup({
-    leaveRecords: new FormArray([])
+  protected movementForm: FormGroup = new FormGroup({
+    movementRecords: new FormArray([])
   });
 
   constructor(private router: Router, private activatedRouter: ActivatedRoute, private http: HttpClient, private dialog: MatDialog, private cdr: ChangeDetectorRef) {
-    this.sailorsInClass = this.router?.currentNavigation()?.extras?.state?.['data'] || [];
     this.activatedRouter?.params?.subscribe((params) => {
       this.classId = params['classId'];
     })
@@ -39,6 +38,7 @@ export class LeaveRecords {
 
   ngOnInit() {
     this.fetchClassDetails();
+    this.fetchOfficersByClassId();
   }
 
   private fetchClassDetails() {
@@ -47,49 +47,55 @@ export class LeaveRecords {
     })
   }
 
+  private fetchOfficersByClassId() {
+    this.http.get<Officer[]>(`${baseUrl}/class/${this.classId}/officers`).subscribe((data) => {
+      this.sailorsInClass = data;
+    })
+  }
+
   protected onOfficerSelection(selectedOfficer: Officer) {
     this.selectedOfficer = selectedOfficer;
     this.resetForm();
-    this.fetchOfficerLeaveRecords(selectedOfficer.id);
+    this.fetchOfficerMovementRecords(selectedOfficer.id);
   }
 
   private resetForm() {
     // Completely reset the FormArray
-    while (this.leaveRecordsArray.length !== 0) {
-      this.leaveRecordsArray.removeAt(0);
+    while (this.movementRecordsArray.length !== 0) {
+      this.movementRecordsArray.removeAt(0);
     }
     
     // Reset the form state
-    this.leaveForm.reset();
+    this.movementForm.reset();
     
     // Force change detection
     this.cdr.detectChanges();
   }
 
-  private fetchOfficerLeaveRecords(officerId: string) {
-    this.http.get<LeaveRecord[]>(`${baseUrl}/data-entry/officer/${officerId}/leaves`).subscribe((data) => {
-      this.officerLeaveRecords = data;
-      this.populateFormWithLeaveRecords(data);
+  private fetchOfficerMovementRecords(officerId: string) {
+    this.http.get<MovementRecord[]>(`${baseUrl}/data-entry/officer/${officerId}/movements`).subscribe((data) => {
+      this.officerMovementRecords = data;
+      this.populateFormWithMovementRecords(data);
     })
   }
 
-  private populateFormWithLeaveRecords(leaveRecords: LeaveRecord[]) {
+  private populateFormWithMovementRecords(movementRecords: MovementRecord[]) {
     // The form should already be reset by resetForm(), but ensure it's empty
-    if (this.leaveRecordsArray.length > 0) {
+    if (this.movementRecordsArray.length > 0) {
       console.warn('FormArray not empty before populating, clearing it...');
-      while (this.leaveRecordsArray.length !== 0) {
-        this.leaveRecordsArray.removeAt(0);
+      while (this.movementRecordsArray.length !== 0) {
+        this.movementRecordsArray.removeAt(0);
       }
     }
 
     // Populate form array with existing data
-    leaveRecords.forEach((record) => {
-      const formGroup = this.createLeaveRecordFormGroup(record);
-      this.leaveRecordsArray.push(formGroup);
+    movementRecords.forEach((record) => {
+      const formGroup = this.createMovementRecordFormGroup(record);
+      this.movementRecordsArray.push(formGroup);
     });
 
     // Add empty row if no data exists
-    if (this.leaveRecordsArray.length === 0) {
+    if (this.movementRecordsArray.length === 0) {
       this.addNewRow();
     }
 
@@ -97,28 +103,28 @@ export class LeaveRecords {
     this.cdr.detectChanges();
   }
 
-  private createLeaveRecordFormGroup(record?: LeaveRecord): FormGroup {
+  private createMovementRecordFormGroup(record?: MovementRecord): FormGroup {
     return new FormGroup({
       id: new FormControl(record?.id || ''),
       from: new FormControl(record?.from || '', Validators.required),
       to: new FormControl(record?.to || '', Validators.required),
-      days: new FormControl(record?.days || '', Validators.required),
-      type: new FormControl(record?.type || '', Validators.required),
-      leaveAddress: new FormControl(record?.leaveAddress || '', Validators.required)
+      arrival: new FormControl(record?.arrival || '', Validators.required),
+      date: new FormControl(record?.date || '', Validators.required),
+      draft: new FormControl(record?.draft || '', Validators.required)
     });
   }
 
-  protected get leaveRecordsArray() {
-    return this.leaveForm.get('leaveRecords') as FormArray;
+  protected get movementRecordsArray() {
+    return this.movementForm.get('movementRecords') as FormArray;
   }
 
   protected addNewRow() {
-    const newRow = this.createLeaveRecordFormGroup();
-    this.leaveRecordsArray.push(newRow);
+    const newRow = this.createMovementRecordFormGroup();
+    this.movementRecordsArray.push(newRow);
   }
 
   protected removeRow(index: number) {
-    this.removeLeaveRecord(this.leaveRecordsArray, index);
+    this.removeMovementRecord(this.movementRecordsArray, index);
   }
 
   protected onSave() {
@@ -127,11 +133,11 @@ export class LeaveRecords {
       return;
     }
 
-    const formValue = this.leaveForm.value;
-    const { leaveRecords } = formValue;
+    const formValue = this.movementForm.value;
+    const { movementRecords } = formValue;
 
-    if (!this.isEmptyArray(leaveRecords)) {
-      this.saveLeaveRecords(leaveRecords);
+    if (!this.isEmptyArray(movementRecords)) {
+      this.saveMovementRecords(movementRecords);
     } else {
       alert('No data to save. Please fill in at least one field.');
     }
@@ -141,21 +147,21 @@ export class LeaveRecords {
     if (arr.length === 0) return true;
     for (const item of arr) {
       // Check if any of the required fields have meaningful values
-      if ((item.from && item.from.toString().trim()) ||
-        (item.to && item.to.toString().trim()) ||
-        (item.days && item.days.toString().trim()) ||
-        (item.type && item.type.trim()) ||
-        (item.leaveAddress && item.leaveAddress.trim())) {
+      if ((item.from && item.from.trim()) ||
+        (item.to && item.to.trim()) ||
+        (item.arrival && item.arrival.trim()) ||
+        (item.date && item.date.toString().trim()) ||
+        (item.draft && item.draft.trim())) {
         return false;
       }
     }
     return true;
   }
 
-  private saveLeaveRecords(leaveRecords: LeaveRecord[]) {
+  private saveMovementRecords(movementRecords: MovementRecord[]) {
     // Filter records into new and existing
-    const newRecords = leaveRecords.filter(record => !record.id);
-    const existingRecords = leaveRecords.filter(record => record.id);
+    const newRecords = movementRecords.filter(record => !record.id);
+    const existingRecords = movementRecords.filter(record => record.id);
 
     // Prepare promises for both POST and PUT calls
     const promises = [];
@@ -165,14 +171,14 @@ export class LeaveRecords {
       const postPayload = newRecords.map(record => ({
         from: record.from,
         to: record.to,
-        days: Number(record.days),
-        type: record.type,
-        leaveAddress: record.leaveAddress,
+        arrival: record.arrival,
+        date: record.date,
+        draft: record.draft,
         officerId: this.selectedOfficer?.id
       }));
 
       promises.push(
-        this.http.post(`${baseUrl}/data-entry/officer/${this.selectedOfficer?.id}/leaves`, postPayload).toPromise()
+        this.http.post(`${baseUrl}/data-entry/officer/${this.selectedOfficer?.id}/movements`, postPayload).toPromise()
       );
     }
 
@@ -182,39 +188,39 @@ export class LeaveRecords {
         id: record.id,
         from: record.from,
         to: record.to,
-        days: Number(record.days),
-        type: record.type,
-        leaveAddress: record.leaveAddress
+        arrival: record.arrival,
+        date: record.date,
+        draft: record.draft
       }));
 
       promises.push(
-        this.http.put(`${baseUrl}/data-entry/leaves`, putPayload).toPromise()
+        this.http.put(`${baseUrl}/data-entry/movements`, putPayload).toPromise()
       );
     }
 
     // Execute all promises
     if (promises.length > 0) {
       Promise.all(promises).then(() => {
-        alert('Leave records saved successfully');
-        this.fetchOfficerLeaveRecords(this.selectedOfficer!.id);
+        alert('Movement records saved successfully');
+        this.fetchOfficerMovementRecords(this.selectedOfficer!.id);
       }).catch(error => {
-        console.error('Error saving leave records:', error);
-        alert('Error saving leave records');
+        console.error('Error saving movement records:', error);
+        alert('Error saving movement records');
       });
     }
   }
 
-  private removeLeaveRecord(formArray: FormArray, index: number) {
+  private removeMovementRecord(formArray: FormArray, index: number) {
     const element = formArray.at(index);
     if (element.value.id) {
       // If the entry has an ID, delete it from the backend first
-      this.http.delete(`${baseUrl}/data-entry/${element.value.id}/leaves`).subscribe(() => {
+      this.http.delete(`${baseUrl}/data-entry/movement/${element.value.id}`).subscribe(() => {
         formArray.removeAt(index);
-        console.log('Leave record removed successfully');
+        console.log('Movement record removed successfully');
 
         // If the array becomes empty, add a new empty row
         if (formArray.length === 0) {
-          const newRow = this.createLeaveRecordFormGroup();
+          const newRow = this.createMovementRecordFormGroup();
           formArray.push(newRow);
         }
       });
@@ -224,7 +230,7 @@ export class LeaveRecords {
 
       // If the array becomes empty, add a new empty row
       if (formArray.length === 0) {
-        const newRow = this.createLeaveRecordFormGroup();
+        const newRow = this.createMovementRecordFormGroup();
         formArray.push(newRow);
       }
     }

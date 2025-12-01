@@ -1,1 +1,119 @@
-<sailor-list (onSailorSelection)="onOfficerSelection($event)" [sailors]="sailorsInClass" [showSearchBar]="true" [classTitle]="classDetails?.name" [allowSailorSelection]="true"></sailor-list>
+<div class="leave-container">
+  <!-- Left side: Sailor list -->
+  <div class="sailor-list-section">
+    <sailor-list 
+      (onSailorSelection)="onOfficerSelection($event)" 
+      [sailors]="sailorsInClass" 
+      [showSearchBar]="true" 
+      [classTitle]="classDetails?.name" 
+      [allowSailorSelection]="true">
+    </sailor-list>
+  </div>
+
+  <!-- Right side: Officer details and leave records form -->
+  <div class="officer-details-section">
+    <!-- Officer info and save button -->
+    <div class="header-section">
+      <div class="officer-info">
+        <h4>Name: {{selectedOfficer?.name ? selectedOfficer?.name : 'No Sailor Selected'}}</h4>
+        <h4>O No: {{selectedOfficer?.officerId ? selectedOfficer?.officerId : 'No Sailor Selected'}}</h4>
+      </div>
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="onSave()" 
+        [disabled]="!selectedOfficer"
+        class="save-button">
+        Save
+      </button>
+    </div>
+
+    <!-- Leave Records Form -->
+    @if (selectedOfficer) {
+      <form [formGroup]="leaveForm">
+        <div class="form-section">
+          <div class="section-header">
+            <h3>Leave Records</h3>
+            <button 
+              type="button" 
+              mat-raised-button 
+              color="accent" 
+              (click)="addNewRow()"
+              class="add-button">
+              Add Record
+            </button>
+          </div>
+          
+          <div class="table-container">
+            <table class="leave-table">
+              <thead>
+                <tr>
+                  <th>S no</th>
+                  <th>From</th>
+                  <th>To</th>
+                  <th>Days</th>
+                  <th>Type</th>
+                  <th>Leave Address</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody formArrayName="leaveRecords">
+                @for (record of leaveRecordsArray.controls; track $index; let i = $index) {
+                  <tr [formGroupName]="i">
+                    <td>{{i + 1}}</td>
+                    <td>
+                      <mat-form-field appearance="outline" class="table-input">
+                        <input matInput [matDatepicker]="fromDatePicker" formControlName="from" placeholder="From date">
+                        <mat-datepicker-toggle matIconSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #fromDatePicker></mat-datepicker>
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field appearance="outline" class="table-input">
+                        <input matInput [matDatepicker]="toDatePicker" formControlName="to" placeholder="To date">
+                        <mat-datepicker-toggle matIconSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #toDatePicker></mat-datepicker>
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field appearance="outline" class="table-input number-input">
+                        <input matInput type="number" formControlName="days" placeholder="Days">
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field appearance="outline" class="table-input">
+                        <input matInput formControlName="type" placeholder="Leave type">
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field appearance="outline" class="table-input large-input">
+                        <textarea matInput formControlName="leaveAddress" placeholder="Leave address" rows="2"></textarea>
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <button 
+                        type="button" 
+                        mat-icon-button 
+                        color="warn" 
+                        (click)="removeRow(i)"
+                        [disabled]="leaveRecordsArray.length <= 1">
+                        ×
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </form>
+    }
+
+    <!-- Show message when no officer is selected -->
+    @if (!selectedOfficer) {
+      <div class="no-officer-message">
+        <p>Please select a sailor to view and edit leave records.</p>
+      </div>
+    }
+  </div>
+</div>

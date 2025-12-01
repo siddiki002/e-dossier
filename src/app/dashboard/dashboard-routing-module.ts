@@ -15,7 +15,9 @@ const routes: Routes = [
   {path: 'medical-records-entry/:classId', loadComponent: () => import('./ado/medical-records/medical-records').then(m => m.MedicalRecords)},
   {path: 'leave-records-entry/:classId', loadComponent: () => import('./ado/leave-records/leave-records').then(m => m.LeaveRecords)},
   {path: 'pet-sports-entry/:classId', loadComponent: () => import('./ado/pet-sports/pet-sports').then(m => m.PetSports)},
+  {path: 'leave-records-entry/:classId', loadComponent: () => import('./ado/leave-records/leave-records').then(m => m.LeaveRecords)},
   {path: 'kit-item-issued-entry/:classId', loadComponent: () => import('./ado/kit-item-issued/kit-item-issued').then(m => m.KitItemIssued)},
+  {path: 'movement-records-entry/:classId', loadComponent: () => import('./ado/movement-records/movement-records').then(m => m.MovementRecords)},
   {path: 'chief-exam/class-overview/:id', loadComponent: () => import('./chief-exam/class-overview/class-overview').then(m => m.ClassOverview)},
   {path: 'chief-exam/marks-entering/:classId/:option', loadComponent: () => import('./chief-exam/marks-entering/marks-entering').then(m => m.MarksEntering)},
 ];

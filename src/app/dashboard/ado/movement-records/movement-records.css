@@ -1,4 +1,4 @@
-.kit-container {
+.movement-container {
   display: flex;
   height: 100vh;
   gap: 20px;
@@ -74,44 +74,44 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.kit-table {
+.movement-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 1000px;
+  min-width: 1200px;
 }
 
-.kit-table thead {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+.movement-table thead {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
   color: white;
 }
 
-.kit-table thead th {
+.movement-table thead th {
   padding: 16px 12px;
   text-align: left;
   font-weight: 600;
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border-bottom: 2px solid #e8537a;
+  border-bottom: 2px solid #43a5f5;
 }
 
-.kit-table tbody tr {
+.movement-table tbody tr {
   border-bottom: 1px solid #e0e0e0;
   transition: background-color 0.2s ease;
 }
 
-.kit-table tbody tr:hover {
-  background-color: #fff5f7;
+.movement-table tbody tr:hover {
+  background-color: #e3f2fd;
 }
 
-.kit-table tbody td {
+.movement-table tbody td {
   padding: 8px 12px;
   vertical-align: middle;
 }
 
-.kit-table tbody td:first-child {
+.movement-table tbody td:first-child {
   font-weight: 600;
-  color: #f5576c;
+  color: #00f2fe;
   width: 60px;
   text-align: center;
 }
@@ -133,18 +133,14 @@
   font-size: 14px;
 }
 
-.number-input {
-  max-width: 100px;
-}
-
-.kit-table tbody button {
+.movement-table tbody button {
   font-size: 24px;
   width: 36px;
   height: 36px;
   line-height: 1;
 }
 
-.kit-table tbody button[disabled] {
+.movement-table tbody button[disabled] {
   opacity: 0.4;
   cursor: not-allowed;
 }
@@ -154,7 +150,7 @@
   justify-content: center;
   align-items: center;
   height: 300px;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
   border-radius: 12px;
   color: white;
   font-size: 18px;
@@ -169,7 +165,7 @@
 
 /* Responsive adjustments */
 @media (max-width: 1400px) {
-  .kit-container {
+  .movement-container {
     flex-direction: column;
   }
 
@@ -204,15 +200,15 @@
 ::ng-deep .table-input.mat-focused .mdc-notched-outline__leading,
 ::ng-deep .table-input.mat-focused .mdc-notched-outline__notch,
 ::ng-deep .table-input.mat-focused .mdc-notched-outline__trailing {
-  border-color: #f5576c;
+  border-color: #4facfe;
   border-width: 2px;
 }
 
 /* Date picker icon styling */
 ::ng-deep .mat-datepicker-toggle {
-  color: #f093fb;
+  color: #4facfe;
 }
 
 ::ng-deep .mat-datepicker-toggle-active {
-  color: #f5576c;
+  color: #00f2fe;
 }

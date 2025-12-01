@@ -281,7 +281,10 @@ export class Ado {
       {name : "Personal Information", route: "personal-information-entry"},
       {name: "Discipline / Observation", route: "discipline-observation-entry"},
       {name : "PET / SPORTS", route: "pet-sports-entry"},
-      {name : 'Medical Records', route: 'medical-records-entry'}
+      {name : 'Medical Records', route: 'medical-records-entry'},
+      {name : 'Leave Records', route: 'leave-records-entry'},
+      {name : 'Kit Item Issued', route: 'kit-item-issued-entry'},
+      {name : 'Movement Records', route: 'movement-records-entry'},
     ];
   }
 

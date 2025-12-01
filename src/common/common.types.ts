@@ -142,3 +142,29 @@ export type TraitsAssessment = {
     score: number,
     total: number
 }
+
+export type LeaveRecord = {
+    from: Date,
+    to: Date,
+    days: number,
+    type: string,
+    leaveAddress: string,
+    id: string
+}
+
+export type MovementRecord = {
+    from: string,
+    to: string,
+    arrival: string,
+    date: Date,
+    draft: string,
+    id: string
+}
+
+export type KitItem = {
+    item: string,
+    quantity: number,
+    issueDate: Date,
+    dueDate: Date,
+    id: string
+}
