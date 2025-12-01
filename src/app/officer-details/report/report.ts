@@ -30,7 +30,7 @@ export class Report {
   protected marksInOptionalCourses: MarksInOptionalCourse = {};
   protected totalMarks: number = 0;
   protected obtainedMarks: number = 0;
-  protected isOic: boolean = false;
+  protected isOic: boolean = true;
   protected oicRemarks: string = '';
   protected doRemarks: string = '';
 
