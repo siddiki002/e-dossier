@@ -27,6 +27,8 @@ export class TraitsAssessmentComponent {
   protected officerDetails: Officer | null = null;
   protected officerTraitsAssessment: TraitsAssessment[] = [];
   protected isOic: boolean = false;
+  protected oicRemarks: string = '';
+  protected doRemarks: string = '';
   
   protected traits = [
     'Professional and practical knowledge',
@@ -73,6 +75,8 @@ export class TraitsAssessmentComponent {
   private fetchOfficerDetails() {
     this.http.get<Officer>(`${baseUrl}/data-entry/officer/${this.officerId}`).subscribe((data) => {
       this.officerDetails = data;
+      this.oicRemarks = data.oicRemarks || '';
+      this.doRemarks = data.doRemarks || '';
     });
   }
 
@@ -221,5 +225,20 @@ export class TraitsAssessmentComponent {
     this.initializeFormData();
     this.tap1TotalMarks = 10;
     this.tap2TotalMarks = 10;
+  }
+
+  protected saveRemarks() {
+
+    const payload: Partial<Officer> = {}
+
+    if(this.isOic) {
+      payload.oicRemarks = this.oicRemarks;
+    } else {
+      payload.doRemarks = this.doRemarks;
+    }
+
+    this.http.put(`${baseUrl}/data-entry/officer/${this.officerId}`, payload).subscribe(() => {
+      alert('Remarks saved successfully.');
+    });
   }
 }

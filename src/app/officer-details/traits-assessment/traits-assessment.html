@@ -226,4 +226,58 @@
       </div>
     </div>
   </div>
+
+  <!-- Sailor Evaluation Remarks Section -->
+  <div class="section-card">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="section-icon">📝</span>
+        Sailor Evaluation Remarks
+      </h2>
+    </div>
+    
+    <div class="remarks-container">
+      <!-- DO Remarks -->
+      <div class="remark-field">
+        <label for="doRemarks" class="remark-label">
+          <span class="label-text">Divisional Officer (DO) Remarks</span>
+          <span class="label-required" *ngIf="!isOic">*</span>
+        </label>
+        <textarea 
+          id="doRemarks" 
+          class="remark-textarea"
+          [class.readonly]="isOic"
+          [placeholder]="isOic ? 'No remarks added from DO' : 'Enter comprehensive evaluation remarks for the officer performance, conduct, and areas for improvement...'"
+          [readOnly]="isOic" 
+          [(ngModel)]="doRemarks"
+          rows="4">
+        </textarea>
+      </div>
+
+      <!-- OIC Remarks -->
+      <div class="remark-field">
+        <label for="oicRemarks" class="remark-label">
+          <span class="label-text">Officer-in-Charge (OIC) Remarks</span>
+          <span class="label-required">*</span>
+        </label>
+        <textarea 
+          id="oicRemarks" 
+          class="remark-textarea"
+          [class.readonly]="!isOic"
+          [placeholder]="!isOic ? 'No remarks added from OIC' : 'Enter comprehensive evaluation remarks for the officers performance, conduct, and areas for improvement...'"
+          [(ngModel)]="oicRemarks"
+          [readOnly]="!isOic"
+          rows="4">
+        </textarea>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-section">
+        <button type="button" class="action-btn primary" (click)="saveRemarks()">
+          <span class="btn-icon">💾</span>
+          Save Remarks
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
